@@ -1,0 +1,92 @@
+---
+import * as Plot from "@observablehq/plot";
+import { parseHTML } from "linkedom";
+
+interface Datum {
+  date: string;
+  value: number;
+}
+
+interface Props {
+  data: Datum[];
+  yLabel?: string;
+  milestoneAnnotations?: { date: string; label: string }[];
+}
+
+const { data, yLabel = "", milestoneAnnotations = [] } = Astro.props;
+
+// Observable Plot needs a DOM; Astro components run in Node.
+const linkedom = parseHTML("<!doctype html><html><body></body></html>");
+const fakeDocument = linkedom.document;
+const fakeWindow = {
+  document: fakeDocument,
+  navigator: { userAgent: "node" },
+  screen: { width: 860, height: 420 },
+  devicePixelRatio: 1,
+  HTMLElement: linkedom.HTMLElement,
+  SVGElement: linkedom.SVGElement,
+};
+
+const g = globalThis as any;
+const priorDocument = g.document;
+const priorWindow = g.window;
+g.document = fakeDocument;
+g.window = fakeWindow;
+
+const yMax = Math.max(...data.map((d) => d.value)) * 1.08;
+
+const svg = Plot.plot({
+  width: 860,
+  height: 420,
+  marginTop: 16,
+  y: { domain: [0, yMax], label: yLabel, grid: true },
+  x: {
+    type: "time",
+    label: "",
+    ticks: 8,
+    tickFormat: "%Y",
+  },
+  marks: [
+    Plot.areaY(data, {
+      x: "date",
+      y: "value",
+      curve: "linear",
+      fill: "#dbeafe",
+      fillOpacity: 0.7,
+    }),
+    Plot.lineY(data, {
+      x: "date",
+      y: "value",
+      curve: "linear",
+      stroke: "#1e3a5f",
+      strokeWidth: 2,
+    }),
+    ...(milestoneAnnotations.length
+      ? [
+          Plot.ruleX(milestoneAnnotations, {
+            x: "date",
+            stroke: "#b45309",
+            strokeWidth: 1,
+            strokeDasharray: "4 3",
+          }),
+          Plot.text(milestoneAnnotations, {
+            x: "date",
+            y: yMax,
+            text: "label",
+            fontSize: 10,
+            fill: "#b45309",
+            textAnchor: "start",
+            dy: -6,
+          }),
+        ]
+      : []),
+  ],
+});
+
+g.document = priorDocument;
+g.window = priorWindow;
+---
+
+<div class="chart-wrap overflow-x-auto">
+  <Fragment set:html={(svg as any).outerHTML ?? svg} />
+</div>

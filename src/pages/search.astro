@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search" description="Search Bharat Journal — pages, ideas, and data stories.">
+  <section class="pt-12 pb-6 max-w-3xl mx-auto">
+    <h1 class="font-display text-3xl md:text-4xl font-bold text-ink">
+      Search
+    </h1>
+    <div id="search" class="mt-6"></div>
+  </section>
+</BaseLayout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+  // eslint-disable-next-line no-undef
+  var PagefindUIConstructor = window.PagefindUI;
+  if (PagefindUIConstructor) {
+    new PagefindUIConstructor({
+      element: "#search",
+      showSubResults: true,
+    });
+  }
+</script>

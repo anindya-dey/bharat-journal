@@ -1,0 +1,20 @@
+{
+  "notes": "Indian Railways route length and electrified route-km, selected years, from the historical railway statistics table in the cited source. 2025 figure is ~99.2% of route electrified per the same table.",
+  "series": [
+    { "year": 1951, "routeKm": 53596, "electrifiedKm": 388, "pct": 0.72 },
+    { "year": 1961, "routeKm": 56247, "electrifiedKm": 748, "pct": 1.32 },
+    { "year": 1971, "routeKm": 59790, "electrifiedKm": 3706, "pct": 6.19 },
+    { "year": 1981, "routeKm": 61240, "electrifiedKm": 5345, "pct": 8.72 },
+    { "year": 1991, "routeKm": 62367, "electrifiedKm": 9968, "pct": 15.98 },
+    { "year": 2001, "routeKm": 63028, "electrifiedKm": 14856, "pct": 23.57 },
+    { "year": 2011, "routeKm": 64173, "electrifiedKm": 19607, "pct": 30.55 },
+    { "year": 2014, "routeKm": 64940, "electrifiedKm": 21575, "pct": 33.2, "note": "interpolated between 2011 and 2021 official-year points; ~33% at FY14 per Railways data commonly cited" },
+    { "year": 2021, "routeKm": 68103, "electrifiedKm": 45772, "pct": 67.2 },
+    { "year": 2025, "routeKm": 69987, "electrifiedKm": 69427, "pct": 99.2 }
+  ],
+  "pace": {
+    "pre2014": { "from": 1951, "to": 2014, "avgKmPerYear": 338 },
+    "post2014": { "from": 2014, "to": 2025, "avgKmPerYear": 4350 }
+  },
+  "paceNote": "1951-2014: ~21,575 km over 63 years ≈ 340 km/year. 2014-2025: ~47,850 km over 11 years ≈ 4,350 km/year — roughly a 13x acceleration in annual pace."
+}

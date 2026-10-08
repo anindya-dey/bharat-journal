@@ -1,0 +1,112 @@
+---
+title: "Rail Electrification: Full Circle to 1947's Standard"
+description: "From 388 km in 1951 to ~99% of route electrified by 2025 — a 13x acceleration in pace, and India's single biggest transport decarbonisation."
+theme: "mobility"
+dataset: "src/data/datasets/rail-electrification.json"
+chartType: "line"
+unit: "electrified route-km"
+sources:
+  - name: "Rail transport in India — historical route & electrification table (citing Indian Railways year-end figures)"
+    url: "https://en.wikipedia.org/wiki/Rail_transport_in_India"
+    retrieved: "October 2026"
+  - name: "Dedicated Freight Corridors — operational length (2,741 km, March 2025)"
+    url: "https://en.wikipedia.org/wiki/Rail_transport_in_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import rail from "../../data/datasets/rail-electrification.json";
+
+export const electrified = rail.series
+  .filter((d) => d.year !== 2014)
+  .map((d) => ({
+    date: `${d.year}-01-01`,
+    value: d.electrifiedKm,
+  }));
+
+export const share = rail.series
+  .filter((d) => d.year !== 2014)
+  .map((d) => ({
+    date: `${d.year}-01-01`,
+    value: d.pct,
+  }));
+
+<ChartFrame
+  caption="Electrified route-km, Indian Railways"
+  subCaption="from 388 km in 1951 (Bombay's suburban lines) to ~69,427 km in 2025 — a 13x acceleration in annual pace after 2014."
+>
+  <LineChart data={electrified} yLabel="Electrified route (km)" />
+</ChartFrame>
+
+<ChartFrame
+  caption="Share of route electrified"
+  subCaption="% of total route length. Thirty per cent in 2011; two-thirds by 2021; ~99% by 2025."
+>
+  <LineChart data={share} yLabel="% of route electrified" />
+</ChartFrame>
+
+<p>
+  Indian Railways ran its first electric train in 1925 — Bombay suburban,
+  1,500 V DC. The modern system, 25 kV AC, was adopted in 1957, and by 1991
+  still covered barely 16% of the route. For four decades, electrification
+  ambled along at roughly <strong>340 km a year</strong>, the pace of a system
+  that treated it as a maintenance project. Then, in the mid-2010s, the
+  ambition changed: complete it. Between 2014 and 2025 the pace averaged
+  <strong>~4,350 km a year</strong>, and by 2025 roughly <strong>99.2%</strong>
+  of the ~70,000 km route was electrified — one of the largest
+  single-infrastructure decarbonisation programmes in the world.
+</p>
+
+<p>
+  The story the full series tells is the point of this journal: the 2025
+  number is not a 2014 invention. The first electric trains, the AC traction
+  standard, the suburban systems of Bombay, Madras and Calcutta, the CORE
+  electrification organisation (1979) — all pre-date it. What changed was
+  <em>pace</em>, driven by a simple piece of arithmetic: electric traction
+  costs the Railways roughly a third of diesel per 1,000 GTKM, and every
+  electrified km also serves the Dedicated Freight Corridors now operating
+  alongside it (~2,741 km by March 2025). The curve bends where strategy
+  meets arithmetic.
+</p>
+
+<p>
+  A note on method: electrification year-points are reported by decade
+  snapshots (1951, 1961, 1971 …), not annually — each year in the chart is an
+  official reported figure, interpolated smoothly between them. The 2014
+  point (~33%) is interpolated from reported FY14 figures and is flagged in
+  the dataset.
+</p>
+
+<SourceList
+  sources={[
+    {
+      name: "Rail transport in India — historical route & electrification table (Wikipedia, citing Indian Railways year-end figures)",
+      url: "https://en.wikipedia.org/wiki/Rail_transport_in_India",
+      retrieved: "October 2026",
+      note: "1951: 388 km / 53,596 km route; 2021: 45,772 km; 2025: 69,427 km / 99.20%.",
+    },
+    {
+      name: "Dedicated Freight Corridors — operational length (as of March 2025: 2,741 km)",
+      url: "https://en.wikipedia.org/wiki/Rail_transport_in_India",
+      retrieved: "October 2026",
+    },
+  ]}
+/>
+
+<section class="mt-12 rounded-lg border border-stone-300 bg-white p-6">
+  <h2 class="font-display text-xl font-bold text-ink mb-2">What's next →</h2>
+  <p class="text-sm text-fog mb-3">
+    Electrified track is capacity waiting to be used — for freight, and for the passenger network the country deserves:
+  </p>
+  <div class="flex flex-col gap-1.5">
+    <a
+      href="/next/last-mile-connectivity"
+      class="text-navy font-medium underline decoration-stone-400 underline-offset-2 hover:decoration-navy"
+    >
+      Seamless last-mile and regional connectivity →
+    </a>
+  </div>
+</section>

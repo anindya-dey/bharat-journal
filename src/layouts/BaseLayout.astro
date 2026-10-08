@@ -1,0 +1,49 @@
+---
+import "../styles/global.css";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { SITE } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+const pageTitle = title
+  ? `${title} — ${SITE.title}`
+  : `${SITE.title} — ${SITE.tagline}`;
+
+const pageDescription =
+  description ?? SITE.description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={SITE.author} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%231a1f2b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23faf9f5' font-family='Georgia'>भ</text></svg>"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <SiteNav />
+    <main class="flex-1 w-full max-w-5xl mx-auto px-5 md:px-8 pb-20">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "notes": "UPI annual transaction volume and value, fiscal years (April-March). Figures compiled from NPCI product statistics as reported in cited sources; earlier years rounded as reported.",
+  "series": [
+    { "date": "2016-04-01", "label": "FY 2016-17", "volumeMn": 0.18, "valueLakhCr": 0.0009, "note": "launched April 2016, pilot scale" },
+    { "date": "2017-04-01", "label": "FY 2017-18", "volumeMn": 920, "valueLakhCr": 1, "note": "92 crore transactions, CAGR base year" },
+    { "date": "2018-04-01", "label": "FY 2018-19", "volumeMn": 5359, "valueLakhCr": 10.98, "note": "5,359 million (535.9 crore)" },
+    { "date": "2019-04-01", "label": "FY 2019-20", "volumeMn": 10733, "valueLakhCr": 21.7, "note": "10,733 million; ~₹2.17 lakh crore monthly run-rate late FY" },
+    { "date": "2020-04-01", "label": "FY 2020-21", "volumeMn": 22342, "valueLakhCr": 41, "note": "22,342 million; ₹41 trillion exchanged in FY21" },
+    { "date": "2021-04-01", "label": "FY 2021-22", "volumeMn": 45960, "valueLakhCr": 84.9, "note": "45,960 million; calendar 2021 total ₹50 trillion crossed" },
+    { "date": "2022-04-01", "label": "FY 2022-23", "volumeMn": 83750, "valueLakhCr": 139, "note": "8,375 crore transactions (NPCI via Economic Survey); ₹139 lakh crore value" },
+    { "date": "2023-04-01", "label": "FY 2023-24", "volumeMn": 116740, "valueLakhCr": 180.6, "note": "~116.74 billion transactions, ₹180.6 lakh crore (NPCI annual)" },
+    { "date": "2024-04-01", "label": "FY 2024-25", "volumeMn": 185000, "valueLakhCr": 240, "note": "~185 billion transactions, ~₹240 lakh crore (NPCI annual report)" }
+  ],
+  "milestoneAnnotations": [
+    { "date": "2016-04-01", "label": "UPI launched" },
+    { "date": "2019-01-01", "label": "MDR scrapped" },
+    { "date": "2024-08-01", "label": "20bn/month" }
+  ]
+}

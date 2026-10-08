@@ -1,0 +1,26 @@
+---
+interface Props {
+  caption?: string;
+  subCaption?: string;
+}
+
+const { caption, subCaption } = Astro.props;
+---
+
+<figure class="my-8">
+  <div
+    class="rounded-lg border border-stone-300 bg-white p-4 md:p-6 shadow-sm"
+    id="chart-container"
+  >
+    <slot />
+  </div>
+  {
+    (caption || subCaption) && (
+      <figcaption class="mt-2.5 text-sm text-fog leading-relaxed">
+        {caption && <span class="text-ink font-medium">{caption}</span>}
+        {caption && subCaption && " — "}
+        {subCaption}
+      </figcaption>
+    )
+  }
+</figure>

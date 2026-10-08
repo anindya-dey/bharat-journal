@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ERAS, SECTORS, MILESTONES } from "../data/milestones";
+
+const byEra = ERAS.map((era) => ({
+  ...era,
+  milestones: MILESTONES.filter((m) => m.era === era.id).sort(
+    (a, b) => a.year - b.year,
+  ),
+}));
+---
+
+<BaseLayout
+  title="Then"
+  description="A milestone timeline of India, 1947–2014 — constitution to digital foundations."
+>
+  <section class="pt-12 pb-6">
+    <p class="text-xs uppercase tracking-[0.25em] text-ember font-semibold mb-2">
+      Then · 1947–2014
+    </p>
+    <h1
+      class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight max-w-2xl"
+    >
+      How we got here
+    </h1>
+    <p class="mt-3 text-ink/70 leading-relaxed max-w-2xl">
+      One timeline, four eras, every milestone a thing that actually happened —
+      dates you can check, anchored so you can share them. Follow a sector
+      across decades with the filters, or walk the whole line.
+    </p>
+  </section>
+
+  <section class="mb-8" id="sector-filter">
+    <div class="flex flex-wrap gap-2" data-filter-group>
+      <button
+        data-sector="all"
+        class="chip-active px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-300 transition-colors"
+      >
+        All sectors
+      </button>
+      {
+        SECTORS.map((s) => (
+          <button
+            data-sector={s.id}
+            class="px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-300 text-ink/80 hover:border-ink transition-colors"
+          >
+            {s.name}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="timeline-rail relative pl-12 md:pl-16 pb-10">
+    {
+      byEra.map((era) => (
+        <section data-era={era.id} class="mb-14 anchor-link">
+          <div class="flex flex-wrap items-baseline gap-x-3 mb-6 -ml-12 md:-ml-16 md:pl-0">
+            <h2 class="font-display text-2xl font-bold text-navy">
+              {era.name}
+            </h2>
+            <span class="text-sm font-mono text-ember">{era.range}</span>
+          </div>
+          <p class="text-sm text-fog italic mb-6 max-w-xl">{era.description}</p>
+          <ol class="space-y-6">
+            {era.milestones.map((m) => (
+              <li
+                data-sector={m.sector}
+                class="milestone anchor-link relative"
+                id={m.anchor}
+              >
+                <span
+                  class="absolute -left-[3.55rem] md:-left-[4.3rem] top-1.5 w-2.5 h-2.5 rounded-full bg-navy ring-4 ring-paper"
+                />
+                <div class="rounded-lg border border-stone-300 bg-white p-4 hover:border-navy transition-colors">
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h3 class="font-display font-bold text-ink leading-snug">
+                      {m.title}
+                    </h3>
+                    <span class="text-xs font-mono text-fog shrink-0">
+                      {m.year}
+                    </span>
+                  </div>
+                  <p class="mt-1.5 text-sm text-fog leading-relaxed">
+                    {m.summary}
+                  </p>
+                  {(m.relatedNow || m.relatedNext) && (
+                    <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                      {m.relatedNow && (
+                        <a
+                          href={m.relatedNow}
+                          class="text-navy underline underline-offset-2 hover:decoration-navy"
+                        >
+                          Where it stands → Now
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
+
+  <p class="text-sm text-fog border-t border-stone-300 pt-6 max-w-2xl">
+    The timeline ends at 2014 deliberately — not because nothing happened after,
+    but because the <em>now</em> of this journal is told in data, not
+    milestones. The post-2014 acceleration is visible in every chart on
+    <a href="/now" class="text-navy underline underline-offset-2">Now</a>,
+    starting from 1947 wherever the data allows.
+  </p>
+
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>(
+      "#sector-filter button",
+    );
+    const milestones = document.querySelectorAll<HTMLElement>(".milestone");
+
+    const setActive = (sector: string) => {
+      milestones.forEach((el) => {
+        const match = sector === "all" || el.dataset.sector === sector;
+        el.style.display = match ? "" : "none";
+      });
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => {
+          b.classList.remove("chip-active");
+          b.classList.add("text-ink/80");
+        });
+        btn.classList.add("chip-active");
+        btn.classList.remove("text-ink/80");
+        setActive(btn.dataset.sector ?? "all");
+      });
+    });
+  </script>
+</BaseLayout>

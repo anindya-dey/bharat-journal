@@ -1,0 +1,20 @@
+{
+  "notes": "PM Jan Dhan Yojana cumulative accounts, deposits and averages as of August each year, from Ministry of Finance / PMJDY statistics reported in cited sources. Cr = crore (10 million). Latest 2025 point from PMJDY dashboard via press reporting.",
+  "series": [
+    { "label": "Aug 2014", "accountsCr": 0.76, "depositsCrRupees": 595, "avgDeposit": 0, "note": "15.5M accounts week one; Guinness record 18.1M in first week" },
+    { "label": "Aug 2015", "accountsCr": 17.9, "depositsCrRupees": 22901, "avgDeposit": 1279 },
+    { "label": "Aug 2016", "accountsCr": 24.1, "depositsCrRupees": 42094, "avgDeposit": 1747 },
+    { "label": "Aug 2017", "accountsCr": 30.9, "depositsCrRupees": 65799, "avgDeposit": 2187 },
+    { "label": "Aug 2018", "accountsCr": 32.55, "depositsCrRupees": 82039, "avgDeposit": 2521 },
+    { "label": "Aug 2019", "accountsCr": 36.79, "depositsCrRupees": 102415, "avgDeposit": 2783 },
+    { "label": "Aug 2020", "accountsCr": 40.41, "depositsCrRupees": 130086, "avgDeposit": 3219 },
+    { "label": "Aug 2021", "accountsCr": 43.04, "depositsCrRupees": 146230, "avgDeposit": 3398 },
+    { "label": "Aug 2022", "accountsCr": 46.25, "depositsCrRupees": 173954, "avgDeposit": 3761 },
+    { "label": "Aug 2023", "accountsCr": 50.09, "depositsCrRupees": 203505, "avgDeposit": 4063 },
+    { "label": "Aug 2025", "accountsCr": 55.3, "depositsCrRupees": 260000, "avgDeposit": 4700, "note": "55+ crore accounts per World Bank Spring 2025 brief; deposits ~₹2.6 lakh crore per MoF 11-year reporting" }
+  ],
+  "context": {
+    "findexBankedAdultsPct": { "2011": 35, "2014": 53, "2017": 80, "2021": 78 },
+    "note": "World Bank Global Findex: adults with an account at a financial institution or mobile-money service, India (%)"
+  }
+}

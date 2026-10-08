@@ -1,0 +1,52 @@
+---
+import { SITE } from "../data/site";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  path === href ||
+  (href !== "/" && path.startsWith(href));
+
+const links = [
+  { href: "/then", label: "Then" },
+  { href: "/now", label: "Now" },
+  { href: "/next", label: "Next" },
+  { href: "/about", label: "About" },
+];
+---
+
+<header class="border-b border-stone-300 bg-cream/60 backdrop-blur sticky top-0 z-40">
+  <div class="max-w-5xl mx-auto px-5 md:px-8">
+    <div class="flex items-center justify-between h-14">
+      <a href="/" class="flex items-baseline gap-2 group">
+        <span class="font-display text-xl font-bold text-ink group-hover:text-navy transition-colors">
+          {SITE.title}
+        </span>
+        <span class="text-xs text-fog hidden sm:inline">{SITE.tagline}</span>
+      </a>
+      <nav class="flex items-center gap-1 md:gap-2">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                isActive(link.href)
+                  ? "bg-ink text-paper"
+                  : "text-ink/80 hover:bg-stone-200",
+              ]}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          href="/search"
+          class="px-3 py-1.5 rounded-md text-sm font-medium text-ink/80 hover:bg-stone-200 transition-colors"
+          aria-label="Search"
+        >
+          Search
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>

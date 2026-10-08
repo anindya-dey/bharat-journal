@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const vizs = await getCollection("now");
+  return vizs.map((v) => ({ params: { topic: v.id }, props: { viz: v } }));
+}
+
+const { viz } = Astro.props;
+const { Content } = await render(viz);
+---
+
+<BaseLayout title={viz.data.title} description={viz.data.description}>
+  <article class="pt-12 pb-8 max-w-3xl mx-auto">
+    <header class="mb-8">
+      <p class="text-xs uppercase tracking-[0.25em] text-ember font-semibold mb-2">
+        Now · {viz.data.theme}
+      </p>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight">
+        {viz.data.title}
+      </h1>
+      <p class="mt-3 text-ink/70 leading-relaxed">{viz.data.description}</p>
+      <div class="mt-3 text-xs text-fog">
+        Updated {viz.data.updated} · dataset:
+        <code class="font-mono text-ink/70">{viz.data.dataset}</code>
+      </div>
+    </header>
+    <div class="prose prose-stone max-w-none">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

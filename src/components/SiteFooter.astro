@@ -1,0 +1,19 @@
+---
+import { SITE } from "../data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-stone-300 bg-cream">
+  <div class="max-w-5xl mx-auto px-5 md:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="text-sm text-fog">
+      <span class="font-display font-semibold text-ink">{SITE.title}</span>
+      — {SITE.description}
+    </div>
+    <div class="text-xs text-fog">
+      © {year} {SITE.author} ·
+      <a href="https://blog.anindyadey.com" class="underline hover:text-ink">Blog</a>
+      ·
+      <a href="/about" class="underline hover:text-ink">Method & sources</a>
+    </div>
+  </div>
+</footer>

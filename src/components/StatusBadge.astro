@@ -1,0 +1,22 @@
+---
+const STATUSES: Record<string, { label: string; class: string }> = {
+  proposed: { label: "Proposed", class: "badge-proposed" },
+  submitted: { label: "Submitted", class: "badge-submitted" },
+  "in-progress": { label: "In progress", class: "badge-in-progress" },
+  achieved: { label: "Achieved", class: "badge-achieved" },
+  stalled: { label: "Stalled", class: "badge-stalled" },
+  declined: { label: "Declined", class: "badge-declined" },
+};
+
+interface Props {
+  status: string;
+}
+
+const { status } = Astro.props;
+const meta = STATUSES[status] ?? STATUSES.proposed;
+---
+
+<span class={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide ${meta.class}`}>
+  <span class="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
+  {meta.label}
+</span>

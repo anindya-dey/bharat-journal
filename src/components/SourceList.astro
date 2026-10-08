@@ -1,0 +1,36 @@
+---
+interface Props {
+  sources: { name: string; url: string; retrieved: string; note?: string }[];
+}
+
+const { sources } = Astro.props;
+---
+
+<aside class="mt-10 rounded-lg border border-stone-300 bg-cream/70 p-5">
+  <h3 class="font-display font-bold text-sm uppercase tracking-wide text-ink mb-3">
+    Sources
+  </h3>
+  <ul class="space-y-2.5">
+    {
+      sources.map((source) => (
+        <li class="text-sm">
+          <a
+            href={source.url}
+            target="_blank"
+            rel="noopener"
+            class="text-navy underline decoration-stone-400 underline-offset-2 hover:decoration-navy"
+          >
+            {source.name}
+          </a>
+          <span class="text-fog">
+            {" "}
+            · data as of {source.retrieved}
+          </span>
+          {source.note && (
+            <span class="block text-xs text-fog mt-0.5">{source.note}</span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</aside>
