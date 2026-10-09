@@ -1,49 +1,51 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Self-hosted fonts */
+/* Use class-based dark mode (toggled by ThemeToggle) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Self-hosted fonts — Quicksand throughout */
 @import "@fontsource-variable/quicksand";
-@import "@fontsource/source-serif-4/400.css";
-@import "@fontsource/source-serif-4/600.css";
-@import "@fontsource/source-serif-4/700.css";
 @import "@fontsource-variable/jetbrains-mono";
 
 @theme {
   --font-sans: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Source Serif 4", Georgia, serif;
+  --font-display: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
   /* Brand: navy */
-  --color-navy-50: oklch(97% 0.012 244);
-  --color-navy-100: oklch(93% 0.026 244);
-  --color-navy-200: oklch(86% 0.045 246);
-  --color-navy-300: oklch(74% 0.075 249);
-  --color-navy-400: oklch(60% 0.11 253);
-  --color-navy-500: oklch(48% 0.115 256);
-  --color-navy-600: oklch(41% 0.111 258);
-  --color-navy-700: oklch(36% 0.1 260);
+  --color-navy-50: #f2f5f9;
+  --color-navy-100: #e2e9f2;
+  --color-navy-200: #c3d2e5;
+  --color-navy-300: #94b3d1;
+  --color-navy-400: #648bbd;
+  --color-navy-500: #42699f;
+  --color-navy-600: #31517e;
   --color-navy-soft: #2c4a6e;
   --color-navy: #1d3557;
-  --color-navy-800: #1d3557;
-  --color-navy-900: #17293f;
-  --color-navy-950: #101c2d;
+  --color-navy-700: #1d3557;
+  --color-navy-800: #16293f;
+  --color-navy-900: #131f2f;
+  --color-navy-950: #0d1722;
 
   /* Accent: saffron */
-  --color-saffron: #d97706;
+  --color-saffron: #e07b1a;
   --color-saffron-50: #fdf6ec;
   --color-saffron-100: #f9ecd3;
   --color-saffron-200: #f2d3a5;
   --color-saffron-300: #ecb471;
   --color-saffron-400: #e59a49;
-  --color-saffron-500: #d97706;
-  --color-saffron-600: #b45309;
-  --color-saffron-700: #92400e;
-  --color-saffron-800: #78350c;
-  --color-saffron-900: #652d0b;
+  --color-saffron-500: #e07b1a;
+  --color-saffron-600: #c05f10;
+  --color-saffron-700: #99490e;
+  --color-saffron-800: #7c3c11;
+  --color-saffron-900: #663210;
   --color-marigold: #f59e0b;
 
   /* Greens */
   --color-moss: #3f7d3f;
+  --color-moss-300: #a3cba3;
+  --color-moss-400: #74a874;
   --color-moss-500: #3f7d3f;
   --color-moss-600: #336833;
   --color-moss-700: #2a542a;
@@ -53,11 +55,11 @@
   --color-clay-500: #b3392f;
   --color-clay-600: #96302a;
 
-  /* Paper / ink neutrals */
+  /* Neutrals */
   --color-paper: #faf9f6;
-  --color-paper-2: #f4f2ec;
+  --color-paper-2: #ffffff;
   --color-cream: #f4efe4;
-  --color-line: #e2e0d8;
+  --color-line: #e4e0d4;
   --color-fog: #5d6472;
   --color-ink: #16181d;
   --color-ink-soft: #3c414b;
@@ -66,7 +68,6 @@
   --shadow-lift: 0 2px 4px rgb(22 24 29 / 0.05), 0 12px 32px -8px rgb(22 24 29 / 0.14);
 
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-chart-in: chart-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes fade-up {
     from {
@@ -78,50 +79,33 @@
       transform: translateY(0);
     }
   }
-  @keyframes chart-in {
-    from {
-      stroke-dashoffset: 2400;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
 }
 
-/* ---------- Dark mode via .dark class ---------- */
+/* ---------- Theme surfaces ---------- */
 :root {
   color-scheme: light;
 }
+
 .dark {
   color-scheme: dark;
-}
-
-.dark body {
-  background-color: #12141a;
-  color: #e8e6e1;
-}
-
-.dark {
-  --color-paper: #12141a;
-  --color-paper-2: #171a21;
-  --color-cream: #1a1e27;
-  --color-line: #272c37;
-  --color-fog: #9aa1ad;
-  --color-ink: #e8e6e1;
-  --color-ink-soft: #c6c8c2;
-  --color-navy: #6188b5;
-  --color-navy-soft: #7292b8;
-  --color-saffron: #e59a49;
+  --color-paper: #101520;
+  --color-paper-2: #161c29;
+  --color-cream: #1a2130;
+  --color-line: #27304a;
+  --color-fog: #94a0b8;
+  --color-ink: #e4e8f2;
+  --color-ink-soft: #c4cbdd;
+  --color-navy: #7ba3d9;
+  --color-navy-soft: #94b8e6;
+  --color-navy-950: #0b111c;
+  --color-saffron: #f0a04b;
+  --color-saffron-600: #f0b26a;
+  --color-saffron-700: #f7c58f;
   --color-marigold: #f5b942;
-  --color-moss: #6fa76f;
-  --color-clay: #d9766d;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -4px rgb(0 0 0 / 0.4);
-  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 12px 32px -8px rgb(0 0 0 / 0.55);
-}
-
-/* ---------- Base ---------- */
-html {
-  scroll-behavior: smooth;
+  --color-moss: #86b98a;
+  --color-clay: #e08a80;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 16px -4px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.45), 0 12px 32px -8px rgb(0 0 0 / 0.6);
 }
 
 body {
@@ -130,7 +114,19 @@ body {
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Tricolor: saffron → white → green present subtly at the very top */
+.tricolor-strip {
+  background: linear-gradient(
+    90deg,
+    #e07b1a 0%,
+    #e07b1a 33.3%,
+    #f3efe0 33.3%,
+    #f3efe0 66.6%,
+    #3f7d3f 66.6%,
+    #3f7d3f 100%
+  );
 }
 
 ::selection {
@@ -142,15 +138,30 @@ body {
   color: #f4f2ec;
 }
 
-/* Card surfaces in dark mode */
-.dark .bg-white,
-.dark [class*="bg-white"] {
-  background-color: #171a21;
-}
-
-/* ---------- Chart SVG: grow-in + reduced motion ---------- */
+/* ---------- Charts ---------- */
 .chart-svg {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Command palette + Pagefind (theme-aware) ---------- */
+.dark .pagefind-ui {
+  --pagefind-ui-primary: #f0a04b;
+  --pagefind-ui-text: #e4e8f2;
+  --pagefind-ui-background: #161c29;
+  --pagefind-ui-border: #27304a;
+  --pagefind-ui-tag: #27304a;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -165,26 +176,4 @@ body {
     transition-duration: 0.001s !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* ---------- Pagefind dark-mode touch-ups ---------- */
-.dark .pagefind-ui {
-  --pagefind-ui-primary: #e59a49;
-  --pagefind-ui-text: #e8e6e1;
-  --pagefind-ui-background: #171a21;
-  --pagefind-ui-border: #272c37;
-  --pagefind-ui-tag: #272c37;
-}
-
-/* Visually hidden but accessible */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
 }

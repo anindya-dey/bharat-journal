@@ -110,13 +110,6 @@ const links = [
 </header>
 
 <script>
-  const openBtn = document.getElementById("palette-open");
-  const root = document.getElementById("cmdk-root");
-  openBtn?.addEventListener("click", () => {
-    root?.removeAttribute("hidden");
-    setTimeout(() => document.getElementById("cmdk-input")?.focus(), 20);
-  });
-
   const menuBtn = document.getElementById("mobile-menu-open");
   const menu = document.getElementById("mobile-menu");
   let menuOpen = false;

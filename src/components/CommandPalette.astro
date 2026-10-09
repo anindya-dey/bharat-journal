@@ -58,95 +58,130 @@ const items = JSON.stringify([...staticItems, ...vizItems, ...ideaItems]);
   </div>
 </div>
 
-<script define:vars={{ items }}>
-  (function () {
-    const DATA = items;
-    const root = document.getElementById("cmdk-root");
-    const input = document.getElementById("cmdk-input");
-    const list = document.getElementById("cmdk-list");
-    let active = 0;
-    let filtered = DATA;
+<script>
+  const DATA: { section: string; title: string; href: string }[] = JSON.parse(
+    (
+      document.getElementById("cmdk-items-data") as HTMLScriptElement
+    )?.textContent ?? "[]",
+  );
 
-    function render() {
-      list.innerHTML = "";
-      filtered.forEach((item, i) => {
-        const li = document.createElement("li");
-        li.className =
-          "px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 " +
-          (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60");
-        li.innerHTML =
-          '<span class="text-sm font-medium">' +
-          item.title +
-          '</span><span class="text-[11px] text-fog">' +
-          item.section +
-          "</span>";
-        li.addEventListener("click", () => go(item));
-        li.addEventListener("mousemove", () => {
-          if (active !== i) {
-            active = i;
-            paint();
-          }
-        });
-        list.appendChild(li);
-      });
-    }
-    function paint() {
-      [...list.children].forEach((li, i) => {
-        li.className =
-          "px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 " +
-          (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60");
-      });
-    }
-    function go(item) {
-      close();
-      window.location.href = item.href;
-    }
-    function open() {
-      root.hidden = false;
-      input.value = "";
-      filtered = DATA;
-      active = 0;
-      render();
-      setTimeout(() => input.focus(), 20);
-    }
-    function close() {
-      root.hidden = true;
-    }
+  const root = document.getElementById("cmdk-root");
+  const input = document.getElementById("cmdk-input") as HTMLInputElement;
+  const list = document.getElementById("cmdk-list")!;
+  let active = 0;
+  let filtered: typeof DATA = DATA;
 
-    document.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        root.hidden ? open() : close();
-      } else if (e.key === "Escape" && !root.hidden) {
-        close();
-      } else if (!root.hidden) {
-        if (e.key === "ArrowDown") {
-          e.preventDefault();
-          active = Math.min(active + 1, filtered.length - 1);
+  function itemHtml(item: typeof DATA[0], i: number) {
+    return (
+      '<li class="px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 ' +
+      (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60") +
+      '" data-idx="' +
+      i +
+      '">' +
+      '<span class="text-sm font-medium">' +
+      item.title +
+      "</span>" +
+      '<span class="text-[11px] text-fog">' +
+      item.section +
+      "</span></li>"
+    );
+  }
+
+  function render() {
+    if (filtered.length === 0) {
+      list.innerHTML =
+        '<li class="px-4 py-3 text-sm text-fog">No results — try another word.</li>';
+      return;
+    }
+    list.innerHTML = filtered.map(itemHtml).join("");
+    [...list.children].forEach((li) => {
+      li.addEventListener("click", () => {
+        const idx = Number((li as HTMLElement).dataset.idx);
+        go(filtered[idx]);
+      });
+      li.addEventListener("mousemove", () => {
+        const idx = Number((li as HTMLElement).dataset.idx);
+        if (active !== idx) {
+          active = idx;
           paint();
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          active = Math.max(active - 1, 0);
-          paint();
-        } else if (e.key === "Enter" && filtered[active]) {
-          go(filtered[active]);
         }
+      });
+    });
+  }
+
+  function paint() {
+    [...list.querySelectorAll("li[data-idx]")].forEach((li) => {
+      const i = Number((li as HTMLElement).dataset.idx);
+      li.className =
+        "px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 " +
+        (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60");
+    });
+  }
+
+  function go(item: typeof DATA[0]) {
+    close();
+    window.location.href = item.href;
+  }
+
+  function open() {
+    root?.removeAttribute("hidden");
+    input.value = "";
+    filtered = DATA;
+    active = 0;
+    render();
+    requestAnimationFrame(() => {
+      input.focus();
+      input.select();
+    });
+  }
+
+  function close() {
+    root?.setAttribute("hidden", "");
+  }
+
+  function toggle() {
+    if (root?.hasAttribute("hidden")) open();
+    else close();
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      toggle();
+    } else if (e.key === "Escape" && !root?.hasAttribute("hidden")) {
+      close();
+    } else if (!root?.hasAttribute("hidden")) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        active = Math.min(active + 1, filtered.length - 1);
+        paint();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        active = Math.max(active - 1, 0);
+        paint();
+      } else if (e.key === "Enter" && filtered[active]) {
+        go(filtered[active]);
       }
-    });
+    }
+  });
 
-    input.addEventListener("input", () => {
-      const q = input.value.trim().toLowerCase();
-      filtered = q
-        ? DATA.filter(
-            (d) =>
-              d.title.toLowerCase().includes(q) ||
-              d.section.toLowerCase().includes(q),
-          )
-        : DATA;
-      active = 0;
-      render();
-    });
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    filtered = q
+      ? DATA.filter(
+          (d) =>
+            d.title.toLowerCase().includes(q) ||
+            d.section.toLowerCase().includes(q),
+        )
+      : DATA;
+    active = 0;
+    render();
+  });
 
-    document.getElementById("cmdk-backdrop").addEventListener("click", close);
-  })();
+  document.getElementById("cmdk-backdrop")?.addEventListener("click", close);
+
+  const openBtn = document.getElementById("palette-open");
+  openBtn?.addEventListener("click", open);
 </script>
+
+<script id="cmdk-items-data" type="application/json" set:html={items} />

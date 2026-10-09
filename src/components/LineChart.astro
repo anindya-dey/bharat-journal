@@ -14,18 +14,19 @@ interface Props {
   color?: string;
   seriesLabel?: string;
   formatValue?: (v: number) => string;
+  formatLabel?: (d: Datum) => string;
 }
 
 const {
   data,
   yLabel = "",
   annotations = [],
-  color = "#1d3557",
+  color = "#e07b1a",
   seriesLabel = yLabel,
   formatValue,
+  formatLabel,
 } = Astro.props;
 
-// Observable Plot needs a DOM; Astro components run in Node.
 const linkedom = parseHTML("<!doctype html><html><body></body></html>");
 const g = globalThis as any;
 const priorDocument = g.document;
@@ -42,16 +43,20 @@ g.window = {
 
 const W = 860;
 const H = 400;
+const PAD_L = 64;
+const PAD_R = 28;
+const PAD_T = 24;
+const PAD_B = 36;
 const yMax = Math.max(...data.map((d) => d.value)) * 1.12;
 const gradId = `grad-${Math.random().toString(36).slice(2, 8)}`;
 
 const svg = Plot.plot({
   width: W,
   height: H,
-  marginTop: 24,
-  marginBottom: 36,
-  marginLeft: 64,
-  marginRight: 48,
+  marginTop: PAD_T,
+  marginBottom: PAD_B,
+  marginLeft: PAD_L,
+  marginRight: PAD_R,
   style: {
     background: "transparent",
     fontFamily: "Quicksand Variable, sans-serif",
@@ -68,12 +73,7 @@ const svg = Plot.plot({
     tickFormat: (v: number) =>
       v >= 1000 ? `${(v / 1000).toFixed(v >= 10000 ? 0 : 1)}k` : `${v}`,
   },
-  x: {
-    type: "time",
-    label: null,
-    ticks: 7,
-    tickFormat: "%Y",
-  },
+  x: { type: "time", label: null, ticks: 7, tickFormat: "%Y" },
   marks: [
     Plot.areaY(data, {
       x: "date",
@@ -89,19 +89,11 @@ const svg = Plot.plot({
       strokeWidth: 2.5,
       strokeLinejoin: "round",
     }),
-    Plot.dot(data, {
-      x: "date",
-      y: "value",
-      fill: color,
-      r: 3.5,
-      stroke: "#faf9f6",
-      strokeWidth: 2,
-    }),
     ...(annotations.length
       ? [
           Plot.ruleX(annotations, {
             x: "date",
-            stroke: "#d97706",
+            stroke: "#e07b1a",
             strokeWidth: 1,
             strokeDasharray: "4 4",
             opacity: 0.7,
@@ -112,7 +104,7 @@ const svg = Plot.plot({
             text: "label",
             fontSize: 10,
             fontWeight: 600,
-            fill: "#b45309",
+            fill: "#c05f10",
             textAnchor: "start",
             dx: 4,
             dy: -8,
@@ -122,35 +114,53 @@ const svg = Plot.plot({
   ],
 });
 
-// Last-point value bubble
-
 g.document = priorDocument;
 g.window = priorWindow;
 
 const fmt =
   formatValue ??
   ((v: number) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : `${v}`));
+const labelFmt = formatLabel ?? ((d: Datum) => d.date.slice(0, 4));
 
 const defs = `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.30"/><stop offset="100%" stop-color="${color}" stop-opacity="0.02"/></linearGradient></defs>`;
 
 let svgStr = (svg as any).outerHTML as string;
-svgStr = svgStr.replace(/<svg[^>]*>/, (tag) => {
-  const aria = `<title>${seriesLabel || "Chart"}</title>`;
-  const withDefs = tag + aria + defs;
-  return withDefs
+svgStr = svgStr.replace(/<svg[^>]*>/, (tag) =>
+  (tag + defs)
     .replace(/\swidth="[^"]*"/, ' width="100%"')
     .replace(/\sheight="[^"]*"/, ' height="auto"')
-    .replace(/<svg/, `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"`);
-});
+    .replace(
+      /<svg/,
+      `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${seriesLabel || "Chart"}"`,
+    ),
+);
 
-const summary = data
-  .map((d) => `${d.date.slice(0, 4)}: ${fmt(d.value)}`)
-  .join("; ");
+// Tooltip payload: label, formatted value, and normalized y fraction
+const tipData = data.map((d) => ({
+  label: labelFmt(d),
+  value: fmt(d.value),
+  f: yMax > 0 ? d.value / yMax : 0,
+}));
+const summary = data.map((d) => `${labelFmt(d)}: ${fmt(d.value)}`).join("; ");
+const jsonTips = JSON.stringify(tipData);
 ---
 
-<div class="chart-svg w-full">
-  <span class="sr-only">
-    {seriesLabel || "Chart"}: {summary}
-  </span>
+<div
+  class="chart-svg w-full chart-hover relative"
+  data-chart
+  data-color={color}
+  data-tips={jsonTips}
+  data-w={W}
+  data-h={H}
+  data-padl={PAD_L}
+  data-padr={PAD_R}
+  data-padt={PAD_T}
+  data-padb={PAD_B}
+>
+  <span class="sr-only">{seriesLabel || "Chart"}: {summary}</span>
   <Fragment set:html={svgStr} />
+  <div
+    class="chart-tip pointer-events-none absolute z-10 hidden rounded-xl bg-ink/90 text-paper px-3 py-2 text-xs font-semibold shadow-lift backdrop-blur-sm dark:bg-ink-soft/95"
+  >
+  </div>
 </div>

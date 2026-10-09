@@ -4,36 +4,39 @@ import Container from "../components/Container.astro";
 import PageHeader from "../components/PageHeader.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import { getCollection } from "astro:content";
-import { Lightbulb, ArrowRight, Sparkles } from "@lucide/astro";
+import { Lightbulb, ArrowRight } from "@lucide/astro";
+import { DOMAINS, domainForIdea } from "../lib/domains";
 
 const ORIGIN_LABELS: Record<string, string> = {
   "my-proposal": "My proposal",
   "government-initiative": "Government initiative",
 };
 
-const ideas = (await getCollection("ideas")).sort((a, b) =>
-  a.data.title.localeCompare(b.data.title),
-);
+const ideas = (await getCollection("ideas"))
+  .map((i) => ({ ...i, domain: domainForIdea(i.data.themes) }))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const themes = [...new Set(ideas.flatMap((i) => i.data.themes))].sort();
+const withDomain = (domain: string) =>
+  domain === "all" || domain === "other"
+    ? ideas
+    : ideas.filter((i) => i.domain === domain);
 
-const THEME_LABEL: Record<string, string> = {};
-themes.forEach((t) => (THEME_LABEL[t] = t));
-
-// Group: government initiatives first as "in motion", then my proposals by theme count
 const grouped = [
   {
-    id: "in-motion",
-    label: "In motion — government initiatives",
-    items: ideas.filter((i) => i.data.origin === "government-initiative"),
+    id: "mine",
+    label: "Proposed by me",
+    items: ideas.filter((i) => i.data.origin === "my-proposal"),
   },
   {
-    id: "my-proposals",
-    label: "My proposals",
-    items: ideas.filter((i) => i.data.origin === "my-proposal"),
+    id: "in-motion",
+    label: "Already in motion — government initiatives",
+    items: ideas.filter((i) => i.data.origin === "government-initiative"),
   },
 ].filter((g) => g.items.length > 0);
 
+const domainCount = (id: string) => withDomain(id).length;
+const domainLabel = (id: string) =>
+  DOMAINS.find((d) => d.id === id)?.label ?? id;
 ---
 
 <BaseLayout
@@ -44,31 +47,35 @@ const grouped = [
     eyebrow="Next · ideas"
     title="Where we could go"
     Icon={Lightbulb}
-    description="Every idea is written the same honest way: where it was seen, what the gap actually is, what India already has nearby, and the concrete ask. Submitted ideas are tracked in the open — achieved ideas move into Now as data."
+    description="New proposals I'd like to see piloted, and big bets the government has already begun. Every idea states where it was seen, what the gap actually is, what already exists nearby, and a concrete ask."
   >
   </PageHeader>
 
   <section class="pb-6" id="idea-filter">
     <Container size="wide">
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <button
-          data-theme="all"
+          data-domain="all"
           aria-pressed="true"
-          class="theme-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-navy bg-navy text-paper transition-colors"
+          class="domain-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-navy bg-navy text-paper transition-colors"
         >
-          All themes
+          All <span class="opacity-70 tabular-nums">{ideas.length}</span>
         </button>
         {
-          themes.map((t) => (
-            <button
-              data-theme={t}
-              aria-pressed="false"
-              class="theme-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
-            >
-              <Sparkles size={12} stroke-width={2.4} />
-              {t}
-            </button>
-          ))
+          DOMAINS.map((d) => {
+            const count = domainCount(d.id);
+            if (count === 0) return null;
+            return (
+              <button
+                data-domain={d.id}
+                aria-pressed="false"
+                class="domain-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
+              >
+                {d.label}
+                <span class="opacity-60 tabular-nums">{count}</span>
+              </button>
+            );
+          })
         }
       </div>
     </Container>
@@ -83,14 +90,13 @@ const grouped = [
               <h2 class="font-display text-xl font-bold text-ink">
                 {group.label}
               </h2>
-              <span class="text-xs font-mono text-fog">
-                {group.items.length}
-              </span>
+              <span class="text-xs font-mono text-fog">{group.items.length}</span>
             </div>
             <div class="grid md:grid-cols-2 gap-4" data-reveal>
               {group.items.map((idea) => (
                 <a
                   href={`/next/${idea.id}`}
+                  data-domain={idea.domain}
                   data-themes={idea.data.themes.join(",")}
                   class="idea-card group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
                 >
@@ -103,17 +109,13 @@ const grouped = [
                   <h3 class="font-display text-lg font-bold text-ink leading-snug group-hover:text-navy transition-colors">
                     {idea.data.title}
                   </h3>
-                  <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-3">
+                  <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
                     {idea.data.description}
                   </p>
-                  <div class="mt-auto pt-4 flex items-end justify-between gap-3">
-                    <div class="flex flex-wrap gap-1.5">
-                      {idea.data.themes.slice(0, 3).map((t) => (
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cream text-[11px] font-medium text-fog">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+                  <div class="mt-auto pt-4 flex items-center justify-between gap-3">
+                    <span class="text-[11px] font-medium text-fog">
+                      {domainLabel(idea.domain as string)}
+                    </span>
                     <ArrowRight
                       size={16}
                       class="text-fog group-hover:text-navy group-hover:translate-x-0.5 transition-all shrink-0"
@@ -129,7 +131,7 @@ const grouped = [
   </div>
 
   <script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>(".theme-chip");
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".domain-chip");
     const cards = document.querySelectorAll<HTMLElement>(".idea-card");
     const groups = document.querySelectorAll<HTMLElement>("[data-group]");
 
@@ -142,10 +144,10 @@ const grouped = [
       "hover:text-navy",
     ];
 
-    const setActive = (theme: string) => {
+    const setActive = (domain: string) => {
       cards.forEach((el) => {
-        const themes = (el.dataset.themes ?? "").split(",");
-        const match = theme === "all" || themes.includes(theme);
+        const match =
+          domain === "all" || el.dataset.domain === domain;
         el.style.display = match ? "" : "none";
       });
       groups.forEach((group) => {
@@ -158,7 +160,7 @@ const grouped = [
 
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const theme = btn.dataset.theme ?? "all";
+        const domain = btn.dataset.domain ?? "all";
         buttons.forEach((b) => {
           b.classList.remove(...ACTIVE);
           b.classList.add(...INACTIVE);
@@ -167,18 +169,18 @@ const grouped = [
         btn.classList.remove(...INACTIVE);
         btn.classList.add(...ACTIVE);
         btn.setAttribute("aria-pressed", "true");
-        setActive(theme);
+        setActive(domain);
         const url = new URL(window.location.href);
-        if (theme === "all") url.searchParams.delete("theme");
-        else url.searchParams.set("theme", theme);
+        if (domain === "all") url.searchParams.delete("domain");
+        else url.searchParams.set("domain", domain);
         history.replaceState(null, "", url);
       });
     });
 
-    const initial = new URLSearchParams(location.search).get("theme");
+    const initial = new URLSearchParams(location.search).get("domain");
     if (initial) {
       document
-        .querySelector<HTMLButtonElement>(`.theme-chip[data-theme="${initial}"]`)
+        .querySelector<HTMLButtonElement>(`.domain-chip[data-domain="${initial}"]`)
         ?.click();
     }
   </script>

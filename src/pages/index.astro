@@ -63,7 +63,17 @@ const stats = [
 
 <BaseLayout>
   <section class="relative overflow-hidden">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-cream via-paper to-paper"></div>
+    <!-- Subtle tricolor wash: saffron fading through white into green -->
+    <div
+      class="absolute inset-0 -z-10 opacity-[0.55] dark:opacity-[0.22]"
+      style="background:
+        radial-gradient(60% 90% at 8% 10%, rgba(224,123,26,0.16) 0%, transparent 60%),
+        radial-gradient(55% 80% at 95% 25%, rgba(63,125,63,0.13) 0%, transparent 60%),
+        linear-gradient(to bottom, #f4efe4 0%, #faf9f6 55%, #faf9f6 100%);"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="absolute inset-x-0 top-0 h-[2px] -z-10" style="background: linear-gradient(90deg, #e07b1a 0%, #f3efe0 50%, #3f7d3f 100%);" aria-hidden="true"></div>
     <Container size="wide" class="pt-16 md:pt-24 pb-12">
       <p
         class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-navy/5 text-navy text-xs font-bold uppercase tracking-[0.18em] mb-6"

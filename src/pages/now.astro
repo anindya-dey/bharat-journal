@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
-import Sparkline from "../components/Sparkline.astro";
 import PageHeader from "../components/PageHeader.astro";
 import { getCollection } from "astro:content";
 import {
@@ -16,7 +15,6 @@ import {
   ChartColumn,
   ChartLine,
 } from "@lucide/astro";
-import { dataset, toSeries } from "../lib/charts";
 
 const THEMES = [
   { id: "money", label: "Money", Icon: Wallet },
@@ -32,30 +30,8 @@ const vizs = (await getCollection("now")).sort((a, b) =>
   a.data.title.localeCompare(b.data.title),
 );
 
-const sparklineFor = (v: (typeof vizs)[number]) => {
-  const spec = v.data.sparkline;
-  if (!spec) return null;
-  try {
-    const d = dataset(spec.dataset);
-    return toSeries(d.series, "year", spec.key);
-  } catch {
-    return null;
-  }
-};
-
-const THEME_SPARK: Record<string, string> = {
-  money: "#1d3557",
-  mobility: "#1d3557",
-  energy: "#d97706",
-  connectivity: "#1d3557",
-  society: "#b3392f",
-  livelihoods: "#3f7d3f",
-  space: "#1d3557",
-};
-
 const byTheme = THEMES.map((theme) => ({
   ...theme,
-  sparkColor: THEME_SPARK[theme.id] ?? "#d97706",
   vizs: vizs.filter((v) => v.data.theme === theme.id),
 })).filter((t) => t.vizs.length > 0);
 ---
@@ -87,7 +63,6 @@ const byTheme = THEMES.map((theme) => ({
             </div>
             <div class="grid md:grid-cols-2 gap-4" data-reveal>
               {theme.vizs.map((v) => {
-                const spark = sparklineFor(v);
                 return (
                   <a
                     href={`/now/${v.id}`}
@@ -108,11 +83,6 @@ const byTheme = THEMES.map((theme) => ({
                     <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
                       {v.data.description}
                     </p>
-                    {spark && (
-                      <div class="mt-4 -mb-1 opacity-90">
-                        <Sparkline data={spark} color={theme.sparkColor} width={200} height={40} />
-                      </div>
-                    )}
                     <div class="mt-auto pt-4 flex items-center justify-between text-xs text-fog">
                       <span>
                         {v.data.sources.length} source

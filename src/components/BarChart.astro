@@ -58,24 +58,15 @@ const svg = Plot.plot({
     overflow: "visible",
     color: "#5d6472",
   },
-  y: {
-    domain: [0, yMax],
-    label: yLabel,
-    labelOffset: 42,
-    grid: true,
-    ticks: 5,
-  },
-  x: {
-    type: "band",
-    label: null,
-  },
+  y: { domain: [0, yMax], label: yLabel, labelOffset: 42, grid: true, ticks: 5 },
+  x: { type: "band", label: null },
   marks: [
     Plot.barY(data, {
       x: "label",
       y: "value",
       rx: 6,
       fill: (_d: Datum, i: number) =>
-        highlightLast && i === data.length - 1 ? "#d97706" : color,
+        highlightLast && i === data.length - 1 ? "#e07b1a" : color,
       fillOpacity: 0.92,
     }),
     Plot.text(data, {
@@ -94,22 +85,38 @@ g.document = priorDocument;
 g.window = priorWindow;
 
 let svgStr = (svg as any).outerHTML as string;
-svgStr = svgStr.replace(/<svg[^>]*>/, (tag) => {
-  const aria = `<title>${seriesLabel || "Chart"}</title>`;
-  return (
-    (tag + aria)
-      .replace(/\swidth="[^"]*"/, ' width="100%"')
-      .replace(/\sheight="[^"]*"/, ' height="auto"')
-      .replace(/<svg/, `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"`)
-  );
-});
+svgStr = svgStr.replace(/<svg[^>]*>/, (tag) =>
+  tag
+    .replace(/\swidth="[^"]*"/, ' width="100%"')
+    .replace(/\sheight="[^"]*"/, ' height="auto"')
+    .replace(
+      /<svg/,
+      `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${seriesLabel || "Chart"}"`,
+    ),
+);
 
 const summary = data.map((d) => `${d.label}: ${fmt(d)}`).join("; ");
+const jsonTips = JSON.stringify(
+  data.map((d) => ({
+    label: d.label,
+    value: fmt(d),
+    f: yMax > 0 ? d.value / yMax : 0,
+  })),
+);
 ---
 
-<div class="chart-svg w-full">
-  <span class="sr-only">
-    {seriesLabel || "Chart"}: {summary}
-  </span>
+<div
+  class="chart-svg w-full chart-hover relative"
+  data-chart
+  data-bar
+  data-tips={jsonTips}
+  data-w={W}
+  data-h={H}
+>
+  <span class="sr-only">{seriesLabel || "Chart"}: {summary}</span>
   <Fragment set:html={svgStr} />
+  <div
+    class="chart-tip pointer-events-none absolute z-10 hidden rounded-xl bg-ink/90 text-paper px-3 py-2 text-xs font-semibold shadow-lift backdrop-blur-sm dark:bg-ink-soft/95"
+  >
+  </div>
 </div>

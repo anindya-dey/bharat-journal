@@ -42,9 +42,6 @@ importers:
       '@fontsource-variable/quicksand':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource/source-serif-4':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.3)
@@ -460,9 +457,6 @@ packages:
 
   '@fontsource-variable/quicksand@5.3.0':
     resolution: {integrity: sha512-EMyoXnGC0uIbjyHDB01MTJoQuODsMo7Q/4XLEwN97YJEeV1WIVFI0QBiW2exGnxvhnMHb+IwQ9E5QZDgGMWCHw==}
-
-  '@fontsource/source-serif-4@5.3.0':
-    resolution: {integrity: sha512-yQz8xmIgMzks8zQbpuca3UYtjxK798XCyQAGdDXmzBgvV7sdoK6d0YvE9F9kiYxORCEMRBgGZDZsSYcXj5KvwA==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -2606,8 +2600,6 @@ snapshots:
   '@fontsource-variable/jetbrains-mono@5.3.0': {}
 
   '@fontsource-variable/quicksand@5.3.0': {}
-
-  '@fontsource/source-serif-4@5.3.0': {}
 
   '@img/colour@1.1.0': {}
 

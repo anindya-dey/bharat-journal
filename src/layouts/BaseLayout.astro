@@ -5,6 +5,7 @@ import SiteFooter from "../components/SiteFooter.astro";
 import CommandPalette from "../components/CommandPalette.astro";
 import BackToTop from "../components/BackToTop.astro";
 import Reveal from "../components/Reveal.astro";
+import ChartTooltip from "../components/ChartTooltip.astro";
 import { SITE } from "../data/site";
 
 interface Props {
@@ -84,6 +85,7 @@ const jsonLd = JSON.stringify({
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
+    <div class="tricolor-strip h-[3px] w-full fixed top-0 left-0 z-[60]" aria-hidden="true"></div>
     <div
       id="reading-progress"
       class="fixed top-0 left-0 z-50 h-0.5 bg-saffron transition-[width] duration-150 ease-out w-0"
@@ -98,6 +100,7 @@ const jsonLd = JSON.stringify({
     <CommandPalette />
     <BackToTop />
     <Reveal />
+    <ChartTooltip />
     <script>
       const bar = document.getElementById("reading-progress");
       const update = () => {
