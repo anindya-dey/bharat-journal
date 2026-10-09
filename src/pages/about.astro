@@ -3,18 +3,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
 import {
   Compass,
-  Send,
+  Check,
   ShieldAlert,
   UserRound,
-  Check,
-  ArrowRight,
+  GitBranch,
 } from "@lucide/astro";
 import { SITE } from "../data/site";
 
 const methodPoints = [
   {
-    strong: "Every chart starts at 1947",
-    rest: "or at the earliest year its data exists. The point is trajectory, not a flattering window. Milestone annotations mark policy events, never election years.",
+    strong: "Charts start at 1947",
+    rest: "or at the earliest year the data exists. The point is the trajectory, not a flattering window. Milestone annotations mark policy events, never election years.",
   },
   {
     strong: "Every figure is sourced and dated",
@@ -22,41 +21,33 @@ const methodPoints = [
   },
   {
     strong: "Unverified is labelled unverified.",
-    rest: "Where a claim couldn't be independently confirmed, the text says so rather than laundering it into fact.",
+    rest: "Where a claim couldn't be independently confirmed, the text says so rather than presenting it as fact.",
   },
   {
     strong: "Ideas get an anatomy, not a wish.",
-    rest: "Each idea states where it was seen (spark), what the gap actually is, what already exists nearby (precedent), and a concrete, pilot-scale ask.",
+    rest: "Each idea states where it was seen, what's missing, what India already has nearby, and a concrete ask.",
   },
 ];
 
-const submissionPoints = [
+const principles = [
   {
-    strong: "Respond to open consultations",
-    rest: "— a comment on an open ministry consultation is read; a cold submission usually isn't.",
+    strong: "Progress first.",
+    rest: "This is a record of what India has built and could build — not a place for complaints or blame.",
   },
   {
-    strong: "Match the channel to the idea",
-    rest: "— tourism ideas to the Ministry of Tourism and MyGov campaigns; payments ideas to RBI/NPCI; city infrastructure to state urban departments and municipal corporations.",
+    strong: "Plain words.",
+    rest: "Facts stated simply, with the sources alongside so anyone can check them.",
   },
   {
-    strong: "CPGRAMS for a trackable reference",
-    rest: "— it issues registration numbers that can be followed up.",
-  },
-  {
-    strong: "RTI as follow-up",
-    rest: "— if a submission goes unanswered, a Right to Information application asking what action was taken is cheap and must be answered.",
-  },
-  {
-    strong: "Archive everything",
-    rest: "— each submission is recorded with platform, date, reference number, and an archived copy; personal details are redacted from anything published.",
+    strong: "A living document.",
+    rest: "Timeline entries, data stories and ideas are added and revised over time, and corrections are noted openly.",
   },
 ];
 ---
 
 <BaseLayout
   title="About"
-  description={`About ${SITE.title} — method, sources, corrections, and how ideas are submitted to government.`}
+  description={`About ${SITE.title} — what it is, how it's made, and how to read it.`}
 >
   <article class="pt-14 pb-16">
     <Container>
@@ -80,7 +71,7 @@ const submissionPoints = [
         about the past.
       </p>
 
-      <section class="mt-12 scroll-mt-32" id="method">
+      <section class="mt-12 scroll-mt-32" id="what">
         <h2
           class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
         >
@@ -88,6 +79,35 @@ const submissionPoints = [
             class="grid place-items-center w-9 h-9 rounded-xl bg-navy/5 text-navy"
           >
             <Compass size={18} stroke-width={2.2} />
+          </span>
+          What it is
+        </h2>
+        <ul class="space-y-4">
+          {
+            principles.map((p) => (
+              <li class="flex gap-3 text-ink/80 leading-relaxed">
+                <Check
+                  size={18}
+                  stroke-width={2.6}
+                  class="mt-0.5 shrink-0 text-moss"
+                />
+                <span>
+                  <strong class="text-ink">{p.strong}</strong> {p.rest}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="mt-12 scroll-mt-32" id="method">
+        <h2
+          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
+        >
+          <span
+            class="grid place-items-center w-9 h-9 rounded-xl bg-saffron-100 text-saffron-600"
+          >
+            <GitBranch size={18} stroke-width={2.2} />
           </span>
           Method
         </h2>
@@ -107,43 +127,6 @@ const submissionPoints = [
             ))
           }
         </ul>
-      </section>
-
-      <section class="mt-12 scroll-mt-32" id="submission-strategy">
-        <h2
-          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
-        >
-          <span
-            class="grid place-items-center w-9 h-9 rounded-xl bg-saffron-100 text-saffron-600"
-          >
-            <Send size={18} stroke-width={2.2} />
-          </span>
-          How ideas reach government
-        </h2>
-        <p class="text-ink/80 leading-relaxed">
-          A journal page doesn't reach anyone in government by itself — it has to
-          be filed where it counts. The strategy, per idea:
-        </p>
-        <ul class="mt-4 space-y-3.5">
-          {
-            submissionPoints.map((p) => (
-              <li class="flex gap-3 text-ink/80 leading-relaxed">
-                <ArrowRight
-                  size={18}
-                  stroke-width={2.6}
-                  class="mt-0.5 shrink-0 text-saffron-600"
-                />
-                <span>
-                  <strong class="text-ink">{p.strong}</strong> {p.rest}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-        <p class="mt-4 text-sm text-fog italic">
-          Portal URLs and current consultation windows are verified at filing
-          time, not cached here — government portals reorganise often.
-        </p>
       </section>
 
       <section class="mt-12 scroll-mt-32" id="corrections">

@@ -9,8 +9,6 @@ import {
   Lightbulb,
   ArrowLeft,
   ArrowRight,
-  Inbox,
-  BuildingComplex,
   ChartLine,
   Landmark,
 } from "@lucide/astro";
@@ -23,12 +21,10 @@ export async function getStaticPaths() {
 
 const { idea } = Astro.props;
 const { Content } = await render(idea);
-const submissions = idea.data.submissions;
 
 const milestone = idea.data.relatedMilestone
   ? MILESTONES.find((m) => m.anchor === idea.data.relatedMilestone)
   : undefined;
-
 ---
 
 <BaseLayout
@@ -67,79 +63,15 @@ const milestone = idea.data.relatedMilestone
         <p class="mt-4 text-lg text-ink/70 leading-relaxed">
           {idea.data.description}
         </p>
-        <div class="mt-4 flex flex-wrap gap-2">
-          {
-            idea.data.recipient && (
-              <span class="inline-flex items-center gap-2 text-sm font-medium text-navy bg-navy/5 px-3 py-1.5 rounded-lg">
-                <BuildingComplex size={15} stroke-width={2.2} />
-                Addressed to {idea.data.recipient}
-              </span>
-            )
-          }
-          {
-            idea.data.targetChannel && (
-              <span class="inline-flex items-center gap-2 text-sm font-medium text-moss bg-moss/10 px-3 py-1.5 rounded-lg">
-                <Inbox size={15} stroke-width={2.2} />
-                Channel: {idea.data.targetChannel}
-              </span>
-            )
-          }
-        </div>
       </header>
 
       <Prose>
         <Content />
       </Prose>
 
-      <aside class="mt-12 rounded-2xl border border-line bg-cream p-6">
-        <h3
-          class="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wide text-ink mb-4"
-        >
-          <Inbox size={16} stroke-width={2.4} />
-          Submission record
-        </h3>
-        {
-          submissions.length === 0 ? (
-            <p class="text-sm text-fog leading-relaxed">
-              Not yet submitted. Channels being considered are listed on the{" "}
-              <a
-                href="/about#submission-strategy"
-                class="font-semibold text-navy hover:text-saffron-600"
-              >
-                About
-              </a>{" "}
-              page. When filed, the platform, date, and any reference number
-              appear here, with an archived copy of what was sent.
-            </p>
-          ) : (
-            <ul class="space-y-3">
-              {submissions.map((s) => (
-                <li class="text-sm text-ink/80">
-                  <span class="font-semibold text-ink">{s.platform}</span> ·{" "}
-                  {s.channel} · {s.date}
-                  {s.referenceNumber && (
-                    <span class="font-mono text-xs text-fog">
-                      {" "}
-                      · ref {s.referenceNumber}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )
-        }
-        {
-          idea.data.statusNote && (
-            <p class="mt-4 text-sm text-fog leading-relaxed">
-              {idea.data.statusNote}
-            </p>
-          )
-        }
-      </aside>
-
       {
         milestone && (
-          <section class="mt-8 rounded-2xl border border-line bg-paper-2 p-5">
+          <section class="mt-10 rounded-2xl border border-line bg-paper-2 p-5">
             <h3 class="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wide text-ink mb-2">
               <Landmark size={15} stroke-width={2.4} />
               The history behind it

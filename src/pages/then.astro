@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
-import Sparkline from "../components/Sparkline.astro";
 import {
   Landmark,
   Wheat,
@@ -34,15 +33,6 @@ const SECTOR_ICONS: Record<string, any> = {
   health: HeartPulse,
 };
 
-const SECTOR_ACCENT: Record<string, string> = {
-  agriculture: "bg-moss",
-  industry: "bg-navy",
-  "science-tech": "bg-saffron",
-  infrastructure: "bg-navy-300",
-  society: "bg-clay",
-  health: "bg-moss",
-};
-
 const byEra = ERAS.map((era) => {
   const milestones = MILESTONES.filter((m) => m.era === era.id).sort(
     (a, b) => a.year - b.year,
@@ -59,23 +49,46 @@ const byEra = ERAS.map((era) => {
 
 const total = MILESTONES.length;
 
-// Milestones-per-year density sparkline (1947 → 2014)
+// ---- Density chart: milestones per year, 1947 → 2014 ----
 const startYear = 1947;
 const endYear = 2014;
-const density = Array.from(
-  { length: endYear - startYear + 1 },
-  (_, i) => {
-    const year = startYear + i;
-    return {
-      year,
-      count: MILESTONES.filter((m) => m.year === year).length,
-    };
-  },
-);
-const sparkData = density.map((d) => ({
-  date: `${d.year}-01-01`,
-  value: d.count,
+const density = Array.from({ length: endYear - startYear + 1 }, (_, i) => {
+  const year = startYear + i;
+  return { year, count: MILESTONES.filter((m) => m.year === year).length };
+});
+const maxCount = Math.max(...density.map((d) => d.count), 1);
+const DW = 900;
+const DH = 110;
+const padT = 10;
+const padB = 6;
+const gap = 2;
+const barW = (DW - (density.length - 1) * gap) / density.length;
+const chartH = DH - padT - padB;
+const bars = density.map((d, i) => {
+  const h = (d.count / maxCount) * chartH;
+  return {
+    x: i * (barW + gap),
+    y: DH - padB - h,
+    w: barW,
+    h: Math.max(h, d.count > 0 ? 2 : 0),
+    year: d.year,
+    count: d.count,
+  };
+});
+// era divider x-positions
+const eraDividers = [1965, 1991, 2005].map((yr) => ({
+  year: yr,
+  x: (yr - startYear) * (barW + gap) - gap / 2,
 }));
+const axisTicks = [1947, 1960, 1980, 2000, 2014].map((yr) => ({
+  year: yr,
+  x: (yr - startYear) * (barW + gap) + barW / 2,
+  pct:
+    (((yr - startYear) * (barW + gap) + barW / 2) / DW) * 100,
+}));
+const peakYears = [...density]
+  .filter((d) => d.count > 1)
+  .map((d) => d.year);
 ---
 
 <BaseLayout
@@ -102,22 +115,84 @@ const sparkData = density.map((d) => ({
       </p>
 
       <!-- Density: milestones per year -->
-      <figure class="mt-6 max-w-xl" aria-label="Milestone density per year">
-        <Sparkline data={sparkData} color="#d97706" width={520} height={46} />
+      <figure class="mt-8" aria-label="Milestones per year, 1947 to 2014">
+        <div class="relative">
+          <svg
+            viewBox={`0 0 ${DW} ${DH}`}
+            width="100%"
+            height="auto"
+            class="w-full h-auto block"
+            role="img"
+            aria-label="Milestones per year, 1947 to 2014"
+          >
+            <!-- baseline -->
+            <line
+              x1="0"
+              y1={DH - padB}
+              x2={DW}
+              y2={DH - padB}
+              stroke="var(--color-line)"
+              stroke-width="1"></line>
+            <!-- era dividers -->
+            {
+              eraDividers.map((d) => (
+                <line
+                  x1={d.x}
+                  y1={padT}
+                  x2={d.x}
+                  y2={DH - padB}
+                  stroke="var(--color-line)"
+                  stroke-width="1"
+                  stroke-dasharray="3 4"
+                />
+              ))
+            }
+            <!-- bars -->
+            {
+              bars.map((b) => (
+                <rect
+                  x={b.x}
+                  y={b.y}
+                  width={b.w}
+                  height={b.h}
+                  rx="1.5"
+                  fill={b.count > 1 ? "#c05f10" : "#e59a49"}
+                  opacity={b.count > 0 ? 1 : 0}
+                >
+                  <title>
+                    {b.year}: {b.count} milestone{b.count === 1 ? "" : "s"}
+                  </title>
+                </rect>
+              ))
+            }
+          </svg>
+          <!-- responsive axis labels -->
+          <div class="relative h-4 mt-1" aria-hidden="true">
+            {
+              axisTicks.map((t) => (
+                <span
+                  class="absolute -translate-x-1/2 text-[10px] sm:text-[11px] font-mono text-fog"
+                  style={`left:${t.pct}%`}
+                >
+                  {t.year}
+                </span>
+              ))
+            }
+          </div>
+        </div>
         <figcaption class="text-xs text-fog mt-1">
-          Milestones per year — the pace of history, 1947–2014
+          Milestones per year, 1947–2014 — the darker bars are the{" "}
+          <strong class="text-ink">{peakYears.length} years</strong> where more
+          than one milestone landed.
         </figcaption>
       </figure>
     </Container>
   </header>
 
-  <!-- Sticky era nav -->
-  <nav
-    aria-label="Jump to era"
-    class="sticky top-16 z-30 bg-paper/90 backdrop-blur border-b border-line"
-  >
+  <!-- Era jump + sector filter -->
+  <section class="pt-6 pb-4">
     <Container size="wide">
-      <div class="flex flex-wrap items-center gap-2 py-2.5">
+      <nav aria-label="Jump to era" class="flex flex-wrap items-center gap-2">
         {
           byEra.map((era) => (
             <a
@@ -129,13 +204,9 @@ const sparkData = density.map((d) => ({
             </a>
           ))
         }
-      </div>
-    </Container>
-  </nav>
+      </nav>
 
-  <section class="pt-6 pb-4" id="sector-filter">
-    <Container size="wide">
-      <div class="flex flex-wrap gap-2">
+      <div class="mt-5 flex flex-wrap gap-2" id="sector-filter">
         <button
           data-sector="all"
           aria-pressed="true"
@@ -159,6 +230,9 @@ const sparkData = density.map((d) => ({
           })
         }
       </div>
+
+      <!-- content-width separator -->
+      <div class="mt-6 h-px w-full bg-line" aria-hidden="true"></div>
     </Container>
   </section>
 
@@ -167,7 +241,7 @@ const sparkData = density.map((d) => ({
       byEra.map((era) => {
         const EraIcon = ERA_ICONS[era.id];
         return (
-          <section data-era={era.id} id={era.id} class="scroll-mt-32">
+          <section data-era={era.id} id={era.id} class="scroll-mt-24">
             <Container size="wide">
               <div class="flex items-center gap-3 pt-10 mb-1">
                 <span class="grid place-items-center w-11 h-11 rounded-2xl bg-navy text-paper shadow-card">
@@ -206,39 +280,32 @@ const sparkData = density.map((d) => ({
                     <div class="space-y-3 pl-10">
                       {yg.milestones.map((m) => {
                         const SectorIcon = SECTOR_ICONS[m.sector];
-                        const accent = SECTOR_ACCENT[m.sector] ?? "bg-navy";
                         return (
                           <article
                             data-sector={m.sector}
-                            class="milestone relative scroll-mt-32 rounded-2xl border border-line bg-paper-2 p-5 flex gap-4"
+                            class="milestone scroll-mt-24 rounded-2xl border border-line bg-paper-2 p-5"
                             id={m.anchor}
                           >
-                            <span
-                              class:list={["shrink-0 w-1 rounded-full", accent]}
-                              aria-hidden="true"
-                            />
-                            <div class="min-w-0">
-                              <h4 class="font-display font-bold text-ink leading-snug">
-                                {m.title}
-                              </h4>
-                              <p class="mt-2 text-sm text-fog leading-relaxed">
-                                {m.summary}
-                              </p>
-                              <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-                                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink/60">
-                                  <SectorIcon size={13} stroke-width={2.2} />
-                                  {SECTORS.find((s) => s.id === m.sector)?.name}
-                                </span>
-                                {m.relatedNow && (
-                                  <a
-                                    href={m.relatedNow}
-                                    class="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:text-saffron-600 transition-colors"
-                                  >
-                                    See where it stands
-                                    <ArrowRight size={13} stroke-width={2.5} />
-                                  </a>
-                                )}
-                              </div>
+                            <h4 class="font-display font-bold text-ink leading-snug">
+                              {m.title}
+                            </h4>
+                            <p class="mt-2 text-sm text-fog leading-relaxed">
+                              {m.summary}
+                            </p>
+                            <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink/60">
+                                <SectorIcon size={13} stroke-width={2.2} />
+                                {SECTORS.find((s) => s.id === m.sector)?.name}
+                              </span>
+                              {m.relatedNow && (
+                                <a
+                                  href={m.relatedNow}
+                                  class="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:text-saffron-600 transition-colors"
+                                >
+                                  See where it stands
+                                  <ArrowRight size={13} stroke-width={2.5} />
+                                </a>
+                              )}
                             </div>
                           </article>
                         );
@@ -260,8 +327,9 @@ const sparkData = density.map((d) => ({
         The timeline ends at 2014 deliberately — not because nothing happened
         after, but because the <em>now</em> of this journal is told in data, not
         milestones. The post-2014 acceleration is visible in every chart on
-        <a href="/now" class="font-semibold text-navy hover:text-saffron-600">Now</a>,
-        starting from 1947 wherever the data allows.
+        <a href="/now" class="font-semibold text-navy hover:text-saffron-600"
+          >Now</a
+        >, starting from 1947 wherever the data allows.
       </p>
     </Container>
   </div>
@@ -313,13 +381,13 @@ const sparkData = density.map((d) => ({
       });
     });
 
-    // Restore filter from URL (?sector=)
     const initial = new URLSearchParams(location.search).get("sector");
     if (initial) {
-      const target = document.querySelector<HTMLButtonElement>(
-        `.sector-chip[data-sector="${initial}"]`,
-      );
-      target?.click();
+      document
+        .querySelector<HTMLButtonElement>(
+          `.sector-chip[data-sector="${initial}"]`,
+        )
+        ?.click();
     }
   </script>
 </BaseLayout>

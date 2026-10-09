@@ -95,8 +95,8 @@
   --color-fog: #97a3bc;
   --color-ink: #eaeef8;
   --color-ink-soft: #c2cbe0;
-  --color-navy: #8ab4f8;
-  --color-navy-soft: #a8c8ff;
+  --color-navy: #7ba3e6;
+  --color-navy-soft: #9dbcf0;
   --color-navy-950: #080d17;
   --color-saffron: #ffb15c;
   --color-saffron-600: #ffc27f;
@@ -141,6 +141,39 @@ body {
 .dark ::selection {
   background: #40506b;
   color: #f4f2ec;
+}
+
+/* ---------- Nav hover: subtle tricolor gradient ---------- */
+.nav-link-hover {
+  background-image: none;
+  transition: background-image 0.2s ease, color 0.2s ease,
+    background-color 0.2s ease;
+}
+.nav-link-hover:hover {
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 153, 51, 0.16) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(19, 136, 8, 0.16) 100%
+  );
+}
+.dark .nav-link-hover:hover {
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 153, 51, 0.22) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(31, 170, 60, 0.22) 100%
+  );
+}
+
+/* ---------- Dark nav / footer tinted bands ---------- */
+.dark .site-nav {
+  background-color: #2a1706;
+  border-color: #3d2410;
+}
+.dark .site-footer {
+  background-color: #08170b;
+  border-color: #12301a;
 }
 
 /* ---------- Charts ---------- */

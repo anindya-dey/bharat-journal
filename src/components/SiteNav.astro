@@ -1,7 +1,6 @@
 ---
 import { Search, Compass, Menu } from "@lucide/astro";
 import ThemeToggle from "./ThemeToggle.astro";
-import IndianFlag from "./IndianFlag.astro";
 import { SITE } from "../data/site";
 
 const path = Astro.url.pathname;
@@ -17,7 +16,7 @@ const links = [
 ---
 
 <header
-  class="sticky top-0 z-40 border-b border-line bg-paper/80 backdrop-blur-xl"
+  class="site-nav sticky top-0 z-40 border-b border-line bg-paper/80 backdrop-blur-xl"
 >
   <div class="max-w-6xl mx-auto px-5 md:px-8">
     <div class="flex items-center justify-between h-16">
@@ -29,11 +28,8 @@ const links = [
           <Compass size={18} stroke-width={2.4} class="text-navy-800" />
         </span>
         <span class="flex flex-col leading-none">
-          <span class="flex items-center gap-2">
-            <span class="font-display font-bold text-lg text-ink tracking-tight">
-              {SITE.title}
-            </span>
-            <IndianFlag size={20} class="shrink-0" />
+          <span class="font-display font-bold text-lg text-ink tracking-tight">
+            {SITE.title}
           </span>
           <span class="text-[11px] font-medium text-fog tracking-wide hidden sm:inline">
             {SITE.tagline}
@@ -52,7 +48,7 @@ const links = [
                   "px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors",
                   isActive(link.href)
                     ? "bg-navy text-paper"
-                    : "text-ink/70 hover:text-ink hover:bg-stone-100 dark:hover:bg-white/10",
+                    : "nav-link-hover text-ink/70 hover:text-ink",
                 ]}
               >
                 {link.label}
@@ -65,7 +61,7 @@ const links = [
           id="palette-open"
           type="button"
           aria-label="Open command palette (Ctrl/Cmd + K)"
-          class="hidden md:grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink hover:bg-stone-100 dark:hover:bg-white/10 transition-colors"
+          class="nav-link-hover hidden md:grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink transition-colors"
         >
           <Search size={18} stroke-width={2.2} />
         </button>
@@ -83,12 +79,11 @@ const links = [
     </div>
   </div>
 
-  <div
-    id="mobile-menu"
-    hidden
-    class="md:hidden border-t border-line bg-paper"
-  >
-    <nav class="max-w-6xl mx-auto px-5 py-3 flex flex-col gap-1" aria-label="Mobile">
+  <div id="mobile-menu" hidden class="md:hidden border-t border-line bg-paper">
+    <nav
+      class="max-w-6xl mx-auto px-5 py-3 flex flex-col gap-1"
+      aria-label="Mobile"
+    >
       {
         links.map((link) => (
           <a
@@ -97,7 +92,7 @@ const links = [
               "px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors",
               isActive(link.href)
                 ? "bg-navy text-paper"
-                : "text-ink/70 hover:bg-stone-100 dark:hover:bg-white/10",
+                : "nav-link-hover text-ink/70",
             ]}
           >
             {link.label}
@@ -106,7 +101,7 @@ const links = [
       }
       <a
         href="/search"
-        class="px-3.5 py-2.5 rounded-lg text-sm font-semibold text-ink/70 hover:bg-stone-100 dark:hover:bg-white/10 transition-colors"
+        class="px-3.5 py-2.5 rounded-lg text-sm font-semibold text-ink/70 nav-link-hover transition-colors"
       >
         Search
       </a>

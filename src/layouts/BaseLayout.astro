@@ -84,10 +84,11 @@ const jsonLd = JSON.stringify({
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col overflow-x-clip">
     <div
       id="reading-progress"
-      class="fixed top-0 left-0 z-50 h-0.5 bg-saffron transition-[width] duration-150 ease-out w-0"
+      class="fixed top-0 left-0 z-50 h-[3px] transition-[width] duration-150 ease-out w-0"
+      style="background: linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%);"
       aria-hidden="true"
     >
     </div>

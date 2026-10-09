@@ -4,22 +4,32 @@ import { SITE } from "../data/site";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line bg-cream">
+<footer class="site-footer border-t border-line bg-cream">
   <div class="max-w-6xl mx-auto px-5 md:px-8 py-10">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div class="flex items-center gap-2.5">
-        <span class="grid place-items-center w-8 h-8 rounded-lg bg-navy text-paper">
-          <Compass size={17} stroke-width={2.2} />
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span
+          class="grid place-items-center w-9 h-9 rounded-xl shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
+          style="background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);"
+        >
+          <Compass size={18} stroke-width={2.4} class="text-navy-800" />
         </span>
-        <div class="leading-tight">
-          <div class="font-display font-bold text-ink">{SITE.title}</div>
-          <div class="text-xs text-fog">{SITE.description}</div>
-        </div>
-      </div>
+        <span class="flex flex-col leading-none">
+          <span class="font-display font-bold text-lg text-ink tracking-tight">
+            {SITE.title}
+          </span>
+          <span class="text-[11px] font-medium text-fog tracking-wide">
+            {SITE.tagline}
+          </span>
+        </span>
+      </a>
 
-      <div class="flex items-center gap-5 text-sm font-medium text-fog">
-        <a href="/about" class="hover:text-ink transition-colors">Method</a>
-        <a href="/rss.xml" class="inline-flex items-center gap-1 hover:text-ink transition-colors">
+      <nav class="flex items-center gap-5 text-sm font-medium text-fog" aria-label="Footer">
+        <a href="/about" class="hover:text-ink transition-colors">About</a>
+        <a
+          href="/rss.xml"
+          class="inline-flex items-center gap-1 hover:text-ink transition-colors"
+        >
           <Rss size={14} /> RSS
         </a>
         <a
@@ -28,12 +38,28 @@ const year = new Date().getFullYear();
         >
           Blog <ArrowUpRight size={14} />
         </a>
-      </div>
+      </nav>
     </div>
-    <div class="mt-6 pt-5 border-t border-line text-xs text-fog">
-      © {year} {SITE.author} · Figures are sourced and dated on each page ·
-      <kbd class="font-mono px-1 py-0.5 rounded bg-paper-2 border border-line">⌘K</kbd>
-      to search anywhere
+
+    <div
+      class="mt-8 pt-6 border-t border-line space-y-2.5 text-xs leading-relaxed text-fog"
+    >
+      <p>© {year} {SITE.author}. All rights reserved.</p>
+      <p>
+        An independent, personal project. Figures are sourced and dated on each
+        page; nothing here is official or endorsed by any government body.
+      </p>
+      <p>
+        Press
+        <kbd
+          class="font-mono px-1.5 py-0.5 rounded bg-paper-2 border border-line text-ink/80"
+          >⌘K</kbd
+        >
+        (or <kbd
+          class="font-mono px-1.5 py-0.5 rounded bg-paper-2 border border-line text-ink/80"
+          >Ctrl K</kbd
+        >) anywhere to search.
+      </p>
     </div>
   </div>
 </footer>

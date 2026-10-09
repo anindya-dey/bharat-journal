@@ -2,14 +2,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-const IDEA_STATUSES = [
-  "proposed",
-  "submitted",
-  "in-progress",
-  "achieved",
-  "stalled",
-  "declined",
-] as const;
+const IDEA_STATUSES = ["proposed", "in-progress", "achieved"] as const;
 
 const ideas = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/next" }),
@@ -20,19 +13,6 @@ const ideas = defineCollection({
     status: z.enum(IDEA_STATUSES),
     statusNote: z.string().optional(),
     themes: z.array(z.string()).min(1),
-    recipient: z.string().optional(),
-    targetChannel: z.string().optional(),
-    submissions: z
-      .array(
-        z.object({
-          platform: z.string(),
-          channel: z.string(),
-          date: z.string(),
-          referenceNumber: z.string().optional(),
-          archivedUrl: z.string().optional(),
-        }),
-      )
-      .default([]),
     relatedNow: z.string().optional(),
     relatedMilestone: z.string().optional(),
     updated: z.string(),
