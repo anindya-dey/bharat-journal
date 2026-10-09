@@ -58,6 +58,7 @@
   /* Neutrals */
   --color-paper: #faf9f6;
   --color-paper-2: #ffffff;
+  --color-chrome: #f4efe4;
   --color-cream: #f4efe4;
   --color-line: #e4e0d4;
   --color-fog: #5d6472;
@@ -84,28 +85,36 @@
 /* ---------- Theme surfaces ---------- */
 :root {
   color-scheme: light;
+  --tip-bg: #0f172a;
+  --tip-fg: #f1f5f9;
+  --tip-border: rgba(255, 255, 255, 0.1);
 }
 
 .dark {
   color-scheme: dark;
-  --color-paper: #0c1322;
-  --color-paper-2: #141d30;
-  --color-cream: #1a2540;
-  --color-line: #27324c;
-  --color-fog: #97a3bc;
-  --color-ink: #eaeef8;
-  --color-ink-soft: #c2cbe0;
-  --color-navy: #7ba3e6;
-  --color-navy-soft: #9dbcf0;
-  --color-navy-950: #080d17;
-  --color-saffron: #ffb15c;
-  --color-saffron-600: #ffc27f;
-  --color-saffron-700: #ffd39c;
-  --color-marigold: #ffc24d;
-  --color-moss: #8fd18f;
-  --color-clay: #f0908a;
+  /* Modern, futuristic dark palette (independent of the light theme) */
+  --color-paper: #0a0e17;
+  --color-paper-2: #121a2b;
+  --color-chrome: #0e1524;
+  --color-cream: #141d31;
+  --color-line: #243049;
+  --color-fog: #93a0bd;
+  --color-ink: #e9edf9;
+  --color-ink-soft: #c3cce2;
+  --color-navy: #8ba4f2;
+  --color-navy-soft: #a6bcff;
+  --color-navy-950: #060a12;
+  --color-saffron: #e8a55e;
+  --color-saffron-600: #efb877;
+  --color-saffron-700: #f3c99a;
+  --color-marigold: #f0b95a;
+  --color-moss: #7fd1a0;
+  --color-clay: #ef8f8f;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 20px -6px rgb(0 0 0 / 0.6);
   --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.55), 0 16px 40px -10px rgb(0 0 0 / 0.7);
+  --tip-bg: #1a2338;
+  --tip-fg: #eef1fa;
+  --tip-border: #303c5a;
 }
 
 body {
@@ -125,13 +134,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 .dark body {
-  background-image: linear-gradient(
-    135deg,
-    rgba(255, 153, 51, 0.13) 0%,
-    rgba(12, 19, 34, 0) 40%,
-    rgba(12, 19, 34, 0) 60%,
-    rgba(31, 170, 60, 0.15) 100%
-  );
+  /* Subtle futuristic glow — no tricolor in dark mode */
+  background-image:
+    radial-gradient(
+      1100px 520px at 50% -8%,
+      rgba(139, 164, 242, 0.1),
+      transparent 62%
+    ),
+    linear-gradient(180deg, #0a0e17 0%, #0b101d 100%);
 }
 
 ::selection {
@@ -160,20 +170,15 @@ body {
 .dark .nav-link-hover:hover {
   background-image: linear-gradient(
     100deg,
-    rgba(255, 153, 51, 0.22) 0%,
-    rgba(255, 255, 255, 0) 45%,
-    rgba(31, 170, 60, 0.22) 100%
+    rgba(139, 164, 242, 0.2) 0%,
+    rgba(139, 164, 242, 0.04) 100%
   );
 }
 
-/* ---------- Dark nav / footer tinted bands ---------- */
-.dark .site-nav {
-  background-color: #2a1706;
-  border-color: #3d2410;
-}
-.dark .site-footer {
-  background-color: #08170b;
-  border-color: #12301a;
+/* ---------- Nav & footer share the same chrome color ---------- */
+.site-nav,
+.site-footer {
+  background-color: var(--color-chrome);
 }
 
 /* ---------- Charts ---------- */
@@ -181,54 +186,94 @@ body {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ---------- Chart tooltip ---------- */
+.chart-tip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  display: none;
+  min-width: 132px;
+  max-width: 240px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.9rem;
+  background: var(--tip-bg);
+  color: var(--tip-fg);
+  border: 1px solid var(--tip-border);
+  box-shadow: var(--shadow-lift);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.chart-tip.is-visible {
+  display: block;
+  animation: fade-up 0.14s ease both;
+}
+.chart-tip .tip-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.6;
+}
+.chart-tip .tip-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 3px;
+}
+.chart-tip .tip-label {
+  font-size: 11px;
+  opacity: 0.72;
+  margin-top: 3px;
+}
+
 /* Dark mode: brighten the baked chart strokes/fills for contrast */
 .dark .chart-svg svg [stroke="#1d3557"] {
-  stroke: #8ab4f8 !important;
+  stroke: #8ba4f2 !important;
 }
 .dark .chart-svg svg [stroke="#e07b1a"] {
-  stroke: #ffb15c !important;
+  stroke: #efb877 !important;
 }
 .dark .chart-svg svg [stroke="#3f7d3f"] {
-  stroke: #8fd18f !important;
+  stroke: #7fd1a0 !important;
 }
 .dark .chart-svg svg [stroke="#b3392f"] {
-  stroke: #f0908a !important;
+  stroke: #ef8f8f !important;
 }
 .dark .chart-svg svg [fill="#1d3557"] {
-  fill: #8ab4f8 !important;
+  fill: #8ba4f2 !important;
 }
 .dark .chart-svg svg [fill="#e07b1a"] {
-  fill: #ffb15c !important;
+  fill: #efb877 !important;
 }
 .dark .chart-svg svg [fill="#3f7d3f"] {
-  fill: #8fd18f !important;
+  fill: #7fd1a0 !important;
 }
 .dark .chart-svg svg [fill="#b3392f"] {
-  fill: #f0908a !important;
+  fill: #ef8f8f !important;
 }
 .dark .chart-svg svg stop[stop-color="#1d3557"] {
-  stop-color: #8ab4f8 !important;
+  stop-color: #8ba4f2 !important;
 }
 .dark .chart-svg svg stop[stop-color="#e07b1a"] {
-  stop-color: #ffb15c !important;
+  stop-color: #efb877 !important;
 }
 .dark .chart-svg svg stop[stop-color="#3f7d3f"] {
-  stop-color: #8fd18f !important;
+  stop-color: #7fd1a0 !important;
 }
 .dark .chart-svg svg stop[stop-color="#b3392f"] {
-  stop-color: #f0908a !important;
+  stop-color: #ef8f8f !important;
 }
 .dark .chart-svg svg [stroke="#faf9f6"] {
-  stroke: #141d30 !important;
+  stroke: #121a2b !important;
 }
 
 /* ---------- Command palette + Pagefind (theme-aware) ---------- */
 .dark .pagefind-ui {
-  --pagefind-ui-primary: #ffb15c;
-  --pagefind-ui-text: #eaeef8;
-  --pagefind-ui-background: #141d30;
-  --pagefind-ui-border: #27324c;
-  --pagefind-ui-tag: #27324c;
+  --pagefind-ui-primary: #8ba4f2;
+  --pagefind-ui-text: #e9edf9;
+  --pagefind-ui-background: #121a2b;
+  --pagefind-ui-border: #243049;
+  --pagefind-ui-tag: #243049;
 }
 
 .sr-only {
