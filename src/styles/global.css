@@ -58,7 +58,7 @@
   /* Neutrals */
   --color-paper: #faf9f6;
   --color-paper-2: #ffffff;
-  --color-chrome: #f4efe4;
+  --color-chrome: #ffffff;
   --color-cream: #f4efe4;
   --color-line: #e4e0d4;
   --color-fog: #5d6472;
@@ -92,29 +92,29 @@
 
 .dark {
   color-scheme: dark;
-  /* Modern, futuristic dark palette (independent of the light theme) */
-  --color-paper: #0a0e17;
-  --color-paper-2: #121a2b;
-  --color-chrome: #0e1524;
-  --color-cream: #141d31;
-  --color-line: #243049;
-  --color-fog: #93a0bd;
-  --color-ink: #e9edf9;
-  --color-ink-soft: #c3cce2;
-  --color-navy: #8ba4f2;
-  --color-navy-soft: #a6bcff;
-  --color-navy-950: #060a12;
-  --color-saffron: #e8a55e;
-  --color-saffron-600: #efb877;
-  --color-saffron-700: #f3c99a;
-  --color-marigold: #f0b95a;
-  --color-moss: #7fd1a0;
-  --color-clay: #ef8f8f;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 20px -6px rgb(0 0 0 / 0.6);
-  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.55), 0 16px 40px -10px rgb(0 0 0 / 0.7);
-  --tip-bg: #1a2338;
-  --tip-fg: #eef1fa;
-  --tip-border: #303c5a;
+  /* Cyberpunk dark palette — violet / purple / fuchsia */
+  --color-paper: #08060f;
+  --color-paper-2: #130f22;
+  --color-chrome: #0d0a18;
+  --color-cream: #171029;
+  --color-line: #2b2148;
+  --color-fog: #a99ed6;
+  --color-ink: #ece7fb;
+  --color-ink-soft: #c8bff0;
+  --color-navy: #b794f6;
+  --color-navy-soft: #c9aef8;
+  --color-navy-950: #050308;
+  --color-saffron: #e879f9;
+  --color-saffron-600: #f0abfc;
+  --color-saffron-700: #f5c2ff;
+  --color-marigold: #f0abfc;
+  --color-moss: #5eead4;
+  --color-clay: #fb7185;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.6), 0 6px 22px -6px rgb(120 60 200 / 0.28);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.6), 0 18px 44px -10px rgb(150 80 240 / 0.4);
+  --tip-bg: #1a1230;
+  --tip-fg: #f1ecff;
+  --tip-border: #3a2c60;
 }
 
 body {
@@ -134,14 +134,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 .dark body {
-  /* Subtle futuristic glow — no tricolor in dark mode */
+  /* Cyberpunk glow — violet + fuchsia radials over deep violet-black */
   background-image:
     radial-gradient(
-      1100px 520px at 50% -8%,
-      rgba(139, 164, 242, 0.1),
-      transparent 62%
+      900px 500px at 12% -6%,
+      rgba(183, 148, 246, 0.18),
+      transparent 60%
     ),
-    linear-gradient(180deg, #0a0e17 0%, #0b101d 100%);
+    radial-gradient(
+      900px 600px at 92% 112%,
+      rgba(232, 121, 249, 0.14),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #08060f 0%, #0a0714 100%);
 }
 
 ::selection {
@@ -153,32 +158,15 @@ body {
   color: #f4f2ec;
 }
 
-/* ---------- Nav hover: subtle tricolor gradient ---------- */
+/* ---------- Nav hover: subtle neutral tint ---------- */
 .nav-link-hover {
-  background-image: none;
-  transition: background-image 0.2s ease, color 0.2s ease,
-    background-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 .nav-link-hover:hover {
-  background-image: linear-gradient(
-    100deg,
-    rgba(255, 153, 51, 0.16) 0%,
-    rgba(255, 255, 255, 0) 45%,
-    rgba(19, 136, 8, 0.16) 100%
-  );
+  background-color: rgba(22, 24, 29, 0.05);
 }
 .dark .nav-link-hover:hover {
-  background-image: linear-gradient(
-    100deg,
-    rgba(139, 164, 242, 0.2) 0%,
-    rgba(139, 164, 242, 0.04) 100%
-  );
-}
-
-/* ---------- Nav & footer share the same chrome color ---------- */
-.site-nav,
-.site-footer {
-  background-color: var(--color-chrome);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 /* ---------- Charts ---------- */
@@ -228,52 +216,52 @@ body {
 
 /* Dark mode: brighten the baked chart strokes/fills for contrast */
 .dark .chart-svg svg [stroke="#1d3557"] {
-  stroke: #8ba4f2 !important;
+  stroke: #b794f6 !important;
 }
 .dark .chart-svg svg [stroke="#e07b1a"] {
-  stroke: #efb877 !important;
+  stroke: #f0abfc !important;
 }
 .dark .chart-svg svg [stroke="#3f7d3f"] {
-  stroke: #7fd1a0 !important;
+  stroke: #5eead4 !important;
 }
 .dark .chart-svg svg [stroke="#b3392f"] {
-  stroke: #ef8f8f !important;
+  stroke: #fb7185 !important;
 }
 .dark .chart-svg svg [fill="#1d3557"] {
-  fill: #8ba4f2 !important;
+  fill: #b794f6 !important;
 }
 .dark .chart-svg svg [fill="#e07b1a"] {
-  fill: #efb877 !important;
+  fill: #f0abfc !important;
 }
 .dark .chart-svg svg [fill="#3f7d3f"] {
-  fill: #7fd1a0 !important;
+  fill: #5eead4 !important;
 }
 .dark .chart-svg svg [fill="#b3392f"] {
-  fill: #ef8f8f !important;
+  fill: #fb7185 !important;
 }
 .dark .chart-svg svg stop[stop-color="#1d3557"] {
-  stop-color: #8ba4f2 !important;
+  stop-color: #b794f6 !important;
 }
 .dark .chart-svg svg stop[stop-color="#e07b1a"] {
-  stop-color: #efb877 !important;
+  stop-color: #f0abfc !important;
 }
 .dark .chart-svg svg stop[stop-color="#3f7d3f"] {
-  stop-color: #7fd1a0 !important;
+  stop-color: #5eead4 !important;
 }
 .dark .chart-svg svg stop[stop-color="#b3392f"] {
-  stop-color: #ef8f8f !important;
+  stop-color: #fb7185 !important;
 }
 .dark .chart-svg svg [stroke="#faf9f6"] {
-  stroke: #121a2b !important;
+  stroke: #130f22 !important;
 }
 
 /* ---------- Command palette + Pagefind (theme-aware) ---------- */
 .dark .pagefind-ui {
-  --pagefind-ui-primary: #8ba4f2;
-  --pagefind-ui-text: #e9edf9;
-  --pagefind-ui-background: #121a2b;
-  --pagefind-ui-border: #243049;
-  --pagefind-ui-tag: #243049;
+  --pagefind-ui-primary: #b794f6;
+  --pagefind-ui-text: #ece7fb;
+  --pagefind-ui-background: #130f22;
+  --pagefind-ui-border: #2b2148;
+  --pagefind-ui-tag: #2b2148;
 }
 
 .sr-only {
