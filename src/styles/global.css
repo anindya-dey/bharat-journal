@@ -183,12 +183,9 @@ body {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* ---------- Logo mark: tricolor (light) → cyberpunk (dark) ---------- */
+/* ---------- Logo mark: tricolor gradient in both themes ---------- */
 .logo-mark {
   background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
-}
-.dark .logo-mark {
-  background: linear-gradient(135deg, #a78bfa 0%, #d946ef 50%, #2dd4bf 100%);
 }
 
 /* ---------- Charts ---------- */
