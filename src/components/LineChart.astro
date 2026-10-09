@@ -21,7 +21,7 @@ const {
   data,
   yLabel = "",
   annotations = [],
-  color = "#c026d3",
+  color = "#16a34a",
   seriesLabel = yLabel,
   formatValue,
   formatLabel,
@@ -89,11 +89,19 @@ const svg = Plot.plot({
       strokeWidth: 2.5,
       strokeLinejoin: "round",
     }),
+    Plot.dot(data, {
+      x: "date",
+      y: "value",
+      r: 3,
+      fill: color,
+      stroke: "var(--color-paper)",
+      strokeWidth: 1.5,
+    }),
     ...(annotations.length
       ? [
           Plot.ruleX(annotations, {
             x: "date",
-            stroke: "#c026d3",
+            stroke: "#16a34a",
             strokeWidth: 1,
             strokeDasharray: "4 4",
             opacity: 0.7,
@@ -104,7 +112,7 @@ const svg = Plot.plot({
             text: "label",
             fontSize: 10,
             fontWeight: 600,
-            fill: "#a21caf",
+            fill: "#b45309",
             textAnchor: "start",
             dx: 4,
             dy: -8,
