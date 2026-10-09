@@ -89,6 +89,15 @@ const axisTicks = [1947, 1960, 1980, 2000, 2014].map((yr) => ({
 const peakYears = [...density]
   .filter((d) => d.count > 1)
   .map((d) => d.year);
+
+// Tooltip payload for the density chart (same floating tooltip as charts)
+const densityTips = JSON.stringify(
+  density.map((d) => ({
+    label: String(d.year),
+    value: `${d.count} milestone${d.count === 1 ? "" : "s"}`,
+    f: maxCount > 0 ? d.count / maxCount : 0,
+  })),
+);
 ---
 
 <BaseLayout
@@ -116,7 +125,19 @@ const peakYears = [...density]
 
       <!-- Density: milestones per year -->
       <figure class="mt-8" aria-label="Milestones per year, 1947 to 2014">
-        <div class="relative">
+        <div
+          class="chart-svg chart-hover relative"
+          data-chart
+          data-bar
+          data-title="Milestones per year"
+          data-tips={densityTips}
+          data-w={DW}
+          data-h={DH}
+          data-padl="0"
+          data-padr="0"
+          data-padt={padT}
+          data-padb={padB}
+        >
           <svg
             viewBox={`0 0 ${DW} ${DH}`}
             width="100%"
@@ -158,27 +179,24 @@ const peakYears = [...density]
                   rx="1.5"
                   fill={b.count > 1 ? "#c05f10" : "#e59a49"}
                   opacity={b.count > 0 ? 1 : 0}
-                >
-                  <title>
-                    {b.year}: {b.count} milestone{b.count === 1 ? "" : "s"}
-                  </title>
-                </rect>
+                />
               ))
             }
           </svg>
-          <!-- responsive axis labels -->
-          <div class="relative h-4 mt-1" aria-hidden="true">
-            {
-              axisTicks.map((t) => (
-                <span
-                  class="absolute -translate-x-1/2 text-[10px] sm:text-[11px] font-mono text-fog"
-                  style={`left:${t.pct}%`}
-                >
-                  {t.year}
-                </span>
-              ))
-            }
-          </div>
+          <div class="chart-tip"></div>
+        </div>
+        <!-- responsive axis labels -->
+        <div class="relative h-4 mt-1" aria-hidden="true">
+          {
+            axisTicks.map((t) => (
+              <span
+                class="absolute -translate-x-1/2 text-[10px] sm:text-[11px] font-mono text-fog"
+                style={`left:${t.pct}%`}
+              >
+                {t.year}
+              </span>
+            ))
+          }
         </div>
         <figcaption class="text-xs text-fog mt-1">
           Milestones per year, 1947–2014 — the darker bars are the{" "}

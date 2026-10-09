@@ -92,29 +92,29 @@
 
 .dark {
   color-scheme: dark;
-  /* Cyberpunk dark palette — violet / purple / fuchsia */
-  --color-paper: #08060f;
-  --color-paper-2: #130f22;
-  --color-chrome: #0d0a18;
-  --color-cream: #171029;
-  --color-line: #2b2148;
+  /* Cyberpunk dark palette — purple / violet / fuchsia / teal */
+  --color-paper: #0a0616;
+  --color-paper-2: #17102b;
+  --color-chrome: #100a20;
+  --color-cream: #1a1235;
+  --color-line: #33244f;
   --color-fog: #a99ed6;
   --color-ink: #ece7fb;
-  --color-ink-soft: #c8bff0;
-  --color-navy: #b794f6;
-  --color-navy-soft: #c9aef8;
-  --color-navy-950: #050308;
-  --color-saffron: #e879f9;
-  --color-saffron-600: #f0abfc;
-  --color-saffron-700: #f5c2ff;
-  --color-marigold: #f0abfc;
-  --color-moss: #5eead4;
+  --color-ink-soft: #cbbff0;
+  --color-navy: #a78bfa;
+  --color-navy-soft: #c4b5fd;
+  --color-navy-950: #06030f;
+  --color-saffron: #d946ef;
+  --color-saffron-600: #e879f9;
+  --color-saffron-700: #f0abfc;
+  --color-marigold: #e879f9;
+  --color-moss: #2dd4bf;
   --color-clay: #fb7185;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.6), 0 6px 22px -6px rgb(120 60 200 / 0.28);
-  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.6), 0 18px 44px -10px rgb(150 80 240 / 0.4);
-  --tip-bg: #1a1230;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.6), 0 6px 22px -6px rgb(140 80 230 / 0.3);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.6), 0 18px 44px -10px rgb(170 90 250 / 0.42);
+  --tip-bg: #1c1338;
   --tip-fg: #f1ecff;
-  --tip-border: #3a2c60;
+  --tip-border: #3d2c66;
 }
 
 body {
@@ -134,19 +134,24 @@ body {
   text-rendering: optimizeLegibility;
 }
 .dark body {
-  /* Cyberpunk glow — violet + fuchsia radials over deep violet-black */
+  /* Cyberpunk glow — violet, teal/turquoise, fuchsia over purple-black */
   background-image:
     radial-gradient(
-      900px 500px at 12% -6%,
-      rgba(183, 148, 246, 0.18),
+      920px 540px at 8% -8%,
+      rgba(167, 139, 250, 0.22),
       transparent 60%
     ),
     radial-gradient(
-      900px 600px at 92% 112%,
-      rgba(232, 121, 249, 0.14),
+      820px 620px at 98% 12%,
+      rgba(45, 212, 191, 0.12),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 78% 116%,
+      rgba(217, 70, 239, 0.18),
       transparent 60%
     ),
-    linear-gradient(180deg, #08060f 0%, #0a0714 100%);
+    linear-gradient(180deg, #0a0616 0%, #0b0719 100%);
 }
 
 ::selection {
@@ -216,52 +221,52 @@ body {
 
 /* Dark mode: brighten the baked chart strokes/fills for contrast */
 .dark .chart-svg svg [stroke="#1d3557"] {
-  stroke: #b794f6 !important;
+  stroke: #a78bfa !important;
 }
 .dark .chart-svg svg [stroke="#e07b1a"] {
   stroke: #f0abfc !important;
 }
 .dark .chart-svg svg [stroke="#3f7d3f"] {
-  stroke: #5eead4 !important;
+  stroke: #2dd4bf !important;
 }
 .dark .chart-svg svg [stroke="#b3392f"] {
   stroke: #fb7185 !important;
 }
 .dark .chart-svg svg [fill="#1d3557"] {
-  fill: #b794f6 !important;
+  fill: #a78bfa !important;
 }
 .dark .chart-svg svg [fill="#e07b1a"] {
   fill: #f0abfc !important;
 }
 .dark .chart-svg svg [fill="#3f7d3f"] {
-  fill: #5eead4 !important;
+  fill: #2dd4bf !important;
 }
 .dark .chart-svg svg [fill="#b3392f"] {
   fill: #fb7185 !important;
 }
 .dark .chart-svg svg stop[stop-color="#1d3557"] {
-  stop-color: #b794f6 !important;
+  stop-color: #a78bfa !important;
 }
 .dark .chart-svg svg stop[stop-color="#e07b1a"] {
   stop-color: #f0abfc !important;
 }
 .dark .chart-svg svg stop[stop-color="#3f7d3f"] {
-  stop-color: #5eead4 !important;
+  stop-color: #2dd4bf !important;
 }
 .dark .chart-svg svg stop[stop-color="#b3392f"] {
   stop-color: #fb7185 !important;
 }
 .dark .chart-svg svg [stroke="#faf9f6"] {
-  stroke: #130f22 !important;
+  stroke: #17102b !important;
 }
 
 /* ---------- Command palette + Pagefind (theme-aware) ---------- */
 .dark .pagefind-ui {
-  --pagefind-ui-primary: #b794f6;
+  --pagefind-ui-primary: #a78bfa;
   --pagefind-ui-text: #ece7fb;
-  --pagefind-ui-background: #130f22;
-  --pagefind-ui-border: #2b2148;
-  --pagefind-ui-tag: #2b2148;
+  --pagefind-ui-background: #17102b;
+  --pagefind-ui-border: #33244f;
+  --pagefind-ui-tag: #33244f;
 }
 
 .sr-only {
