@@ -1,0 +1,66 @@
+---
+title: "National Highways: Paving the Country"
+description: "From under 24,000 km of national highway in 1971 to over 150,000 km today — the road network that carries India's freight and connects its cities."
+theme: "mobility"
+datasets: ["src/data/datasets/highways.json"]
+unit: "km of national highway"
+sources:
+  - name: "National highways of India — length by year (Wikipedia, citing MoRTH)"
+    url: "https://en.wikipedia.org/wiki/National_highways_of_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["last-mile-connectivity"]
+sparkline:
+  dataset: "highways"
+  key: "km"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Route, Gauge, Truck } from "@lucide/astro";
+import data from "../../data/datasets/highways.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.km }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~152,000 km" label="of national highway (2024)" Icon={Route} accent="navy" />
+  <StatCallout value="6x" label="growth since 1971" Icon={Gauge} accent="saffron" />
+  <StatCallout value="Golden Quadrilateral" label="the programme that accelerated it" Icon={Truck} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Total national highway length"
+  subCaption="km of national highway by fiscal year. The steep climb from the mid-2000s is the Golden Quadrilateral and NHDP era."
+>
+  <LineChart data={series} yLabel="National highway (km)" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  India's national highways are less than 2% of its roads but carry around
+  <strong>40%</strong> of its road traffic. In 1971 the network was under
+  24,000 km; by 2024 it had crossed <strong>151,000 km</strong> — a six-fold
+  expansion, most of it in the two decades since the
+  <strong>Golden Quadrilateral</strong> and the National Highway Development
+  Programme connected the four metros with four-to-six-lane highways.
+</p>
+
+<p>
+  The build-out is the physical counterpart to the digital one: expressways,
+  economic corridors, and four-laning that cut travel times and freight costs
+  across the country.
+</p>
+
+<SourceList
+  sources={[
+    { name: "National highways of India — length by year (MoRTH via Wikipedia)", url: "https://en.wikipedia.org/wiki/National_highways_of_India", retrieved: "October 2026", note: "23,798 km (1971) → 151,874 km (2023-24)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/last-mile-connectivity", label: "Seamless last-mile connectivity" }
+  ]}
+/>

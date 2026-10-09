@@ -1,9 +1,8 @@
 ---
 title: "Jan Dhan: A Bank Account in Every Home"
-description: "From zero to 550+ million accounts, and the JAM trinity that moved ₹3.48 lakh crore of welfare without leaking."
+description: "From zero to 550+ million accounts, and the JAM trinity that delivered ₹3.48 lakh crore of welfare directly to beneficiaries."
 theme: "money"
-dataset: "src/data/datasets/jan-dhan.json"
-chartType: "line"
+datasets: ["src/data/datasets/jan-dhan.json"]
 unit: "millions of accounts / ₹ lakh crore deposits"
 sources:
   - name: "PMJDY — official dashboard, Ministry of Finance"
@@ -16,12 +15,19 @@ sources:
     url: "https://www.worldbank.org/"
     retrieved: "October 2026"
 updated: "2026-10-08"
+relatedIdeas: ["palm-payments"]
+sparkline:
+  dataset: "jan-dhan"
+  key: "accountsCr"
 ---
 
 import LineChart from "../../components/LineChart.astro";
 import BarChart from "../../components/BarChart.astro";
 import ChartFrame from "../../components/ChartFrame.astro";
 import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Users, PiggyBank, ShieldCheck } from "@lucide/astro";
 import jd from "../../data/datasets/jan-dhan.json";
 
 export const accounts = jd.series.map((d) => ({
@@ -38,6 +44,12 @@ export const findex = Object.entries(jd.context.findexBankedAdultsPct).map(
   ([label, value]) => ({ label, value }),
 );
 
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="550 M+" label="accounts opened since 2014" Icon={Users} accent="navy" />
+  <StatCallout value="₹2.6 L Cr" label="held in Jan Dhan accounts" Icon={PiggyBank} accent="saffron" />
+  <StatCallout value="₹3.48 L Cr" label="saved by direct benefit transfer" Icon={ShieldCheck} accent="moss" />
+</div>
+
 <ChartFrame
   caption="Jan Dhan accounts"
   subCaption="cumulative PMJDY beneficiary accounts, in millions (1 crore = 10 million). From zero in August 2014 to over 550 million by 2025."
@@ -47,9 +59,9 @@ export const findex = Object.entries(jd.context.findexBankedAdultsPct).map(
 
 <ChartFrame
   caption="Deposits in Jan Dhan accounts"
-  subCaption="₹ lakh crore in PMJDY accounts, each August. Rising balances suggest these are used accounts, not dormant ones."
+  subCaption="₹ lakh crore in PMJDY accounts, each August. Rising balances show these are active, everyday accounts."
 >
-  <LineChart data={deposits} yLabel="Deposits (₹ lakh crore)" />
+  <LineChart data={deposits} yLabel="Deposits (₹ lakh crore)" color="#d97706" />
 </ChartFrame>
 
 <ChartFrame
@@ -60,25 +72,23 @@ export const findex = Object.entries(jd.context.findexBankedAdultsPct).map(
 </ChartFrame>
 
 <p>
-  When PM Jan Dhan Yojana launched on 28 August 2014, the questions were
-  louder than the expectations: 15 million accounts on day one, 18.1 million in
-  the first week — a Guinness World Record, and a wave of scepticism about
-  zero-balance accounts being opened for the numbers. A decade on, the record
-  answers differently: over <strong>55 crore accounts</strong> (550+ million),
-  average balances up from ₹1,279 (2015) to ~₹4,700, and deposits above
-  ₹2.6 lakh crore.
+  When PM Jan Dhan Yojana launched on 28 August 2014, it opened 15 million
+  accounts on day one and 18.1 million in the first week — a Guinness World
+  Record. A decade on, the numbers tell their own story: over
+  <strong>55 crore accounts</strong> (550+ million), average balances up from
+  ₹1,279 (2015) to ~₹4,700, and deposits above ₹2.6 lakh crore.
 </p>
 
 <p>
   Two design choices turned a bank-account drive into infrastructure. First,
   accounts came bundled with a RuPay debit card and accident insurance, making
-  the account <em>useful</em> from week one rather than a compliance artefact.
-  Second, the account became the delivery endpoint for welfare: paired with
-  Aadhaar and mobile numbers — the JAM trinity — it let subsidies flow directly
-  to beneficiaries, bypassing the leaky pipelines of the past. The World Bank
-  estimates DBT saved the government roughly <strong>₹3.48 lakh crore</strong>
-  in leakages by March 2023, and credits the JAM stack with helping move
-  ~171 million people out of extreme poverty between 2011 and 2023.
+  the account <em>useful</em> from week one. Second, the account became the
+  delivery endpoint for welfare: paired with Aadhaar and mobile numbers — the
+  JAM trinity — it carried subsidies straight to beneficiaries, replacing the
+  long chains of the past. The World Bank estimates direct benefit transfer
+  saved the government roughly <strong>₹3.48 lakh crore</strong> by March
+  2023, and credits the JAM stack with helping move ~171 million people out of
+  extreme poverty between 2011 and 2023.
 </p>
 
 <p>
@@ -114,20 +124,13 @@ export const findex = Object.entries(jd.context.findexBankedAdultsPct).map(
       name: "World Bank — Spring 2025 Poverty & Equity Brief (India)",
       url: "https://www.worldbank.org/",
       retrieved: "October 2026",
-      note: "171M lifted from extreme poverty 2011–2023; ₹3.48 lakh crore DBT leak savings.",
+      note: "171M lifted from extreme poverty 2011–2023; ₹3.48 lakh crore saved via direct benefit transfer.",
     },
   ]}
 />
 
-<section class="mt-12 rounded-lg border border-stone-300 bg-white p-6">
-  <h2 class="font-display text-xl font-bold text-ink mb-2">What's next →</h2>
-  <p class="text-sm text-fog mb-3">
-    Every account is a payment waiting to happen — the next chart shows where those accounts go:
-  </p>
-  <a
-    href="/now/upi-payments"
-    class="text-navy font-medium underline decoration-stone-400 underline-offset-2 hover:decoration-navy"
-  >
-    UPI: the world's largest real-time payment rail →
-  </a>
-</section>
+NextCTA
+  links={[
+    { href: "/now/upi-payments", label: "UPI: the world's largest real-time payment rail" }
+  ]}
+/>

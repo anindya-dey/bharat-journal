@@ -1,0 +1,67 @@
+---
+title: "Feeding the Nation"
+description: "From a food-aid recipient in the 1960s to one of the world's largest food producers — the food production index has nearly tripled since 1990."
+theme: "livelihoods"
+datasets: ["src/data/datasets/food-production.json"]
+unit: "food production index (2014–16 = 100)"
+sources:
+  - name: "World Bank — Food production index (2014-2016 = 100), India (AG.PRD.FOOD.XD)"
+    url: "https://data.worldbank.org/indicator/AG.PRD.FOOD.XD?locations=IN"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["water-security"]
+sparkline:
+  dataset: "food-production"
+  key: "index"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Wheat, Milk, TrendingUp } from "@lucide/astro";
+import data from "../../data/datasets/food-production.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.index }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~3x" label="food production growth since 1990" Icon={TrendingUp} accent="moss" />
+  <StatCallout value="#1" label="world's largest milk producer" Icon={Milk} accent="navy" />
+  <StatCallout value="Green + White" label="the two revolutions behind it" Icon={Wheat} accent="saffron" />
+</div>
+
+<ChartFrame
+  caption="Food production index"
+  subCaption="index of food production (2014–16 = 100), India. A near-tripling of output since 1990 across crops and livestock."
+>
+  <LineChart data={series} yLabel="Food production index" color="#3f7d3f" />
+</ChartFrame>
+
+<p>
+  A country that imported food aid in the 1960s — the era of
+  "ship-to-mouth" — now feeds well over a billion people and exports
+  foodgrain. The <strong>Green Revolution</strong> brought high-yield wheat and
+  rice; the <strong>White Revolution</strong> (Operation Flood) built the
+  cooperative dairy system that made India the world's largest milk producer.
+  The food production index has nearly <strong>tripled</strong> since 1990.
+</p>
+
+<p>
+  This is the achievement that made every other one possible: a population that
+  is fed can be educated, employed and lifted out of poverty. The next frontier
+  is resilience — water security, climate-proof agriculture, and food systems
+  that hold up as the climate shifts.
+</p>
+
+<SourceList
+  sources={[
+    { name: "World Bank — Food production index (2014-2016 = 100)", url: "https://data.worldbank.org/indicator/AG.PRD.FOOD.XD?locations=IN", retrieved: "October 2026", note: "47.5 (1990) → 139.3 (2024)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/water-security", label: "Water security: interlinking, recycling, desalination" }
+  ]}
+/>

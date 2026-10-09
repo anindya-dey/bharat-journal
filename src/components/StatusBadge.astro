@@ -1,12 +1,52 @@
 ---
-const STATUSES: Record<string, { label: string; class: string }> = {
-  proposed: { label: "Proposed", class: "badge-proposed" },
-  submitted: { label: "Submitted", class: "badge-submitted" },
-  "in-progress": { label: "In progress", class: "badge-in-progress" },
-  achieved: { label: "Achieved", class: "badge-achieved" },
-  stalled: { label: "Stalled", class: "badge-stalled" },
-  declined: { label: "Declined", class: "badge-declined" },
-};
+import {
+  Lightbulb,
+  Send,
+  Clock,
+  CircleCheck,
+  CirclePause,
+  CircleX,
+} from "@lucide/astro";
+
+const STATUSES: Record<string, { label: string; classes: string; Icon: any }> =
+  {
+    proposed: {
+      label: "Proposed",
+      classes:
+        "bg-stone-100 text-stone-700 ring-stone-200 dark:bg-white/10 dark:text-stone-200 dark:ring-white/15",
+      Icon: Lightbulb,
+    },
+    submitted: {
+      label: "Submitted",
+      classes:
+        "bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:ring-blue-900",
+      Icon: Send,
+    },
+    "in-progress": {
+      label: "In progress",
+      classes:
+        "bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-900",
+      Icon: Clock,
+    },
+    achieved: {
+      label: "Achieved",
+      classes:
+        "bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900",
+      Icon: CircleCheck,
+    },
+    stalled: {
+      label: "Stalled",
+      classes:
+        "bg-orange-50 text-orange-700 ring-orange-200 dark:bg-orange-950/40 dark:text-orange-300 dark:ring-orange-900",
+      Icon: CirclePause,
+    },
+    declined: {
+      label: "Declined",
+      classes:
+        "bg-red-50 text-red-700 ring-red-200 dark:bg-red-950/40 dark:text-red-300 dark:ring-red-900",
+      Icon: CircleX,
+    },
+  };
 
 interface Props {
   status: string;
@@ -14,9 +54,15 @@ interface Props {
 
 const { status } = Astro.props;
 const meta = STATUSES[status] ?? STATUSES.proposed;
+const { Icon } = meta;
 ---
 
-<span class={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide ${meta.class}`}>
-  <span class="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
+<span
+  class:list={[
+    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ring-1 ring-inset",
+    meta.classes,
+  ]}
+>
+  <Icon size={12} stroke-width={2.5} />
   {meta.label}
 </span>

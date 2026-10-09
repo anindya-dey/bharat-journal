@@ -1,0 +1,179 @@
+{
+  "notes": "Number of operational metro/rapid-transit systems in India by year (first line of each system). Total operational route length ~1070 km across 21 systems. Source: rail transport table.",
+  "totalKm": 1070,
+  "systems": 21,
+  "series": [
+    {
+      "year": 1984,
+      "systems": 1
+    },
+    {
+      "year": 1985,
+      "systems": 1
+    },
+    {
+      "year": 1986,
+      "systems": 1
+    },
+    {
+      "year": 1987,
+      "systems": 1
+    },
+    {
+      "year": 1988,
+      "systems": 1
+    },
+    {
+      "year": 1989,
+      "systems": 1
+    },
+    {
+      "year": 1990,
+      "systems": 1
+    },
+    {
+      "year": 1991,
+      "systems": 1
+    },
+    {
+      "year": 1992,
+      "systems": 1
+    },
+    {
+      "year": 1993,
+      "systems": 1
+    },
+    {
+      "year": 1994,
+      "systems": 1
+    },
+    {
+      "year": 1995,
+      "systems": 1
+    },
+    {
+      "year": 1996,
+      "systems": 1
+    },
+    {
+      "year": 1997,
+      "systems": 1
+    },
+    {
+      "year": 1998,
+      "systems": 1
+    },
+    {
+      "year": 1999,
+      "systems": 1
+    },
+    {
+      "year": 2000,
+      "systems": 1
+    },
+    {
+      "year": 2001,
+      "systems": 1
+    },
+    {
+      "year": 2002,
+      "systems": 2
+    },
+    {
+      "year": 2003,
+      "systems": 2
+    },
+    {
+      "year": 2004,
+      "systems": 2
+    },
+    {
+      "year": 2005,
+      "systems": 2
+    },
+    {
+      "year": 2006,
+      "systems": 2
+    },
+    {
+      "year": 2007,
+      "systems": 2
+    },
+    {
+      "year": 2008,
+      "systems": 2
+    },
+    {
+      "year": 2009,
+      "systems": 2
+    },
+    {
+      "year": 2010,
+      "systems": 2
+    },
+    {
+      "year": 2011,
+      "systems": 3
+    },
+    {
+      "year": 2012,
+      "systems": 3
+    },
+    {
+      "year": 2013,
+      "systems": 4
+    },
+    {
+      "year": 2014,
+      "systems": 5
+    },
+    {
+      "year": 2015,
+      "systems": 7
+    },
+    {
+      "year": 2016,
+      "systems": 7
+    },
+    {
+      "year": 2017,
+      "systems": 10
+    },
+    {
+      "year": 2018,
+      "systems": 10
+    },
+    {
+      "year": 2019,
+      "systems": 13
+    },
+    {
+      "year": 2020,
+      "systems": 13
+    },
+    {
+      "year": 2021,
+      "systems": 14
+    },
+    {
+      "year": 2022,
+      "systems": 15
+    },
+    {
+      "year": 2023,
+      "systems": 16
+    },
+    {
+      "year": 2024,
+      "systems": 17
+    },
+    {
+      "year": 2025,
+      "systems": 20
+    },
+    {
+      "year": 2026,
+      "systems": 21
+    }
+  ]
+}

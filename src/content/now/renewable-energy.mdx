@@ -1,0 +1,83 @@
+---
+title: "Renewable Energy: Half the Grid, and Climbing"
+description: "From 161 MW of solar in 2010 to over 150 GW, and renewables crossing half of India's installed capacity — the fastest energy build-out in the country's history."
+theme: "energy"
+datasets: ["src/data/datasets/solar.json", "src/data/datasets/renewable.json"]
+unit: "MW solar / % renewable share"
+sources:
+  - name: "Solar power in India — installed capacity by year (Wikipedia, citing MNRE/CEA)"
+    url: "https://en.wikipedia.org/wiki/Solar_power_in_India"
+    retrieved: "October 2026"
+  - name: "Renewable energy in India — capacity trend (Wikipedia, citing CEA)"
+    url: "https://en.wikipedia.org/wiki/Renewable_energy_in_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["green-hydrogen-economy", "national-data-centre-grid"]
+sparkline:
+  dataset: "renewable"
+  key: "renewablePct"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Sun, Wind, Zap } from "@lucide/astro";
+import solar from "../../data/datasets/solar.json";
+import renewable from "../../data/datasets/renewable.json";
+
+export const solarSeries = solar.series.map((d) => ({ date: `${d.year}-01-01`, value: d.mw }));
+export const shareSeries = renewable.series.map((d) => ({ date: `${d.year}-01-01`, value: d.renewablePct }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~157 GW" label="installed solar by 2026" Icon={Sun} accent="saffron" />
+  <StatCallout value="~269 GW" label="total renewable capacity" Icon={Wind} accent="moss" />
+  <StatCallout value="50.9%" label="of installed capacity is renewable" Icon={Zap} accent="navy" />
+</div>
+
+<ChartFrame
+  caption="Installed solar capacity"
+  subCaption="MW (AC), year-end. From 161 MW in 2010 to over 150,000 MW — a ~1,000-fold rise in sixteen years."
+>
+  <LineChart data={solarSeries} yLabel="Solar capacity (MW)" color="#d97706" />
+</ChartFrame>
+
+<ChartFrame
+  caption="Renewable share of installed capacity"
+  subCaption="% of total grid capacity from renewable sources, each 31 March. Crossing 50% is the milestone."
+>
+  <LineChart data={shareSeries} yLabel="% renewable" color="#3f7d3f" />
+</ChartFrame>
+
+<p>
+  India's solar story is one of the fastest energy transitions ever recorded.
+  In 2010 the country had <strong>161 MW</strong> of solar; by 2026 it had
+  built more than <strong>150 GW</strong> — most of it in the last decade, and
+  at some of the lowest tariffs in the world. Wind has grown steadily alongside
+  it, and together with hydro, biomass and small hydro, renewables now supply
+  <strong>over half</strong> of India's installed power capacity.
+</p>
+
+<p>
+  The design choices mattered. Solar parks aggregated land and transmission;
+  reverse auctions drove tariffs down to world-leading levels; and the
+  <strong>International Solar Alliance</strong>, co-founded by India, turned a
+  domestic programme into global leadership. This is the foundation the next
+  energy bets — green hydrogen, round-the-clock renewables, and the data-centre
+  grid — all build on.
+</p>
+
+<SourceList
+  sources={[
+    { name: "Solar power in India — capacity table (MNRE/CEA via Wikipedia)", url: "https://en.wikipedia.org/wiki/Solar_power_in_India", retrieved: "October 2026", note: "161 MW (2010) → 105,647 MW (Mar 2025) → ~157,046 MW (2026)." },
+    { name: "Renewable energy in India — capacity trend (CEA via Wikipedia)", url: "https://en.wikipedia.org/wiki/Renewable_energy_in_India", retrieved: "October 2026", note: "Renewable share 26.7% (2014) → 50.9% (2026)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/green-hydrogen-economy", label: "A green hydrogen export hub" },
+    { href: "/next/national-data-centre-grid", label: "A data-centre grid near every capital" }
+  ]}
+/>

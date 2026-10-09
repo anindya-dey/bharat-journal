@@ -1,0 +1,67 @@
+---
+title: "Literacy: From 3% to 74%"
+description: "At the dawn of the republic, barely one in thirty Indians could read. Today three in four can — one of the largest literacy expansions ever achieved."
+theme: "society"
+datasets: ["src/data/datasets/literacy.json"]
+unit: "% literate"
+sources:
+  - name: "Literacy in India — literacy rate by census year (Wikipedia, citing Census of India)"
+    url: "https://en.wikipedia.org/wiki/Literacy_in_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["ai-vernacular-education"]
+sparkline:
+  dataset: "literacy"
+  key: "pct"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { BookOpen, GraduationCap, Users } from "@lucide/astro";
+import data from "../../data/datasets/literacy.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.pct }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="74%" label="literacy rate at the 2011 census" Icon={GraduationCap} accent="navy" />
+  <StatCallout value="3% → 74%" label="since 1872" Icon={BookOpen} accent="saffron" />
+  <StatCallout value="RTE 2009" label="education made a fundamental right" Icon={Users} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Literacy rate"
+  subCaption="combined literacy (%), India, census years. The steep climb begins with independence and accelerates after the 1960s."
+>
+  <LineChart data={series} yLabel="Literacy (%)" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  In 1872, roughly <strong>3%</strong> of India could read. At independence the
+  figure was about <strong>18%</strong>. By the 2011 census it had reached
+  <strong>74%</strong> — and the gender gap, once enormous, has been narrowing
+  with each decade. Universal elementary education became a national mission
+  through <strong>Sarva Shiksha Abhiyan</strong> (2001) and a fundamental right
+  through the <strong>Right to Education Act</strong> (2009).
+</p>
+
+<p>
+  The next chapter is quality and access in the mother tongue — and that is
+  where India's language technology and digital rails can do something no
+  previous generation could: put a patient, personal tutor within reach of
+  every child.
+</p>
+
+<SourceList
+  sources={[
+    { name: "Literacy in India — literacy by census year", url: "https://en.wikipedia.org/wiki/Literacy_in_India", retrieved: "October 2026", note: "~3.25% (1872) → 74.04% (2011)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/ai-vernacular-education", label: "An AI tutor in every mother tongue" }
+  ]}
+/>

@@ -1,122 +1,197 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import {
+  Compass,
+  Send,
+  ShieldAlert,
+  UserRound,
+  Check,
+  ArrowRight,
+} from "@lucide/astro";
 import { SITE } from "../data/site";
+
+const methodPoints = [
+  {
+    strong: "Every chart starts at 1947",
+    rest: "or at the earliest year its data exists. The point is trajectory, not a flattering window. Milestone annotations mark policy events, never election years.",
+  },
+  {
+    strong: "Every figure is sourced and dated",
+    rest: "on the page that uses it, with a link and a \"data as of\" date. Datasets live in the repo as JSON, so a figure can be traced from chart to source.",
+  },
+  {
+    strong: "Unverified is labelled unverified.",
+    rest: "Where a claim couldn't be independently confirmed, the text says so rather than laundering it into fact.",
+  },
+  {
+    strong: "Ideas get an anatomy, not a wish.",
+    rest: "Each idea states where it was seen (spark), what the gap actually is, what already exists nearby (precedent), and a concrete, pilot-scale ask.",
+  },
+];
+
+const submissionPoints = [
+  {
+    strong: "Respond to open consultations",
+    rest: "— a comment on an open ministry consultation is read; a cold submission usually isn't.",
+  },
+  {
+    strong: "Match the channel to the idea",
+    rest: "— tourism ideas to the Ministry of Tourism and MyGov campaigns; payments ideas to RBI/NPCI; city infrastructure to state urban departments and municipal corporations.",
+  },
+  {
+    strong: "CPGRAMS for a trackable reference",
+    rest: "— it issues registration numbers that can be followed up.",
+  },
+  {
+    strong: "RTI as follow-up",
+    rest: "— if a submission goes unanswered, a Right to Information application asking what action was taken is cheap and must be answered.",
+  },
+  {
+    strong: "Archive everything",
+    rest: "— each submission is recorded with platform, date, reference number, and an archived copy; personal details are redacted from anything published.",
+  },
+];
 ---
 
-<BaseLayout title="About" description={`About ${SITE.title} — method, sources, corrections, and how ideas are submitted to government.`}>
-  <article class="pt-12 pb-8 max-w-3xl mx-auto">
-    <h1 class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight">
-      About this journal
-    </h1>
-    <p class="mt-4 text-ink/70 leading-relaxed">
-      {SITE.title} is one citizen's public record of India's progress and its
-      possibilities. It has three views — <a href="/then" class="text-navy underline underline-offset-2">Then</a>,
-      <a href="/now" class="text-navy underline underline-offset-2">Now</a>, and
-      <a href="/next" class="text-navy underline underline-offset-2">Next</a> — because a
-      credible argument about the future has to show its work about the past.
-    </p>
-
-    <section class="mt-10 anchor-link" id="method">
-      <h2 class="font-display text-2xl font-bold text-ink mb-3">Method</h2>
-      <ul class="space-y-3 text-ink/80 leading-relaxed list-disc pl-5">
-        <li>
-          <strong>Every chart starts at 1947</strong>, or at the earliest year
-          its data exists. The point is trajectory, not a flattering window.
-          Milestone annotations mark policy events, never election years —
-          the site's credibility shouldn't depend on any party's timeline.
-        </li>
-        <li>
-          <strong>Every figure is sourced and dated</strong> on the page that
-          uses it, with a link and a "data as of" date. Datasets live in the
-          repo as JSON, so a figure can be traced from chart to source.
-        </li>
-        <li>
-          <strong>Unverified is labelled unverified.</strong> Where a claim
-          couldn't be independently confirmed (e.g. the status of a specific
-          park project), the text says so rather than laundering it into
-          fact.
-        </li>
-        <li>
-          <strong>Ideas get an anatomy, not a wish.</strong> Each idea under
-          Next states where it was seen (spark), what the gap actually is
-          (with corrections — India is often further along than the
-          imported framing assumes), what already exists nearby
-          (precedent), and a concrete, pilot-scale ask.
-        </li>
-        <li>
-          <strong>Retrospective milestones end at 2014</strong> — the
-          post-2014 period is told in Now's data instead, where the
-          acceleration is visible on every chart.
-        </li>
-      </ul>
-    </section>
-
-    <section class="mt-10 anchor-link" id="submission-strategy">
-      <h2 class="font-display text-2xl font-bold text-ink mb-3">
-        How ideas are submitted to government
-      </h2>
-      <p class="text-ink/80 leading-relaxed">
-        A journal page doesn't reach anyone in government by itself — it has
-        to be filed where it counts. The strategy, per idea:
+<BaseLayout
+  title="About"
+  description={`About ${SITE.title} — method, sources, corrections, and how ideas are submitted to government.`}
+>
+  <article class="pt-14 pb-16">
+    <Container>
+      <h1
+        class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight tracking-tight"
+      >
+        About this journal
+      </h1>
+      <p class="mt-4 text-lg text-ink/70 leading-relaxed">
+        {SITE.title} is one citizen's public record of India's progress and its
+        possibilities. It has three views —
+        <a href="/then" class="font-semibold text-navy hover:text-saffron-600"
+          >Then</a
+        >,
+        <a href="/now" class="font-semibold text-navy hover:text-saffron-600"
+          >Now</a
+        >, and
+        <a href="/next" class="font-semibold text-navy hover:text-saffron-600"
+          >Next</a
+        > — because a credible argument about the future has to show its work
+        about the past.
       </p>
-      <ul class="mt-3 space-y-2.5 text-ink/80 leading-relaxed list-disc pl-5">
-        <li>
-          <strong>Respond to open consultations</strong> (ministry draft
-          policies, e.g. a draft National Tourism Policy) — a comment on an
-          open consultation is read; a cold submission usually isn't.
-        </li>
-        <li>
-          <strong>Match the channel to the idea</strong> — tourism ideas to
-          the Ministry of Tourism and its MyGov campaigns; payments ideas to
-          RBI/NPCI consultation windows; city-infrastructure ideas to state
-          urban development departments and municipal corporations.
-        </li>
-        <li>
-          <strong>CPGRAMS for a trackable reference</strong> — the Centralized
-          Public Grievance Redress and Monitoring System issues registration
-          numbers that can be followed up.
-        </li>
-        <li>
-          <strong>RTI as follow-up</strong> — if a submission goes
-          unanswered, a Right to Information application asking what action
-          was taken is cheap and legally must be answered. The reply (either
-          way) becomes part of the record here.
-        </li>
-        <li>
-          <strong>Archive everything</strong> — each submission is recorded
-          with platform, date, reference number, and an archived copy;
-          personal details (phone, address) are redacted from anything
-          published.
-        </li>
-      </ul>
-      <p class="mt-3 text-sm text-fog italic">
-        Portal URLs and current consultation windows are verified at filing
-        time, not cached here — government portals reorganise often.
-      </p>
-    </section>
 
-    <section class="mt-10 anchor-link" id="corrections">
-      <h2 class="font-display text-2xl font-bold text-ink mb-3">Corrections</h2>
-      <p class="text-ink/80 leading-relaxed">
-        This journal errs on the side of citability. If a figure, date, or
-        framing is wrong, it gets fixed visibly — corrections are noted on
-        the page, not silently overwritten. The best way to report one is the
-        repo's issue tracker (see README), or via the contact channels on
-        <a
-          href="https://blog.anindyadey.com"
-          class="text-navy underline underline-offset-2">the author's blog</a>.
-      </p>
-    </section>
+      <section class="mt-12 scroll-mt-32" id="method">
+        <h2
+          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
+        >
+          <span
+            class="grid place-items-center w-9 h-9 rounded-xl bg-navy/5 text-navy"
+          >
+            <Compass size={18} stroke-width={2.2} />
+          </span>
+          Method
+        </h2>
+        <ul class="space-y-4">
+          {
+            methodPoints.map((p) => (
+              <li class="flex gap-3 text-ink/80 leading-relaxed">
+                <Check
+                  size={18}
+                  stroke-width={2.6}
+                  class="mt-0.5 shrink-0 text-moss"
+                />
+                <span>
+                  <strong class="text-ink">{p.strong}</strong> {p.rest}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
-    <section class="mt-10 anchor-link" id="author">
-      <h2 class="font-display text-2xl font-bold text-ink mb-3">Author</h2>
-      <p class="text-ink/80 leading-relaxed">
-        {SITE.author} — born 1992, writing from the vantage of a generation
-        that grew up inside the changes this journal charts. Day job:
-        software. Longer writing lives at
-        <a href="https://blog.anindyadey.com" class="text-navy underline underline-offset-2">
-          blog.anindyadey.com</a>.
-      </p>
-    </section>
+      <section class="mt-12 scroll-mt-32" id="submission-strategy">
+        <h2
+          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
+        >
+          <span
+            class="grid place-items-center w-9 h-9 rounded-xl bg-saffron-100 text-saffron-600"
+          >
+            <Send size={18} stroke-width={2.2} />
+          </span>
+          How ideas reach government
+        </h2>
+        <p class="text-ink/80 leading-relaxed">
+          A journal page doesn't reach anyone in government by itself — it has to
+          be filed where it counts. The strategy, per idea:
+        </p>
+        <ul class="mt-4 space-y-3.5">
+          {
+            submissionPoints.map((p) => (
+              <li class="flex gap-3 text-ink/80 leading-relaxed">
+                <ArrowRight
+                  size={18}
+                  stroke-width={2.6}
+                  class="mt-0.5 shrink-0 text-saffron-600"
+                />
+                <span>
+                  <strong class="text-ink">{p.strong}</strong> {p.rest}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-4 text-sm text-fog italic">
+          Portal URLs and current consultation windows are verified at filing
+          time, not cached here — government portals reorganise often.
+        </p>
+      </section>
+
+      <section class="mt-12 scroll-mt-32" id="corrections">
+        <h2
+          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
+        >
+          <span
+            class="grid place-items-center w-9 h-9 rounded-xl bg-clay/10 text-clay"
+          >
+            <ShieldAlert size={18} stroke-width={2.2} />
+          </span>
+          Corrections
+        </h2>
+        <p class="text-ink/80 leading-relaxed">
+          This journal errs on the side of citability. If a figure, date, or
+          framing is wrong, it gets fixed visibly — corrections are noted on the
+          page, not silently overwritten. Report one via the repo's issue
+          tracker, or through the contact channels on
+          <a
+            href="https://blog.anindyadey.com"
+            class="font-semibold text-navy hover:text-saffron-600"
+            >the author's blog</a
+          >.
+        </p>
+      </section>
+
+      <section class="mt-12 scroll-mt-32" id="author">
+        <h2
+          class="flex items-center gap-2.5 font-display text-2xl font-bold text-ink mb-4"
+        >
+          <span
+            class="grid place-items-center w-9 h-9 rounded-xl bg-navy/5 text-navy"
+          >
+            <UserRound size={18} stroke-width={2.2} />
+          </span>
+          Author
+        </h2>
+        <p class="text-ink/80 leading-relaxed">
+          {SITE.author} — born 1992, writing from the vantage of a generation that
+          grew up inside the changes this journal charts. Day job: software.
+          Longer writing lives at
+          <a
+            href="https://blog.anindyadey.com"
+            class="font-semibold text-navy hover:text-saffron-600"
+            >blog.anindyadey.com</a
+          >.
+        </p>
+      </section>
+    </Container>
   </article>
 </BaseLayout>

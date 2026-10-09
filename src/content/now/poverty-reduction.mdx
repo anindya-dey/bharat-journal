@@ -1,0 +1,71 @@
+---
+title: "Poverty: The Great Escape"
+description: "From nearly half of Indians living in extreme poverty in 1993 to under 3% today — the largest reduction in poverty in human history."
+theme: "society"
+datasets: ["src/data/datasets/poverty.json"]
+unit: "% below $2.15/day"
+sources:
+  - name: "World Bank — Poverty headcount ratio at $2.15/day (2017 PPP), India (SI.POV.DDAY)"
+    url: "https://data.worldbank.org/indicator/SI.POV.DDAY?locations=IN"
+    retrieved: "October 2026"
+  - name: "World Bank — Spring 2025 Poverty & Equity Brief (India)"
+    url: "https://www.worldbank.org/en/country/india"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["semiconductor-ai-compute"]
+sparkline:
+  dataset: "poverty"
+  key: "pct"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { TrendingDown, Users, Home } from "@lucide/astro";
+import data from "../../data/datasets/poverty.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.pct }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="47.5% → 2.6%" label="extreme poverty, 1993 to 2023" Icon={TrendingDown} accent="moss" />
+  <StatCallout value="~171M" label="lifted out of extreme poverty, 2011–2023" Icon={Users} accent="navy" />
+  <StatCallout value="JAM trinity" label="the delivery rails behind it" Icon={Home} accent="saffron" />
+</div>
+
+<ChartFrame
+  caption="Extreme poverty headcount"
+  subCaption="% of population below $2.15/day (2017 PPP). The fall from ~47% to under 3% is the largest poverty reduction ever recorded."
+>
+  <LineChart data={series} yLabel="% below $2.15/day" color="#3f7d3f" />
+</ChartFrame>
+
+<p>
+  In 1993, <strong>47.5%</strong> of Indians lived below the international
+  extreme-poverty line. By 2023, that had fallen to <strong>2.6%</strong> — and
+  the World Bank estimates that roughly <strong>171 million people</strong>
+  moved out of extreme poverty between 2011 and 2023 alone. No country has
+  lifted more people out of poverty in a comparable period.
+</p>
+
+<p>
+  The drivers were the compounding effects of growth after liberalisation, the
+  Green and White Revolutions, and — critically for the last mile — the
+  <strong>JAM trinity</strong> of Jan Dhan accounts, Aadhaar and mobile that
+  carried welfare directly to the poorest. Poverty reduction is the ground on
+  which every other ambition on this site stands.
+</p>
+
+<SourceList
+  sources={[
+    { name: "World Bank — Poverty headcount ratio at $2.15/day", url: "https://data.worldbank.org/indicator/SI.POV.DDAY?locations=IN", retrieved: "October 2026", note: "47.5% (1993) → 2.6% (2023)." },
+    { name: "World Bank — Spring 2025 Poverty & Equity Brief (India)", url: "https://www.worldbank.org/en/country/india", retrieved: "October 2026", note: "171M moved out of extreme poverty, 2011–2023." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/semiconductor-ai-compute", label: "Own the semiconductor and AI-compute stack" }
+  ]}
+/>

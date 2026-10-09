@@ -1,10 +1,11 @@
 ---
+import { Search, Compass, Menu } from "@lucide/astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import { SITE } from "../data/site";
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
-  path === href ||
-  (href !== "/" && path.startsWith(href));
+  path === href || (href !== "/" && path.startsWith(href));
 
 const links = [
   { href: "/then", label: "Then" },
@@ -14,39 +15,120 @@ const links = [
 ];
 ---
 
-<header class="border-b border-stone-300 bg-cream/60 backdrop-blur sticky top-0 z-40">
-  <div class="max-w-5xl mx-auto px-5 md:px-8">
-    <div class="flex items-center justify-between h-14">
-      <a href="/" class="flex items-baseline gap-2 group">
-        <span class="font-display text-xl font-bold text-ink group-hover:text-navy transition-colors">
-          {SITE.title}
-        </span>
-        <span class="text-xs text-fog hidden sm:inline">{SITE.tagline}</span>
-      </a>
-      <nav class="flex items-center gap-1 md:gap-2">
-        {
-          links.map((link) => (
-            <a
-              href={link.href}
-              class:list={[
-                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
-                isActive(link.href)
-                  ? "bg-ink text-paper"
-                  : "text-ink/80 hover:bg-stone-200",
-              ]}
-            >
-              {link.label}
-            </a>
-          ))
-        }
-        <a
-          href="/search"
-          class="px-3 py-1.5 rounded-md text-sm font-medium text-ink/80 hover:bg-stone-200 transition-colors"
-          aria-label="Search"
+<header
+  class="sticky top-0 z-40 border-b border-line bg-paper/80 backdrop-blur-xl"
+>
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span
+          class="grid place-items-center w-9 h-9 rounded-xl bg-navy text-paper shadow-card group-hover:scale-105 transition-transform"
         >
-          Search
-        </a>
-      </nav>
+          <Compass size={19} stroke-width={2.2} />
+        </span>
+        <span class="flex flex-col leading-none">
+          <span class="font-display font-bold text-lg text-ink tracking-tight">
+            {SITE.title}
+          </span>
+          <span class="text-[11px] font-medium text-fog tracking-wide hidden sm:inline">
+            {SITE.tagline}
+          </span>
+        </span>
+      </a>
+
+      <div class="flex items-center gap-1.5">
+        <nav class="hidden md:flex items-center gap-1" aria-label="Primary">
+          {
+            links.map((link) => (
+              <a
+                href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                class:list={[
+                  "px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors",
+                  isActive(link.href)
+                    ? "bg-navy text-paper"
+                    : "text-ink/70 hover:text-ink hover:bg-stone-100 dark:hover:bg-white/10",
+                ]}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <button
+          id="palette-open"
+          type="button"
+          aria-label="Open command palette (Ctrl/Cmd + K)"
+          class="hidden md:grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink hover:bg-stone-100 dark:hover:bg-white/10 transition-colors"
+        >
+          <Search size={18} stroke-width={2.2} />
+        </button>
+        <ThemeToggle />
+        <button
+          id="mobile-menu-open"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          class="md:hidden grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink transition-colors"
+        >
+          <Menu size={20} stroke-width={2.2} />
+        </button>
+      </div>
     </div>
   </div>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="md:hidden border-t border-line bg-paper"
+  >
+    <nav class="max-w-6xl mx-auto px-5 py-3 flex flex-col gap-1" aria-label="Mobile">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              "px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors",
+              isActive(link.href)
+                ? "bg-navy text-paper"
+                : "text-ink/70 hover:bg-stone-100 dark:hover:bg-white/10",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="/search"
+        class="px-3.5 py-2.5 rounded-lg text-sm font-semibold text-ink/70 hover:bg-stone-100 dark:hover:bg-white/10 transition-colors"
+      >
+        Search
+      </a>
+    </nav>
+  </div>
 </header>
+
+<script>
+  const openBtn = document.getElementById("palette-open");
+  const root = document.getElementById("cmdk-root");
+  openBtn?.addEventListener("click", () => {
+    root?.removeAttribute("hidden");
+    setTimeout(() => document.getElementById("cmdk-input")?.focus(), 20);
+  });
+
+  const menuBtn = document.getElementById("mobile-menu-open");
+  const menu = document.getElementById("mobile-menu");
+  let menuOpen = false;
+  const toggleMenu = () => {
+    menuOpen = !menuOpen;
+    if (menu) menu.hidden = !menuOpen;
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", String(menuOpen));
+      menuBtn.innerHTML = menuOpen
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>';
+    }
+  };
+  menuBtn?.addEventListener("click", toggleMenu);
+</script>

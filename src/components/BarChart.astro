@@ -11,54 +11,105 @@ interface Props {
   data: Datum[];
   yLabel?: string;
   highlightLast?: boolean;
+  color?: string;
+  seriesLabel?: string;
+  formatValue?: (d: Datum) => string;
 }
 
-const { data, yLabel = "", highlightLast = true } = Astro.props;
+const {
+  data,
+  yLabel = "",
+  highlightLast = true,
+  color = "#1d3557",
+  seriesLabel = yLabel,
+  formatValue,
+} = Astro.props;
 
-// Observable Plot needs a DOM; Astro components run in Node.
 const linkedom = parseHTML("<!doctype html><html><body></body></html>");
-const fakeDocument = linkedom.document;
-const fakeWindow = {
-  document: fakeDocument,
+const g = globalThis as any;
+const priorDocument = g.document;
+const priorWindow = g.window;
+g.document = linkedom.document;
+g.window = {
+  document: linkedom.document,
   navigator: { userAgent: "node" },
-  screen: { width: 860, height: 420 },
+  screen: { width: 860, height: 400 },
   devicePixelRatio: 1,
   HTMLElement: linkedom.HTMLElement,
   SVGElement: linkedom.SVGElement,
 };
 
-const g = globalThis as any;
-const priorDocument = g.document;
-const priorWindow = g.window;
-g.document = fakeDocument;
-g.window = fakeWindow;
-
-const yMax = Math.max(...data.map((d) => d.value)) * 1.08;
+const W = 860;
+const H = 400;
+const yMax = Math.max(...data.map((d) => d.value)) * 1.12;
+const fmt = formatValue ?? ((d: Datum) => `${d.value}`);
 
 const svg = Plot.plot({
-  width: 860,
-  height: 420,
-  marginTop: 16,
-  y: { domain: [0, yMax], label: yLabel, grid: true },
+  width: W,
+  height: H,
+  marginTop: 24,
+  marginBottom: 36,
+  marginLeft: 56,
+  marginRight: 28,
+  style: {
+    background: "transparent",
+    fontFamily: "Quicksand Variable, sans-serif",
+    fontSize: "12px",
+    overflow: "visible",
+    color: "#5d6472",
+  },
+  y: {
+    domain: [0, yMax],
+    label: yLabel,
+    labelOffset: 42,
+    grid: true,
+    ticks: 5,
+  },
   x: {
     type: "band",
-    label: "",
+    label: null,
   },
   marks: [
     Plot.barY(data, {
       x: "label",
       y: "value",
+      rx: 6,
       fill: (_d: Datum, i: number) =>
-        highlightLast && i === data.length - 1 ? "#b45309" : "#1e3a5f",
-      fillOpacity: 0.85,
+        highlightLast && i === data.length - 1 ? "#d97706" : color,
+      fillOpacity: 0.92,
+    }),
+    Plot.text(data, {
+      x: "label",
+      y: "value",
+      text: fmt,
+      dy: -9,
+      fontSize: 11,
+      fontWeight: 600,
+      fill: "#16181d",
     }),
   ],
 });
 
 g.document = priorDocument;
 g.window = priorWindow;
+
+let svgStr = (svg as any).outerHTML as string;
+svgStr = svgStr.replace(/<svg[^>]*>/, (tag) => {
+  const aria = `<title>${seriesLabel || "Chart"}</title>`;
+  return (
+    (tag + aria)
+      .replace(/\swidth="[^"]*"/, ' width="100%"')
+      .replace(/\sheight="[^"]*"/, ' height="auto"')
+      .replace(/<svg/, `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"`)
+  );
+});
+
+const summary = data.map((d) => `${d.label}: ${fmt(d)}`).join("; ");
 ---
 
-<div class="chart-wrap overflow-x-auto">
-  <Fragment set:html={(svg as any).outerHTML ?? svg} />
+<div class="chart-svg w-full">
+  <span class="sr-only">
+    {seriesLabel || "Chart"}: {summary}
+  </span>
+  <Fragment set:html={svgStr} />
 </div>

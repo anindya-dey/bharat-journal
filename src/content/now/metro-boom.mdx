@@ -1,0 +1,73 @@
+---
+title: "The Metro Boom"
+description: "From one metro line in Kolkata in 1984 to over 20 cities with rapid transit today — the fastest urban-rail expansion in the world."
+theme: "mobility"
+datasets: ["src/data/datasets/metro.json"]
+unit: "cities with an operating metro"
+sources:
+  - name: "Rail transport in India — urban rail / metro systems table (Wikipedia)"
+    url: "https://en.wikipedia.org/wiki/Rail_transport_in_India"
+    retrieved: "October 2026"
+  - name: "Urban rail transit in India — Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Urban_rail_transit_in_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["high-speed-rail-grid", "satellite-capitals"]
+sparkline:
+  dataset: "metro"
+  key: "systems"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { TrainFront, MapPin, Users } from "@lucide/astro";
+import data from "../../data/datasets/metro.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.systems }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value={`${data.systems}`} label="cities with an operating metro" Icon={MapPin} accent="navy" />
+  <StatCallout value="~1,070 km" label="of operational metro route" Icon={TrainFront} accent="saffron" />
+  <StatCallout value="1984" label="Kolkata — India's first metro" Icon={Users} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Cities with an operating metro"
+  subCaption="cumulative count of metro/rapid-transit systems in operation, by the year each opened. One in 1984; more than twenty today."
+>
+  <LineChart data={series} yLabel="Metro systems in operation" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  India's first metro — Kolkata's — opened in <strong>1984</strong>, and for
+  nearly two decades it stood almost alone. Then came Delhi Metro in 2002,
+  delivered on time and within budget, and the template caught on. Bengaluru,
+  Chennai, Mumbai, Hyderabad, Kochi, Lucknow, Jaipur, Nagpur, Kanpur, Pune,
+  Agra, and more followed. Today <strong>over twenty</strong> Indian cities run
+  a metro or rapid-transit system, with <strong>~1,070 km</strong> of
+  operational route — one of the largest urban-rail build-outs anywhere, and
+  still accelerating.
+</p>
+
+<p>
+  Metros are the visible layer of a deeper change: cities that once moved
+  almost entirely by private vehicle and bus now have a high-capacity spine,
+  and the next wave — regional rapid transit like Namo Bharat — is beginning
+  to link the metros to their surrounding regions.
+</p>
+
+<SourceList
+  sources={[
+    { name: "Rail transport in India — metro systems table", url: "https://en.wikipedia.org/wiki/Rail_transport_in_India", retrieved: "October 2026", note: "Opening years and operational lengths per system; total ~1,070 km across 21 systems." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/high-speed-rail-grid", label: "A national high-speed rail grid" },
+    { href: "/next/satellite-capitals", label: "Satellite capitals, linked by rapid rail" }
+  ]}
+/>

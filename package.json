@@ -13,16 +13,21 @@
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
     "@astrojs/sitemap": "^3.7.4",
+    "@lucide/astro": "^1.53.0",
     "@observablehq/plot": "^0.6.17",
     "astro": "^7.3.5",
-    "linkedom": "^0.18.13",
     "pagefind": "^1.5.2",
     "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@astrojs/rss": "^4.0.19",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/quicksand": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.0",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
+    "linkedom": "^0.18.13",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"
   }

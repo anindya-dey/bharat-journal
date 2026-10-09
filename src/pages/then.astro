@@ -1,12 +1,80 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Sparkline from "../components/Sparkline.astro";
+import {
+  Landmark,
+  Wheat,
+  Radio,
+  ShieldCheck,
+  Sprout,
+  Factory,
+  Atom,
+  TrainFront,
+  Users,
+  HeartPulse,
+  Milestone as MilestoneIcon,
+  ArrowRight,
+} from "@lucide/astro";
 import { ERAS, SECTORS, MILESTONES } from "../data/milestones";
 
-const byEra = ERAS.map((era) => ({
-  ...era,
-  milestones: MILESTONES.filter((m) => m.era === era.id).sort(
+const ERA_ICONS: Record<string, any> = {
+  "nation-building": Landmark,
+  "food-and-industry": Wheat,
+  liberalisation: Radio,
+  "welfare-and-digital": ShieldCheck,
+};
+
+const SECTOR_ICONS: Record<string, any> = {
+  agriculture: Sprout,
+  industry: Factory,
+  "science-tech": Atom,
+  infrastructure: TrainFront,
+  society: Users,
+  health: HeartPulse,
+};
+
+const SECTOR_ACCENT: Record<string, string> = {
+  agriculture: "bg-moss",
+  industry: "bg-navy",
+  "science-tech": "bg-saffron",
+  infrastructure: "bg-navy-300",
+  society: "bg-clay",
+  health: "bg-moss",
+};
+
+const byEra = ERAS.map((era) => {
+  const milestones = MILESTONES.filter((m) => m.era === era.id).sort(
     (a, b) => a.year - b.year,
-  ),
+  );
+  const years = [...new Set(milestones.map((m) => m.year))].sort(
+    (a, b) => a - b,
+  );
+  const yearGroups = years.map((year) => ({
+    year,
+    milestones: milestones.filter((m) => m.year === year),
+  }));
+  return { ...era, yearGroups, count: milestones.length };
+});
+
+const total = MILESTONES.length;
+
+// Milestones-per-year density sparkline (1947 → 2014)
+const startYear = 1947;
+const endYear = 2014;
+const density = Array.from(
+  { length: endYear - startYear + 1 },
+  (_, i) => {
+    const year = startYear + i;
+    return {
+      year,
+      count: MILESTONES.filter((m) => m.year === year).length,
+    };
+  },
+);
+const sparkData = density.map((d) => ({
+  date: `${d.year}-01-01`,
+  value: d.count,
 }));
 ---
 
@@ -14,128 +82,244 @@ const byEra = ERAS.map((era) => ({
   title="Then"
   description="A milestone timeline of India, 1947–2014 — constitution to digital foundations."
 >
-  <section class="pt-12 pb-6">
-    <p class="text-xs uppercase tracking-[0.25em] text-ember font-semibold mb-2">
-      Then · 1947–2014
-    </p>
-    <h1
-      class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight max-w-2xl"
-    >
-      How we got here
-    </h1>
-    <p class="mt-3 text-ink/70 leading-relaxed max-w-2xl">
-      One timeline, four eras, every milestone a thing that actually happened —
-      dates you can check, anchored so you can share them. Follow a sector
-      across decades with the filters, or walk the whole line.
-    </p>
-  </section>
-
-  <section class="mb-8" id="sector-filter">
-    <div class="flex flex-wrap gap-2" data-filter-group>
-      <button
-        data-sector="all"
-        class="chip-active px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-300 transition-colors"
+  <header class="pt-14 md:pt-16 pb-6">
+    <Container size="wide">
+      <div
+        class="flex items-center gap-2 text-saffron-600 font-semibold text-xs uppercase tracking-[0.25em] mb-3"
       >
-        All sectors
-      </button>
-      {
-        SECTORS.map((s) => (
-          <button
-            data-sector={s.id}
-            class="px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-300 text-ink/80 hover:border-ink transition-colors"
-          >
-            {s.name}
-          </button>
-        ))
-      }
-    </div>
+        <MilestoneIcon size={15} stroke-width={2.5} />
+        Then · 1947–2014
+      </div>
+      <h1
+        class="font-display text-4xl md:text-5xl font-bold text-ink leading-[1.05] max-w-2xl tracking-tight"
+      >
+        How we got here
+      </h1>
+      <p class="mt-4 text-lg text-ink/70 leading-relaxed max-w-2xl">
+        One timeline, four eras, <strong class="text-ink">{total} milestones</strong>.
+        Grouped by year, told in plain words — no more, no less. Filter by sector
+        to follow a thread, or walk the whole line.
+      </p>
+
+      <!-- Density: milestones per year -->
+      <figure class="mt-6 max-w-xl" aria-label="Milestone density per year">
+        <Sparkline data={sparkData} color="#d97706" width={520} height={46} />
+        <figcaption class="text-xs text-fog mt-1">
+          Milestones per year — the pace of history, 1947–2014
+        </figcaption>
+      </figure>
+    </Container>
+  </header>
+
+  <!-- Sticky era nav -->
+  <nav
+    aria-label="Jump to era"
+    class="sticky top-16 z-30 bg-paper/90 backdrop-blur border-b border-line"
+  >
+    <Container size="wide">
+      <div class="flex flex-wrap items-center gap-2 py-2.5">
+        {
+          byEra.map((era) => (
+            <a
+              href={`#${era.id}`}
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
+            >
+              <span class="text-saffron-600">{era.range}</span>
+              {era.name}
+            </a>
+          ))
+        }
+      </div>
+    </Container>
+  </nav>
+
+  <section class="pt-6 pb-4" id="sector-filter">
+    <Container size="wide">
+      <div class="flex flex-wrap gap-2">
+        <button
+          data-sector="all"
+          aria-pressed="true"
+          class="sector-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-navy bg-navy text-paper transition-colors"
+        >
+          All sectors
+        </button>
+        {
+          SECTORS.map((s) => {
+            const Icon = SECTOR_ICONS[s.id];
+            return (
+              <button
+                data-sector={s.id}
+                aria-pressed="false"
+                class="sector-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
+              >
+                <Icon size={14} stroke-width={2.3} />
+                {s.name}
+              </button>
+            );
+          })
+        }
+      </div>
+    </Container>
   </section>
 
-  <div class="timeline-rail relative pl-12 md:pl-16 pb-10">
+  <div class="pb-16">
     {
-      byEra.map((era) => (
-        <section data-era={era.id} class="mb-14 anchor-link">
-          <div class="flex flex-wrap items-baseline gap-x-3 mb-6 -ml-12 md:-ml-16 md:pl-0">
-            <h2 class="font-display text-2xl font-bold text-navy">
-              {era.name}
-            </h2>
-            <span class="text-sm font-mono text-ember">{era.range}</span>
-          </div>
-          <p class="text-sm text-fog italic mb-6 max-w-xl">{era.description}</p>
-          <ol class="space-y-6">
-            {era.milestones.map((m) => (
-              <li
-                data-sector={m.sector}
-                class="milestone anchor-link relative"
-                id={m.anchor}
-              >
-                <span
-                  class="absolute -left-[3.55rem] md:-left-[4.3rem] top-1.5 w-2.5 h-2.5 rounded-full bg-navy ring-4 ring-paper"
-                />
-                <div class="rounded-lg border border-stone-300 bg-white p-4 hover:border-navy transition-colors">
-                  <div class="flex items-baseline justify-between gap-3">
-                    <h3 class="font-display font-bold text-ink leading-snug">
-                      {m.title}
-                    </h3>
-                    <span class="text-xs font-mono text-fog shrink-0">
-                      {m.year}
-                    </span>
-                  </div>
-                  <p class="mt-1.5 text-sm text-fog leading-relaxed">
-                    {m.summary}
-                  </p>
-                  {(m.relatedNow || m.relatedNext) && (
-                    <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                      {m.relatedNow && (
-                        <a
-                          href={m.relatedNow}
-                          class="text-navy underline underline-offset-2 hover:decoration-navy"
-                        >
-                          Where it stands → Now
-                        </a>
-                      )}
-                    </div>
-                  )}
+      byEra.map((era) => {
+        const EraIcon = ERA_ICONS[era.id];
+        return (
+          <section data-era={era.id} id={era.id} class="scroll-mt-32">
+            <Container size="wide">
+              <div class="flex items-center gap-3 pt-10 mb-1">
+                <span class="grid place-items-center w-11 h-11 rounded-2xl bg-navy text-paper shadow-card">
+                  <EraIcon size={22} stroke-width={2} />
+                </span>
+                <div>
+                  <h2 class="font-display text-2xl font-bold text-ink leading-tight">
+                    {era.name}
+                  </h2>
+                  <span class="text-sm font-mono font-medium text-saffron-600">
+                    {era.range}
+                  </span>
                 </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))
+              </div>
+              <p class="text-sm text-fog leading-relaxed mb-8 max-w-xl md:ml-14">
+                {era.description}
+              </p>
+
+              <ol class="relative">
+                <span
+                  class="absolute left-[6px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-navy-300 via-line to-line"
+                  aria-hidden="true"
+                />
+                {era.yearGroups.map((yg) => (
+                  <li data-year-group class="relative pb-7">
+                    <div class="relative mb-3 pl-10">
+                      <span
+                        class="absolute left-0 top-0.5 w-3.5 h-3.5 rounded-full bg-navy ring-4 ring-paper"
+                        aria-hidden="true"
+                      />
+                      <h3 class="font-mono text-lg font-bold text-navy tabular-nums leading-none">
+                        {yg.year}
+                      </h3>
+                    </div>
+
+                    <div class="space-y-3 pl-10">
+                      {yg.milestones.map((m) => {
+                        const SectorIcon = SECTOR_ICONS[m.sector];
+                        const accent = SECTOR_ACCENT[m.sector] ?? "bg-navy";
+                        return (
+                          <article
+                            data-sector={m.sector}
+                            class="milestone relative scroll-mt-32 rounded-2xl border border-line bg-paper-2 p-5 flex gap-4"
+                            id={m.anchor}
+                          >
+                            <span
+                              class:list={["shrink-0 w-1 rounded-full", accent]}
+                              aria-hidden="true"
+                            />
+                            <div class="min-w-0">
+                              <h4 class="font-display font-bold text-ink leading-snug">
+                                {m.title}
+                              </h4>
+                              <p class="mt-2 text-sm text-fog leading-relaxed">
+                                {m.summary}
+                              </p>
+                              <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink/60">
+                                  <SectorIcon size={13} stroke-width={2.2} />
+                                  {SECTORS.find((s) => s.id === m.sector)?.name}
+                                </span>
+                                {m.relatedNow && (
+                                  <a
+                                    href={m.relatedNow}
+                                    class="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:text-saffron-600 transition-colors"
+                                  >
+                                    See where it stands
+                                    <ArrowRight size={13} stroke-width={2.5} />
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </Container>
+          </section>
+        );
+      })
     }
   </div>
 
-  <p class="text-sm text-fog border-t border-stone-300 pt-6 max-w-2xl">
-    The timeline ends at 2014 deliberately — not because nothing happened after,
-    but because the <em>now</em> of this journal is told in data, not
-    milestones. The post-2014 acceleration is visible in every chart on
-    <a href="/now" class="text-navy underline underline-offset-2">Now</a>,
-    starting from 1947 wherever the data allows.
-  </p>
+  <div class="pb-16">
+    <Container size="wide">
+      <p class="text-sm text-fog leading-relaxed border-t border-line pt-6 max-w-2xl">
+        The timeline ends at 2014 deliberately — not because nothing happened
+        after, but because the <em>now</em> of this journal is told in data, not
+        milestones. The post-2014 acceleration is visible in every chart on
+        <a href="/now" class="font-semibold text-navy hover:text-saffron-600">Now</a>,
+        starting from 1947 wherever the data allows.
+      </p>
+    </Container>
+  </div>
 
   <script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>(
-      "#sector-filter button",
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".sector-chip");
+    const yearGroups = document.querySelectorAll<HTMLElement>(
+      "[data-year-group]",
     );
-    const milestones = document.querySelectorAll<HTMLElement>(".milestone");
+
+    const ACTIVE = ["border-navy", "bg-navy", "text-paper"];
+    const INACTIVE = [
+      "border-line",
+      "bg-paper-2",
+      "text-ink/70",
+      "hover:border-navy",
+      "hover:text-navy",
+    ];
 
     const setActive = (sector: string) => {
-      milestones.forEach((el) => {
+      document.querySelectorAll<HTMLElement>(".milestone").forEach((el) => {
         const match = sector === "all" || el.dataset.sector === sector;
         el.style.display = match ? "" : "none";
+      });
+      yearGroups.forEach((group) => {
+        const visible = group.querySelectorAll<HTMLElement>(
+          '.milestone:not([style*="display: none"])',
+        ).length;
+        group.style.display = visible > 0 ? "" : "none";
       });
     };
 
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
+        const sector = btn.dataset.sector ?? "all";
         buttons.forEach((b) => {
-          b.classList.remove("chip-active");
-          b.classList.add("text-ink/80");
+          b.classList.remove(...ACTIVE);
+          b.classList.add(...INACTIVE);
+          b.setAttribute("aria-pressed", "false");
         });
-        btn.classList.add("chip-active");
-        btn.classList.remove("text-ink/80");
-        setActive(btn.dataset.sector ?? "all");
+        btn.classList.remove(...INACTIVE);
+        btn.classList.add(...ACTIVE);
+        btn.setAttribute("aria-pressed", "true");
+        setActive(sector);
+        const url = new URL(window.location.href);
+        if (sector === "all") url.searchParams.delete("sector");
+        else url.searchParams.set("sector", sector);
+        history.replaceState(null, "", url);
       });
     });
+
+    // Restore filter from URL (?sector=)
+    const initial = new URLSearchParams(location.search).get("sector");
+    if (initial) {
+      const target = document.querySelector<HTMLButtonElement>(
+        `.sector-chip[data-sector="${initial}"]`,
+      );
+      target?.click();
+    }
   </script>
 </BaseLayout>

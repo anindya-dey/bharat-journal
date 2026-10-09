@@ -1,0 +1,23 @@
+---
+import type { AstroComponent } from "@lucide/astro";
+
+interface Props {
+  title: string;
+  Icon?: AstroComponent;
+}
+
+const { title, Icon } = Astro.props;
+---
+
+<aside class="not-prose my-8 rounded-2xl border-l-4 border-saffron bg-cream/60 p-5 md:p-6">
+  <p class="flex items-start gap-3 text-base md:text-lg leading-relaxed text-ink-soft font-medium">
+    {
+      Icon && (
+        <span class="text-saffron-600 mt-0.5 shrink-0">
+          <Icon size={22} stroke-width={2} />
+        </span>
+      )
+    }
+    <span class="font-display">{title}</span>
+  </p>
+</aside>

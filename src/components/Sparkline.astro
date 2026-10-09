@@ -1,0 +1,57 @@
+---
+interface Datum {
+  date: string;
+  value: number;
+}
+
+interface Props {
+  data: Datum[];
+  color?: string;
+  width?: number;
+  height?: number;
+}
+
+const {
+  data,
+  color = "#d97706",
+  width = 160,
+  height = 44,
+} = Astro.props;
+
+const values = data.map((d) => d.value);
+const min = Math.min(...values);
+const max = Math.max(...values);
+const span = max - min || 1;
+const n = values.length;
+
+const points = data.map((d, i) => {
+  const x = (i / (n - 1)) * width;
+  const y = height - ((d.value - min) / span) * (height - 6) - 3;
+  return `${x.toFixed(1)},${y.toFixed(1)}`;
+});
+
+const area = `M0,${height} L${points.join(" L")} L${width},${height} Z`;
+const line = `M${points.join(" L")}`;
+---
+
+<svg
+  viewBox="0 0 {width} {height}"
+  width={width}
+  height={height}
+  class="w-full h-auto"
+  aria-hidden="true"
+>
+  <path d={area} fill={color} opacity="0.12"></path>
+  <path
+    d={line}
+    fill="none"
+    stroke={color}
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+  <circle
+    cx={width}
+    cy={height - ((values[n - 1] - min) / span) * (height - 6) - 3}
+    r="2.5"
+    fill={color}></circle>
+</svg>

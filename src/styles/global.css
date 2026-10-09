@@ -1,20 +1,125 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Self-hosted fonts */
+@import "@fontsource-variable/quicksand";
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/source-serif-4/600.css";
+@import "@fontsource/source-serif-4/700.css";
+@import "@fontsource-variable/jetbrains-mono";
 
 @theme {
-  --font-serif: "Source Serif 4", "Georgia", "Times New Roman", serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  --color-ink: #1a1f2b;
-  --color-paper: #faf9f5;
-  --color-cream: #f3efe6;
-  --color-ember: #b45309;
-  --color-navy: #1e3a5f;
-  --color-moss: #4d7c0f;
-  --color-clay: #b91c1c;
-  --color-fog: #6b7280;
+  /* Brand: navy */
+  --color-navy-50: oklch(97% 0.012 244);
+  --color-navy-100: oklch(93% 0.026 244);
+  --color-navy-200: oklch(86% 0.045 246);
+  --color-navy-300: oklch(74% 0.075 249);
+  --color-navy-400: oklch(60% 0.11 253);
+  --color-navy-500: oklch(48% 0.115 256);
+  --color-navy-600: oklch(41% 0.111 258);
+  --color-navy-700: oklch(36% 0.1 260);
+  --color-navy-soft: #2c4a6e;
+  --color-navy: #1d3557;
+  --color-navy-800: #1d3557;
+  --color-navy-900: #17293f;
+  --color-navy-950: #101c2d;
+
+  /* Accent: saffron */
+  --color-saffron: #d97706;
+  --color-saffron-50: #fdf6ec;
+  --color-saffron-100: #f9ecd3;
+  --color-saffron-200: #f2d3a5;
+  --color-saffron-300: #ecb471;
+  --color-saffron-400: #e59a49;
+  --color-saffron-500: #d97706;
+  --color-saffron-600: #b45309;
+  --color-saffron-700: #92400e;
+  --color-saffron-800: #78350c;
+  --color-saffron-900: #652d0b;
+  --color-marigold: #f59e0b;
+
+  /* Greens */
+  --color-moss: #3f7d3f;
+  --color-moss-500: #3f7d3f;
+  --color-moss-600: #336833;
+  --color-moss-700: #2a542a;
+
+  /* Red */
+  --color-clay: #b3392f;
+  --color-clay-500: #b3392f;
+  --color-clay-600: #96302a;
+
+  /* Paper / ink neutrals */
+  --color-paper: #faf9f6;
+  --color-paper-2: #f4f2ec;
+  --color-cream: #f4efe4;
+  --color-line: #e2e0d8;
+  --color-fog: #5d6472;
+  --color-ink: #16181d;
+  --color-ink-soft: #3c414b;
+
+  --shadow-card: 0 1px 2px rgb(22 24 29 / 0.04), 0 4px 16px -4px rgb(22 24 29 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(22 24 29 / 0.05), 0 12px 32px -8px rgb(22 24 29 / 0.14);
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-chart-in: chart-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes chart-in {
+    from {
+      stroke-dashoffset: 2400;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 }
 
+/* ---------- Dark mode via .dark class ---------- */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #12141a;
+  color: #e8e6e1;
+}
+
+.dark {
+  --color-paper: #12141a;
+  --color-paper-2: #171a21;
+  --color-cream: #1a1e27;
+  --color-line: #272c37;
+  --color-fog: #9aa1ad;
+  --color-ink: #e8e6e1;
+  --color-ink-soft: #c6c8c2;
+  --color-navy: #6188b5;
+  --color-navy-soft: #7292b8;
+  --color-saffron: #e59a49;
+  --color-marigold: #f5b942;
+  --color-moss: #6fa76f;
+  --color-clay: #d9766d;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -4px rgb(0 0 0 / 0.4);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 12px 32px -8px rgb(0 0 0 / 0.55);
+}
+
+/* ---------- Base ---------- */
 html {
   scroll-behavior: smooth;
 }
@@ -24,48 +129,62 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
-}
-
-.font-display {
-  font-family: var(--font-serif);
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
   background: #fde68a;
+  color: #16181d;
+}
+.dark ::selection {
+  background: #40506b;
+  color: #f4f2ec;
 }
 
-/* Anchor links inside timeline/sections */
-.anchor-link {
-  scroll-margin-top: 5rem;
+/* Card surfaces in dark mode */
+.dark .bg-white,
+.dark [class*="bg-white"] {
+  background-color: #171a21;
 }
 
-/* Status badge colors */
-.badge-proposed { background-color: #e7e5e4; color: #44403c; }
-.badge-submitted { background-color: #dbeafe; color: #1e40af; }
-.badge-in-progress { background-color: #fef3c7; color: #b45309; }
-.badge-achieved { background-color: #d1fae5; color: #166534; }
-.badge-stalled { background-color: #fee2e2; color: #991b1b; }
-.badge-declined { background-color: #fee2e2; color: #991b1b; }
-
-/* Filter chip active state */
-.chip-active {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+/* ---------- Chart SVG: grow-in + reduced motion ---------- */
+.chart-svg {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Timeline connector line */
-.timeline-rail::before {
-  content: "";
-  position: absolute;
-  left: 1.25rem;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 2px;
-  background: linear-gradient(to bottom, #d6d3d1, #a8a29e);
-}
-
-@media (min-width: 768px) {
-  .timeline-rail::before {
-    left: 1.75rem;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Pagefind dark-mode touch-ups ---------- */
+.dark .pagefind-ui {
+  --pagefind-ui-primary: #e59a49;
+  --pagefind-ui-text: #e8e6e1;
+  --pagefind-ui-background: #171a21;
+  --pagefind-ui-border: #272c37;
+  --pagefind-ui-tag: #272c37;
+}
+
+/* Visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

@@ -1,0 +1,261 @@
+{
+  "notes": "Food production index (2014-2016 = 100), India. World Bank (WDI), AG.PRD.FOOD.XD.",
+  "series": [
+    {
+      "year": 1961,
+      "index": 22.1
+    },
+    {
+      "year": 1962,
+      "index": 21.8
+    },
+    {
+      "year": 1963,
+      "index": 22.3
+    },
+    {
+      "year": 1964,
+      "index": 22.8
+    },
+    {
+      "year": 1965,
+      "index": 21.8
+    },
+    {
+      "year": 1966,
+      "index": 21.7
+    },
+    {
+      "year": 1967,
+      "index": 23.0
+    },
+    {
+      "year": 1968,
+      "index": 24.4
+    },
+    {
+      "year": 1969,
+      "index": 25.2
+    },
+    {
+      "year": 1970,
+      "index": 26.6
+    },
+    {
+      "year": 1971,
+      "index": 26.9
+    },
+    {
+      "year": 1972,
+      "index": 25.8
+    },
+    {
+      "year": 1973,
+      "index": 27.7
+    },
+    {
+      "year": 1974,
+      "index": 26.8
+    },
+    {
+      "year": 1975,
+      "index": 29.8
+    },
+    {
+      "year": 1976,
+      "index": 29.6
+    },
+    {
+      "year": 1977,
+      "index": 31.8
+    },
+    {
+      "year": 1978,
+      "index": 33.0
+    },
+    {
+      "year": 1979,
+      "index": 31.3
+    },
+    {
+      "year": 1980,
+      "index": 32.4
+    },
+    {
+      "year": 1981,
+      "index": 34.9
+    },
+    {
+      "year": 1982,
+      "index": 34.6
+    },
+    {
+      "year": 1983,
+      "index": 38.8
+    },
+    {
+      "year": 1984,
+      "index": 39.4
+    },
+    {
+      "year": 1985,
+      "index": 40.2
+    },
+    {
+      "year": 1986,
+      "index": 40.8
+    },
+    {
+      "year": 1987,
+      "index": 40.5
+    },
+    {
+      "year": 1988,
+      "index": 44.5
+    },
+    {
+      "year": 1989,
+      "index": 47.0
+    },
+    {
+      "year": 1990,
+      "index": 47.5
+    },
+    {
+      "year": 1991,
+      "index": 49.6
+    },
+    {
+      "year": 1992,
+      "index": 51.6
+    },
+    {
+      "year": 1993,
+      "index": 52.3
+    },
+    {
+      "year": 1994,
+      "index": 54.0
+    },
+    {
+      "year": 1995,
+      "index": 55.1
+    },
+    {
+      "year": 1996,
+      "index": 55.3
+    },
+    {
+      "year": 1997,
+      "index": 57.8
+    },
+    {
+      "year": 1998,
+      "index": 58.7
+    },
+    {
+      "year": 1999,
+      "index": 62.4
+    },
+    {
+      "year": 2000,
+      "index": 61.8
+    },
+    {
+      "year": 2001,
+      "index": 63.5
+    },
+    {
+      "year": 2002,
+      "index": 60.0
+    },
+    {
+      "year": 2003,
+      "index": 64.1
+    },
+    {
+      "year": 2004,
+      "index": 64.5
+    },
+    {
+      "year": 2005,
+      "index": 68.0
+    },
+    {
+      "year": 2006,
+      "index": 72.0
+    },
+    {
+      "year": 2007,
+      "index": 77.9
+    },
+    {
+      "year": 2008,
+      "index": 79.4
+    },
+    {
+      "year": 2009,
+      "index": 78.3
+    },
+    {
+      "year": 2010,
+      "index": 83.7
+    },
+    {
+      "year": 2011,
+      "index": 89.2
+    },
+    {
+      "year": 2012,
+      "index": 91.5
+    },
+    {
+      "year": 2013,
+      "index": 95.5
+    },
+    {
+      "year": 2014,
+      "index": 98.3
+    },
+    {
+      "year": 2015,
+      "index": 98.5
+    },
+    {
+      "year": 2016,
+      "index": 103.2
+    },
+    {
+      "year": 2017,
+      "index": 108.1
+    },
+    {
+      "year": 2018,
+      "index": 113.5
+    },
+    {
+      "year": 2019,
+      "index": 116.6
+    },
+    {
+      "year": 2020,
+      "index": 120.5
+    },
+    {
+      "year": 2021,
+      "index": 126.8
+    },
+    {
+      "year": 2022,
+      "index": 131.1
+    },
+    {
+      "year": 2023,
+      "index": 135.9
+    },
+    {
+      "year": 2024,
+      "index": 139.3
+    }
+  ]
+}

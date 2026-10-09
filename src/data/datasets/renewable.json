@@ -1,0 +1,96 @@
+{
+  "notes": "Renewable energy installed capacity (GW) as of 31 March, and renewable share of total capacity (%). Source table 2014-2026.",
+  "series": [
+    {
+      "year": 2014,
+      "windGw": 21.0,
+      "solarGw": 2.6,
+      "renewableGw": 76.1,
+      "renewablePct": 26.7
+    },
+    {
+      "year": 2015,
+      "windGw": 23.4,
+      "solarGw": 3.7,
+      "renewableGw": 81.0,
+      "renewablePct": 29.5
+    },
+    {
+      "year": 2016,
+      "windGw": 26.8,
+      "solarGw": 6.8,
+      "renewableGw": 89.7,
+      "renewablePct": 29.4
+    },
+    {
+      "year": 2017,
+      "windGw": 32.3,
+      "solarGw": 12.3,
+      "renewableGw": 102.6,
+      "renewablePct": 31.4
+    },
+    {
+      "year": 2018,
+      "windGw": 34.1,
+      "solarGw": 21.7,
+      "renewableGw": 115.3,
+      "renewablePct": 33.5
+    },
+    {
+      "year": 2019,
+      "windGw": 35.6,
+      "solarGw": 28.2,
+      "renewableGw": 123.9,
+      "renewablePct": 34.8
+    },
+    {
+      "year": 2020,
+      "windGw": 37.7,
+      "solarGw": 34.6,
+      "renewableGw": 132.9,
+      "renewablePct": 35.9
+    },
+    {
+      "year": 2021,
+      "windGw": 39.2,
+      "solarGw": 40.0,
+      "renewableGw": 140.7,
+      "renewablePct": 36.8
+    },
+    {
+      "year": 2022,
+      "windGw": 40.4,
+      "solarGw": 52.4,
+      "renewableGw": 155.0,
+      "renewablePct": 38.8
+    },
+    {
+      "year": 2023,
+      "windGw": 42.6,
+      "solarGw": 62.7,
+      "renewableGw": 169.5,
+      "renewablePct": 40.7
+    },
+    {
+      "year": 2024,
+      "windGw": 45.9,
+      "solarGw": 76.3,
+      "renewableGw": 187.6,
+      "renewablePct": 42.4
+    },
+    {
+      "year": 2025,
+      "windGw": 50.0,
+      "solarGw": 98.0,
+      "renewableGw": 215.2,
+      "renewablePct": 45.3
+    },
+    {
+      "year": 2026,
+      "windGw": 56.1,
+      "solarGw": 140.6,
+      "renewableGw": 269.0,
+      "renewablePct": 50.9
+    }
+  ]
+}

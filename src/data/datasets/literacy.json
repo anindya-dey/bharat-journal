@@ -1,0 +1,65 @@
+{
+  "notes": "Combined literacy rate (%), India, census years. Source table.",
+  "series": [
+    {
+      "year": 1872,
+      "pct": 3.25
+    },
+    {
+      "year": 1881,
+      "pct": 4.32
+    },
+    {
+      "year": 1891,
+      "pct": 4.62
+    },
+    {
+      "year": 1901,
+      "pct": 5.4
+    },
+    {
+      "year": 1911,
+      "pct": 5.9
+    },
+    {
+      "year": 1921,
+      "pct": 7.2
+    },
+    {
+      "year": 1931,
+      "pct": 9.5
+    },
+    {
+      "year": 1941,
+      "pct": 16.1
+    },
+    {
+      "year": 1951,
+      "pct": 18.33
+    },
+    {
+      "year": 1961,
+      "pct": 28.3
+    },
+    {
+      "year": 1971,
+      "pct": 34.45
+    },
+    {
+      "year": 1981,
+      "pct": 43.57
+    },
+    {
+      "year": 1991,
+      "pct": 52.21
+    },
+    {
+      "year": 2001,
+      "pct": 64.83
+    },
+    {
+      "year": 2011,
+      "pct": 74.04
+    }
+  ]
+}

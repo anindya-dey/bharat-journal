@@ -1,0 +1,23 @@
+---
+import { Sun, Moon } from "@lucide/astro";
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle dark mode"
+  class="grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink hover:bg-stone-100 dark:hover:bg-white/10 transition-colors"
+>
+  <span class="hidden dark:block"><Sun size={18} stroke-width={2.2} /></span>
+  <span class="block dark:hidden"><Moon size={18} stroke-width={2.2} /></span>
+</button>
+
+<script>
+  const btn = document.getElementById("theme-toggle");
+  btn?.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark");
+    try {
+      localStorage.setItem("bj-theme", dark ? "dark" : "light");
+    } catch {}
+  });
+</script>

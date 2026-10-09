@@ -1,20 +1,38 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import { Search } from "@lucide/astro";
 ---
 
-<BaseLayout title="Search" description="Search Bharat Journal — pages, ideas, and data stories.">
-  <section class="pt-12 pb-6 max-w-3xl mx-auto">
-    <h1 class="font-display text-3xl md:text-4xl font-bold text-ink">
-      Search
-    </h1>
-    <div id="search" class="mt-6"></div>
+<BaseLayout
+  title="Search"
+  description="Search Bharat Journal — pages, ideas, and data stories."
+>
+  <section class="pt-14 pb-20">
+    <Container>
+      <div
+        class="flex items-center gap-2 text-saffron-600 font-semibold text-xs uppercase tracking-[0.25em] mb-3"
+      >
+        <Search size={15} stroke-width={2.5} />
+        Search
+      </div>
+      <h1
+        class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight tracking-tight mb-2"
+      >
+        Find anything
+      </h1>
+      <p class="text-sm text-fog mb-8">
+        Or press <kbd class="font-mono px-1.5 py-0.5 rounded bg-paper-2 border border-line text-xs">⌘K</kbd>
+        anywhere on the site for the command palette.
+      </p>
+      <div id="search"></div>
+    </Container>
   </section>
 </BaseLayout>
 
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 <script src="/pagefind/pagefind-ui.js" is:inline></script>
 <script is:inline>
-  // eslint-disable-next-line no-undef
   var PagefindUIConstructor = window.PagefindUI;
   if (PagefindUIConstructor) {
     new PagefindUIConstructor({

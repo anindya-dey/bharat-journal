@@ -1,0 +1,65 @@
+{
+  "notes": "Domestic + international air passengers, India (fiscal year). Source table.",
+  "series": [
+    {
+      "year": 2011,
+      "passengers": 162305422
+    },
+    {
+      "year": 2012,
+      "passengers": 159401356
+    },
+    {
+      "year": 2013,
+      "passengers": 168916042
+    },
+    {
+      "year": 2014,
+      "passengers": 190129158
+    },
+    {
+      "year": 2015,
+      "passengers": 223615522
+    },
+    {
+      "year": 2016,
+      "passengers": 264969723
+    },
+    {
+      "year": 2017,
+      "passengers": 308753400
+    },
+    {
+      "year": 2018,
+      "passengers": 344699733
+    },
+    {
+      "year": 2019,
+      "passengers": 341050651
+    },
+    {
+      "year": 2020,
+      "passengers": 115379783
+    },
+    {
+      "year": 2021,
+      "passengers": 188891441
+    },
+    {
+      "year": 2022,
+      "passengers": 327279136
+    },
+    {
+      "year": 2023,
+      "passengers": 376426164
+    },
+    {
+      "year": 2024,
+      "passengers": 412086111
+    },
+    {
+      "year": 2025,
+      "passengers": 420087802
+    }
+  ]
+}

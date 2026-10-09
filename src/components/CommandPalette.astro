@@ -1,0 +1,152 @@
+---
+import { getCollection } from "astro:content";
+
+const ideas = await getCollection("ideas");
+const vizs = await getCollection("now");
+
+const ideaItems = ideas.map((i) => ({
+  section: "Next — ideas",
+  title: i.data.title,
+  href: `/next/${i.id}`,
+}));
+
+const vizItems = vizs.map((v) => ({
+  section: "Now — data stories",
+  title: v.data.title,
+  href: `/now/${v.id}`,
+}));
+
+const staticItems = [
+  { section: "Sections", title: "Then — the timeline", href: "/then" },
+  { section: "Sections", title: "Now — where we stand", href: "/now" },
+  { section: "Sections", title: "Next — ideas", href: "/next" },
+  { section: "Sections", title: "About — method & sources", href: "/about" },
+  { section: "Sections", title: "Search", href: "/search" },
+];
+
+const items = JSON.stringify([...staticItems, ...vizItems, ...ideaItems]);
+---
+
+<div id="cmdk-root" hidden>
+  <div
+    id="cmdk-backdrop"
+    class="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm"
+    data-close
+  >
+  </div>
+  <div
+    class="fixed z-50 top-[12vh] left-1/2 -translate-x-1/2 w-[92vw] max-w-xl rounded-2xl bg-paper border border-line shadow-lift overflow-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Command palette"
+  >
+    <input
+      id="cmdk-input"
+      type="text"
+      placeholder="Search the journal…"
+      autocomplete="off"
+      class="w-full px-5 py-4 text-base bg-transparent border-b border-line outline-none placeholder:text-fog"
+    />
+    <ul id="cmdk-list" class="max-h-[50vh] overflow-y-auto py-2"></ul>
+    <div
+      class="px-4 py-2.5 border-t border-line text-[11px] text-fog flex items-center gap-4"
+    >
+      <span><kbd class="font-mono">↑↓</kbd> navigate</span>
+      <span><kbd class="font-mono">↵</kbd> open</span>
+      <span><kbd class="font-mono">esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ items }}>
+  (function () {
+    const DATA = items;
+    const root = document.getElementById("cmdk-root");
+    const input = document.getElementById("cmdk-input");
+    const list = document.getElementById("cmdk-list");
+    let active = 0;
+    let filtered = DATA;
+
+    function render() {
+      list.innerHTML = "";
+      filtered.forEach((item, i) => {
+        const li = document.createElement("li");
+        li.className =
+          "px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 " +
+          (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60");
+        li.innerHTML =
+          '<span class="text-sm font-medium">' +
+          item.title +
+          '</span><span class="text-[11px] text-fog">' +
+          item.section +
+          "</span>";
+        li.addEventListener("click", () => go(item));
+        li.addEventListener("mousemove", () => {
+          if (active !== i) {
+            active = i;
+            paint();
+          }
+        });
+        list.appendChild(li);
+      });
+    }
+    function paint() {
+      [...list.children].forEach((li, i) => {
+        li.className =
+          "px-4 py-2.5 cursor-pointer flex items-baseline justify-between gap-3 " +
+          (i === active ? "bg-cream text-ink" : "text-ink-soft hover:bg-cream/60");
+      });
+    }
+    function go(item) {
+      close();
+      window.location.href = item.href;
+    }
+    function open() {
+      root.hidden = false;
+      input.value = "";
+      filtered = DATA;
+      active = 0;
+      render();
+      setTimeout(() => input.focus(), 20);
+    }
+    function close() {
+      root.hidden = true;
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        root.hidden ? open() : close();
+      } else if (e.key === "Escape" && !root.hidden) {
+        close();
+      } else if (!root.hidden) {
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          active = Math.min(active + 1, filtered.length - 1);
+          paint();
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          active = Math.max(active - 1, 0);
+          paint();
+        } else if (e.key === "Enter" && filtered[active]) {
+          go(filtered[active]);
+        }
+      }
+    });
+
+    input.addEventListener("input", () => {
+      const q = input.value.trim().toLowerCase();
+      filtered = q
+        ? DATA.filter(
+            (d) =>
+              d.title.toLowerCase().includes(q) ||
+              d.section.toLowerCase().includes(q),
+          )
+        : DATA;
+      active = 0;
+      render();
+    });
+
+    document.getElementById("cmdk-backdrop").addEventListener("click", close);
+  })();
+</script>

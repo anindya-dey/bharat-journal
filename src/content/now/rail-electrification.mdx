@@ -1,9 +1,8 @@
 ---
-title: "Rail Electrification: Full Circle to 1947's Standard"
-description: "From 388 km in 1951 to ~99% of route electrified by 2025 — a 13x acceleration in pace, and India's single biggest transport decarbonisation."
+title: "Rail Electrification: A 13x Change of Pace"
+description: "From 388 km in 1951 to ~99% of route electrified by 2025 — India's single biggest transport decarbonisation, and the story of an accelerating curve."
 theme: "mobility"
-dataset: "src/data/datasets/rail-electrification.json"
-chartType: "line"
+datasets: ["src/data/datasets/rail-electrification.json"]
 unit: "electrified route-km"
 sources:
   - name: "Rail transport in India — historical route & electrification table (citing Indian Railways year-end figures)"
@@ -13,11 +12,18 @@ sources:
     url: "https://en.wikipedia.org/wiki/Rail_transport_in_India"
     retrieved: "October 2026"
 updated: "2026-10-08"
+relatedIdeas: ["last-mile-connectivity", "high-speed-rail-grid"]
+sparkline:
+  dataset: "rail-electrification"
+  key: "electrifiedKm"
 ---
 
 import LineChart from "../../components/LineChart.astro";
 import ChartFrame from "../../components/ChartFrame.astro";
 import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { TrainFront, Gauge, Leaf } from "@lucide/astro";
 import rail from "../../data/datasets/rail-electrification.json";
 
 export const electrified = rail.series
@@ -34,6 +40,12 @@ export const share = rail.series
     value: d.pct,
   }));
 
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~69,400 km" label="route electrified by 2025" Icon={TrainFront} accent="navy" />
+  <StatCallout value="~13x" label="faster annual pace after 2014" Icon={Gauge} accent="saffron" />
+  <StatCallout value="99.2%" label="of the route, electrified" Icon={Leaf} accent="moss" />
+</div>
+
 <ChartFrame
   caption="Electrified route-km, Indian Railways"
   subCaption="from 388 km in 1951 (Bombay's suburban lines) to ~69,427 km in 2025 — a 13x acceleration in annual pace after 2014."
@@ -45,7 +57,7 @@ export const share = rail.series
   caption="Share of route electrified"
   subCaption="% of total route length. Thirty per cent in 2011; two-thirds by 2021; ~99% by 2025."
 >
-  <LineChart data={share} yLabel="% of route electrified" />
+  <LineChart data={share} yLabel="% of route electrified" color="#3f7d3f" />
 </ChartFrame>
 
 <p>
@@ -96,17 +108,8 @@ export const share = rail.series
   ]}
 />
 
-<section class="mt-12 rounded-lg border border-stone-300 bg-white p-6">
-  <h2 class="font-display text-xl font-bold text-ink mb-2">What's next →</h2>
-  <p class="text-sm text-fog mb-3">
-    Electrified track is capacity waiting to be used — for freight, and for the passenger network the country deserves:
-  </p>
-  <div class="flex flex-col gap-1.5">
-    <a
-      href="/next/last-mile-connectivity"
-      class="text-navy font-medium underline decoration-stone-400 underline-offset-2 hover:decoration-navy"
-    >
-      Seamless last-mile and regional connectivity →
-    </a>
-  </div>
-</section>
+NextCTA
+  links={[
+    { href: "/next/last-mile-connectivity", label: "Seamless last-mile and regional connectivity" }
+  ]}
+/>

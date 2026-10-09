@@ -1,0 +1,38 @@
+---
+import type { AstroComponent } from "@lucide/astro";
+import Container from "./Container.astro";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  Icon?: AstroComponent;
+
+}
+
+const { eyebrow, title, description, Icon } = Astro.props;
+---
+
+<header class="pt-14 md:pt-16 pb-8">
+  <Container size="wide">
+    <div
+      class="flex items-center gap-2 text-saffron font-semibold text-xs uppercase tracking-[0.25em] mb-3"
+    >
+      {Icon && <Icon size={15} stroke-width={2.5} />}
+      {eyebrow}
+    </div>
+    <h1
+      class="font-display text-4xl md:text-5xl font-bold text-ink leading-tight tracking-tight max-w-3xl"
+    >
+      {title}
+    </h1>
+    {
+      description && (
+        <p class="mt-4 text-lg text-ink/70 leading-relaxed max-w-2xl">
+          {description}
+        </p>
+      )
+    }
+    <slot />
+  </Container>
+</header>

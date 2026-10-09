@@ -1,0 +1,65 @@
+{
+  "notes": "Container port traffic (million TEU), India. World Bank (WDI), IS.SHP.GOOD.TU.",
+  "series": [
+    {
+      "year": 2010,
+      "teuM": 9.2
+    },
+    {
+      "year": 2011,
+      "teuM": 9.9
+    },
+    {
+      "year": 2012,
+      "teuM": 10.0
+    },
+    {
+      "year": 2013,
+      "teuM": 10.6
+    },
+    {
+      "year": 2014,
+      "teuM": 11.7
+    },
+    {
+      "year": 2015,
+      "teuM": 12.3
+    },
+    {
+      "year": 2016,
+      "teuM": 13.7
+    },
+    {
+      "year": 2017,
+      "teuM": 15.5
+    },
+    {
+      "year": 2018,
+      "teuM": 17.0
+    },
+    {
+      "year": 2019,
+      "teuM": 17.5
+    },
+    {
+      "year": 2020,
+      "teuM": 17.6
+    },
+    {
+      "year": 2021,
+      "teuM": 19.6
+    },
+    {
+      "year": 2022,
+      "teuM": 19.7
+    },
+    {
+      "year": 2023,
+      "teuM": 22.2
+    },
+    {
+      "year": 2024,
+      "teuM": 23.9
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+---
+interface Link {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  intro?: string;
+  links: Link[];
+}
+
+const { intro = "What's next →", links } = Astro.props;
+---
+
+<aside class="not-prose my-10 rounded-2xl bg-navy text-paper p-6 shadow-card">
+  <h2 class="font-display text-xl font-bold mb-2">{intro}</h2>
+  <div class="flex flex-col gap-1.5 mt-3">
+    {
+      links.map((link, i) => (
+        <a
+          href={link.href}
+          class:list={[
+            "font-semibold text-marigold underline decoration-marigold/40 underline-offset-2 hover:decoration-marigold transition-colors",
+            i === 0 ? "text-lg" : "",
+          ]}
+        >
+          {link.label} →
+        </a>
+      ))
+    }
+  </div>
+</aside>

@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 const IDEA_STATUSES = [
@@ -20,6 +21,7 @@ const ideas = defineCollection({
     statusNote: z.string().optional(),
     themes: z.array(z.string()).min(1),
     recipient: z.string().optional(),
+    targetChannel: z.string().optional(),
     submissions: z
       .array(
         z.object({
@@ -42,15 +44,28 @@ const now = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    theme: z.enum(["money", "mobility", "livelihoods"]),
-    dataset: z.string(),
-    chartType: z.enum(["line", "bar", "area"]),
+    theme: z.enum([
+      "money",
+      "mobility",
+      "connectivity",
+      "energy",
+      "society",
+      "livelihoods",
+      "space",
+    ]),
+    datasets: z.array(z.string()).default([]),
+    sparkline: z
+      .object({
+        dataset: z.string(),
+        key: z.string(),
+      })
+      .optional(),
     unit: z.string(),
     sources: z
       .array(
         z.object({
           name: z.string(),
-          url: z.string().url(),
+          url: z.url(),
           retrieved: z.string(),
           note: z.string().optional(),
         }),

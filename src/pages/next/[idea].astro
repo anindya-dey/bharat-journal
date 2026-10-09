@@ -1,7 +1,20 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Prose from "../../components/Prose.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { getCollection, render } from "astro:content";
+import {
+  Lightbulb,
+  ArrowLeft,
+  ArrowRight,
+  Inbox,
+  BuildingComplex,
+  ChartLine,
+  Landmark,
+} from "@lucide/astro";
+import { MILESTONES } from "../../data/milestones";
 
 export async function getStaticPaths() {
   const ideas = await getCollection("ideas");
@@ -11,79 +24,158 @@ export async function getStaticPaths() {
 const { idea } = Astro.props;
 const { Content } = await render(idea);
 const submissions = idea.data.submissions;
+
+const milestone = idea.data.relatedMilestone
+  ? MILESTONES.find((m) => m.anchor === idea.data.relatedMilestone)
+  : undefined;
+
 ---
 
-<BaseLayout title={idea.data.title} description={idea.data.description}>
-  <article class="pt-12 pb-8 max-w-3xl mx-auto">
-    <header class="mb-8">
-      <div class="flex flex-wrap items-center gap-3 mb-3">
-        <StatusBadge status={idea.data.status} />
-        <span class="text-xs text-fog">
-          {idea.data.origin === "my-proposal"
-            ? "My proposal"
-            : "Government initiative"}
-          {idea.data.recipient ? ` · addressed to ${idea.data.recipient}` : ""}
-        </span>
+<BaseLayout
+  title={idea.data.title}
+  description={idea.data.description}
+  type="article"
+>
+  <article class="pt-14 pb-16">
+    <Container>
+      <Breadcrumb
+        crumbs={[
+          { href: "/next", label: "Next" },
+          { label: idea.data.title },
+        ]}
+      />
+      <header class="mb-10">
+        <div
+          class="flex items-center gap-2 text-saffron-600 font-semibold text-xs uppercase tracking-[0.25em] mb-3"
+        >
+          <Lightbulb size={15} stroke-width={2.5} />
+          Next · idea
+        </div>
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <StatusBadge status={idea.data.status} />
+          <span class="text-xs font-medium text-fog">
+            {idea.data.origin === "my-proposal"
+              ? "My proposal"
+              : "Government initiative"}
+          </span>
+        </div>
+        <h1
+          class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight tracking-tight"
+        >
+          {idea.data.title}
+        </h1>
+        <p class="mt-4 text-lg text-ink/70 leading-relaxed">
+          {idea.data.description}
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {
+            idea.data.recipient && (
+              <span class="inline-flex items-center gap-2 text-sm font-medium text-navy bg-navy/5 px-3 py-1.5 rounded-lg">
+                <BuildingComplex size={15} stroke-width={2.2} />
+                Addressed to {idea.data.recipient}
+              </span>
+            )
+          }
+          {
+            idea.data.targetChannel && (
+              <span class="inline-flex items-center gap-2 text-sm font-medium text-moss bg-moss/10 px-3 py-1.5 rounded-lg">
+                <Inbox size={15} stroke-width={2.2} />
+                Channel: {idea.data.targetChannel}
+              </span>
+            )
+          }
+        </div>
+      </header>
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      <aside class="mt-12 rounded-2xl border border-line bg-cream p-6">
+        <h3
+          class="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wide text-ink mb-4"
+        >
+          <Inbox size={16} stroke-width={2.4} />
+          Submission record
+        </h3>
+        {
+          submissions.length === 0 ? (
+            <p class="text-sm text-fog leading-relaxed">
+              Not yet submitted. Channels being considered are listed on the{" "}
+              <a
+                href="/about#submission-strategy"
+                class="font-semibold text-navy hover:text-saffron-600"
+              >
+                About
+              </a>{" "}
+              page. When filed, the platform, date, and any reference number
+              appear here, with an archived copy of what was sent.
+            </p>
+          ) : (
+            <ul class="space-y-3">
+              {submissions.map((s) => (
+                <li class="text-sm text-ink/80">
+                  <span class="font-semibold text-ink">{s.platform}</span> ·{" "}
+                  {s.channel} · {s.date}
+                  {s.referenceNumber && (
+                    <span class="font-mono text-xs text-fog">
+                      {" "}
+                      · ref {s.referenceNumber}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        {
+          idea.data.statusNote && (
+            <p class="mt-4 text-sm text-fog leading-relaxed">
+              {idea.data.statusNote}
+            </p>
+          )
+        }
+      </aside>
+
+      {
+        milestone && (
+          <section class="mt-8 rounded-2xl border border-line bg-paper-2 p-5">
+            <h3 class="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wide text-ink mb-2">
+              <Landmark size={15} stroke-width={2.4} />
+              The history behind it
+            </h3>
+            <p class="text-sm text-fog leading-relaxed">
+              <a
+                href={`/then#${milestone.anchor}`}
+                class="font-semibold text-navy hover:text-saffron-600 transition-colors"
+              >
+                {milestone.year} — {milestone.title} →
+              </a>
+            </p>
+          </section>
+        )
+      }
+
+      <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold">
+        <a
+          href="/next"
+          class="inline-flex items-center gap-1.5 text-navy hover:text-saffron-600 transition-colors"
+        >
+          <ArrowLeft size={15} stroke-width={2.5} /> All ideas
+        </a>
+        {
+          idea.data.relatedNow && (
+            <a
+              href={idea.data.relatedNow}
+              class="inline-flex items-center gap-1.5 text-navy hover:text-saffron-600 transition-colors"
+            >
+              <ChartLine size={15} stroke-width={2.5} /> See where this stands
+              today
+              <ArrowRight size={15} stroke-width={2.5} />
+            </a>
+          )
+        }
       </div>
-      <h1 class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight">
-        {idea.data.title}
-      </h1>
-      <p class="mt-3 text-ink/70 leading-relaxed">{idea.data.description}</p>
-    </header>
-
-    <div class="prose prose-stone max-w-none">
-      <Content />
-    </div>
-
-    <aside class="mt-10 rounded-lg border border-stone-300 bg-cream/70 p-5">
-      <h3 class="font-display font-bold text-sm uppercase tracking-wide text-ink mb-3">
-        Submission record
-      </h3>
-      {
-        submissions.length === 0 ? (
-          <p class="text-sm text-fog">
-            Not yet submitted. Channels being considered are listed on the{" "}
-            <a href="/about#submission-strategy" class="text-navy underline underline-offset-2">
-              About
-            </a>{" "}
-            page. When filed, the platform, date, and any reference number will
-            appear here, with an archived copy of what was sent.
-          </p>
-        ) : (
-          <ul class="space-y-3">
-            {submissions.map((s) => (
-              <li class="text-sm">
-                <span class="font-medium text-ink">{s.platform}</span>{" "}
-                · {s.channel} · {s.date}
-                {s.referenceNumber && (
-                  <span class="font-mono text-xs text-fog"> · ref {s.referenceNumber}</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )
-      }
-      {
-        idea.data.statusNote && (
-          <p class="mt-3 text-sm text-fog">{idea.data.statusNote}</p>
-        )
-      }
-    </aside>
-
-    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-      <a href="/next" class="text-navy underline underline-offset-2 hover:decoration-navy">
-        ← All ideas
-      </a>
-      {
-        idea.data.relatedNow && (
-          <a
-            href={idea.data.relatedNow}
-            class="text-navy underline underline-offset-2 hover:decoration-navy"
-          >
-            See where this stands today → Now
-          </a>
-        )
-      }
-    </div>
+    </Container>
   </article>
 </BaseLayout>

@@ -1,0 +1,71 @@
+---
+title: "Living Longer: Life Expectancy Since 1950"
+description: "From a life expectancy of 41 years at independence to over 70 today — one of the sharpest health gains any large country has made."
+theme: "society"
+datasets: ["src/data/datasets/life-expectancy.json"]
+unit: "years"
+sources:
+  - name: "Demographics of India — life expectancy (Wikipedia, citing UN/World Bank)"
+    url: "https://en.wikipedia.org/wiki/Demographics_of_India"
+    retrieved: "October 2026"
+  - name: "World Bank — Life expectancy at birth, India (SP.DYN.LE00.IN)"
+    url: "https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=IN"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["ai-primary-healthcare"]
+sparkline:
+  dataset: "life-expectancy"
+  key: "years"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { HeartPulse, Baby, Activity } from "@lucide/astro";
+import data from "../../data/datasets/life-expectancy.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.years }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="41 → 70+" label="years of life expectancy, 1950 to today" Icon={HeartPulse} accent="clay" />
+  <StatCallout value="~+29 yrs" label="added to the average Indian life" Icon={Baby} accent="navy" />
+  <StatCallout value="<5/1000" label="smallpox, polio and maternal gains" Icon={Activity} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Life expectancy at birth"
+  subCaption="years, India, 1950–2020. A gain of roughly three decades in a single lifetime."
+>
+  <LineChart data={series} yLabel="Life expectancy (years)" color="#b3392f" />
+</ChartFrame>
+
+<p>
+  At independence, an Indian could expect to live to about <strong>41</strong>.
+  Today the figure is over <strong>70</strong> — roughly three extra decades
+  added within a single lifetime. Few countries of India's size and starting
+  point have achieved a larger health gain.
+</p>
+
+<p>
+  The drivers were cumulative: the eradication of smallpox and polio, the
+  expansion of primary healthcare and vaccination, better nutrition through the
+  Green and White Revolutions, cleaner water, and — in the last decade —
+  schemes like Ayushman Bharat and a vast telemedicine network. The next
+  frontier is not just length of life but quality of it, which is where
+  AI-assisted and preventive care come in.
+</p>
+
+<SourceList
+  sources={[
+    { name: "Demographics of India — life expectancy table (UN/World Bank via Wikipedia)", url: "https://en.wikipedia.org/wiki/Demographics_of_India", retrieved: "October 2026", note: "41.18 years (1950) → 70.16 (2020)." },
+    { name: "World Bank — Life expectancy at birth", url: "https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=IN", retrieved: "October 2026" },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/ai-primary-healthcare", label: "AI-assisted primary healthcare" }
+  ]}
+/>

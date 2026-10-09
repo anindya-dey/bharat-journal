@@ -1,0 +1,26 @@
+---
+import { ArrowUp } from "@lucide/astro";
+---
+
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Back to top"
+  class="fixed bottom-6 right-6 z-40 grid place-items-center w-11 h-11 rounded-full bg-navy text-paper shadow-lift opacity-0 pointer-events-none transition-all duration-300 hover:bg-navy-soft"
+>
+  <ArrowUp size={20} stroke-width={2.4} />
+</button>
+
+<script>
+  const btn = document.getElementById("back-to-top");
+  const update = () => {
+    const show = window.scrollY > 700;
+    btn?.classList.toggle("opacity-0", !show);
+    btn?.classList.toggle("pointer-events-none", !show);
+  };
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+  btn?.addEventListener("click", () =>
+    window.scrollTo({ top: 0, behavior: "smooth" }),
+  );
+</script>

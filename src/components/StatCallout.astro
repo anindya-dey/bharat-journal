@@ -1,0 +1,40 @@
+---
+import type { AstroComponent } from "@lucide/astro";
+
+interface Props {
+  value: string;
+  label: string;
+  Icon?: AstroComponent;
+  accent?: "navy" | "saffron" | "moss" | "clay";
+}
+
+const { value, label, Icon, accent = "navy" } = Astro.props;
+
+const accents = {
+  navy: "text-navy",
+  saffron: "text-saffron-600",
+  moss: "text-moss",
+  clay: "text-clay",
+};
+---
+
+<div
+  class="rounded-2xl border border-line bg-paper-2 p-5 shadow-card flex flex-col gap-2"
+>
+  {
+    Icon && (
+      <span class:list={[accents[accent], "opacity-80"]}>
+        <Icon size={20} stroke-width={2.2} />
+      </span>
+    )
+  }
+  <div
+    class:list={[
+      "font-display text-3xl font-bold tracking-tight",
+      accents[accent],
+    ]}
+  >
+    {value}
+  </div>
+  <div class="text-sm font-medium text-fog leading-snug">{label}</div>
+</div>

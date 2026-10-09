@@ -1,0 +1,77 @@
+---
+title: "Aadhaar: Identity for a Billion"
+description: "Over 1.38 billion people now hold a digital ID — the identity layer beneath welfare, banking and payments."
+theme: "society"
+datasets: ["src/data/datasets/aadhaar.json"]
+unit: "billion holders"
+sources:
+  - name: "Aadhaar — holders and milestones (Wikipedia, citing UIDAI dashboard)"
+    url: "https://en.wikipedia.org/wiki/Aadhaar"
+    retrieved: "October 2026"
+  - name: "UIDAI — Aadhaar dashboard"
+    url: "https://uidai.gov.in/"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["palm-payments"]
+sparkline:
+  dataset: "aadhaar"
+  key: "holdersBn"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Fingerprint, ShieldCheck, Link2 } from "@lucide/astro";
+import data from "../../data/datasets/aadhaar.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.holdersBn }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="1.38 bn" label="Aadhaar holders (Oct 2024)" Icon={Fingerprint} accent="navy" />
+  <StatCallout value="2010" label="first Aadhaar issued" Icon={ShieldCheck} accent="saffron" />
+  <StatCallout value="JAM trinity" label="Aadhaar + Jan Dhan + mobile" Icon={Link2} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Aadhaar holders"
+  subCaption="billions of residents with an Aadhaar ID. From the first enrolment in 2010 to over 1.38 billion by 2024."
+>
+  <LineChart data={series} yLabel="Holders (billions)" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  Aadhaar — a 12-digit digital identity for every resident — is the quiet
+  foundation of India's digital public infrastructure. The first Aadhaar was
+  issued in <strong>2010</strong>; by 2018 the system held over
+  <strong>1.22 billion</strong> identities, and by 2024 more than
+  <strong>1.38 billion</strong>. No country had ever attempted identity at this
+  scale, and none had done it so cheaply.
+</p>
+
+<p>
+  Its importance is as an <em>enabler</em>: paired with Jan Dhan accounts and
+  mobile numbers — the JAM trinity — it lets welfare reach the right person
+  directly, lets a bank verify a customer in seconds, and lets UPI move money
+  between strangers. Identity is the layer everything else authenticates
+  against.
+</p>
+
+<p class="text-sm text-fog italic">
+  Enrollment figures are UIDAI dashboard totals as reported; the chart shows the
+  sourced milestone points (2010 launch, July 2018, October 2024).
+</p>
+
+<SourceList
+  sources={[
+    { name: "Aadhaar — holders (UIDAI via Wikipedia)", url: "https://en.wikipedia.org/wiki/Aadhaar", retrieved: "October 2026", note: "1.22 billion (July 2018); 1.383 billion (Oct 2024)." },
+    { name: "UIDAI — Aadhaar dashboard", url: "https://uidai.gov.in/", retrieved: "October 2026" },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/palm-payments", label: "Palm and biometric payments on India's rails" }
+  ]}
+/>

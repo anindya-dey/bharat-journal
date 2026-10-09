@@ -1,0 +1,68 @@
+---
+title: "Electricity for Everyone"
+description: "From roughly half the population with electricity in 1993 to near-universal access — one of the largest electrification drives in history."
+theme: "energy"
+datasets: ["src/data/datasets/electricity-access.json"]
+unit: "% of population with electricity"
+sources:
+  - name: "World Bank — Access to electricity (% of population), India (WDI EG.ELC.ACCS.ZS)"
+    url: "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS?locations=IN"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["national-data-centre-grid"]
+sparkline:
+  dataset: "electricity-access"
+  key: "pct"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Zap, Home, Sun } from "@lucide/astro";
+import data from "../../data/datasets/electricity-access.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.pct }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="99.9%" label="of the population with electricity (2024)" Icon={Zap} accent="saffron" />
+  <StatCallout value="50.9% → 99.9%" label="access, 1993 to 2024" Icon={Home} accent="navy" />
+  <StatCallout value="Saubhagya" label="the scheme that finished the job" Icon={Sun} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Access to electricity"
+  subCaption="% of India's population with access to electricity. The steep post-2017 climb is the Saubhagya and rural-electrification push."
+>
+  <LineChart data={series} yLabel="% with electricity" color="#d97706" />
+</ChartFrame>
+
+<p>
+  In 1993, roughly <strong>half</strong> of India's population had access to
+  electricity. By 2024, that figure was <strong>99.9%</strong> — one of the
+  largest electrification drives any country has completed. The curve is a
+  reminder that the hardest part of infrastructure is often the last mile: the
+  final villages, the last households, the connection that reaches the home
+  rather than just the feeder.
+</p>
+
+<p>
+  The acceleration came from <strong>Saubhagya</strong> (household
+  electrification), the rural electrification programmes before it, and the
+  parallel build-out of generation and grid capacity. Universal access is also
+  the precondition for everything digital: a phone that charges, a clinic that
+  runs, a data centre that operates.
+</p>
+
+<SourceList
+  sources={[
+    { name: "World Bank — Access to electricity (% of population)", url: "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS?locations=IN", retrieved: "October 2026", note: "50.9% (1993) → 99.9% (2024)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/national-data-centre-grid", label: "A sovereign data-centre grid near every capital" }
+  ]}
+/>

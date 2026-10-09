@@ -2,21 +2,42 @@
 import "../styles/global.css";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import CommandPalette from "../components/CommandPalette.astro";
+import BackToTop from "../components/BackToTop.astro";
+import Reveal from "../components/Reveal.astro";
 import { SITE } from "../data/site";
 
 interface Props {
   title?: string;
   description?: string;
+  type?: "website" | "article";
+  ogImage?: string;
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  type = "website",
+  ogImage = "/og-image.png",
+} = Astro.props;
 
 const pageTitle = title
   ? `${title} — ${SITE.title}`
   : `${SITE.title} — ${SITE.tagline}`;
+const pageDescription = description ?? SITE.description;
 
-const pageDescription =
-  description ?? SITE.description;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": type === "article" ? "Article" : "WebSite",
+  name: pageTitle,
+  description: pageDescription,
+  url: canonical.toString(),
+  author: { "@type": "Person", name: SITE.author },
+  publisher: { "@type": "Person", name: SITE.author },
+});
 ---
 
 <!doctype html>
@@ -27,23 +48,66 @@ const pageDescription =
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <meta name="author" content={SITE.author} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" sizes="32x32" href="/icon/32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/180.png" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:type" content="website" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%231a1f2b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23faf9f5' font-family='Georgia'>भ</text></svg>"
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content={`${SITE.title} — ${SITE.tagline}`} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={jsonLd}
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
-    />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("bj-theme");
+          if (
+            t === "dark" ||
+            (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="min-h-screen flex flex-col">
+    <div
+      id="reading-progress"
+      class="fixed top-0 left-0 z-50 h-0.5 bg-saffron transition-[width] duration-150 ease-out w-0"
+      aria-hidden="true"
+    >
+    </div>
     <SiteNav />
-    <main class="flex-1 w-full max-w-5xl mx-auto px-5 md:px-8 pb-20">
+    <main class="flex-1 w-full">
       <slot />
     </main>
     <SiteFooter />
+    <CommandPalette />
+    <BackToTop />
+    <Reveal />
+    <script>
+      const bar = document.getElementById("reading-progress");
+      const update = () => {
+        const h = document.documentElement;
+        const p =
+          h.scrollTop / Math.max(h.scrollHeight - h.clientHeight, 1);
+        if (bar) bar.style.width = (p * 100).toFixed(2) + "%";
+      };
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    </script>
   </body>
 </html>

@@ -1,0 +1,65 @@
+---
+title: "Ports: The Gateway Trade"
+description: "Container traffic through Indian ports has more than doubled since 2010 — the physical layer of India's export economy."
+theme: "livelihoods"
+datasets: ["src/data/datasets/port-traffic.json"]
+unit: "million TEU"
+sources:
+  - name: "World Bank — Container port traffic (TEU), India (IS.SHP.GOOD.TU)"
+    url: "https://data.worldbank.org/indicator/IS.SHP.GOOD.TU?locations=IN"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["green-hydrogen-economy"]
+sparkline:
+  dataset: "port-traffic"
+  key: "teuM"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Anchor, Ship, TrendingUp } from "@lucide/astro";
+import data from "../../data/datasets/port-traffic.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.teuM }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~24M TEU" label="container traffic (2024)" Icon={Ship} accent="navy" />
+  <StatCallout value="2.6x" label="growth since 2010" Icon={TrendingUp} accent="saffron" />
+  <StatCallout value="Sagarmala" label="the ports-modernisation programme" Icon={Anchor} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Container port traffic"
+  subCaption="million TEU (twenty-foot equivalent units) handled at Indian ports. Steady growth even through the pandemic years."
+>
+  <LineChart data={series} yLabel="Million TEU" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  India's ports moved about <strong>9 million TEU</strong> of containers in
+  2010; by 2024 that had risen to nearly <strong>24 million</strong>. Behind the
+  numbers is a quiet transformation: the <strong>Sagarmala</strong> programme
+  modernised ports and linked them to inland logistics, the Jawaharlal Nehru
+  Port became one of the busiest container hubs in South Asia, and new
+  deep-water terminals and dedicated freight corridors are moving cargo faster.
+</p>
+
+<p>
+  Ports are where the export story is written — and where the next chapter
+  (green shipping fuels, transshipment hubs) will be decided.
+</p>
+
+<SourceList
+  sources={[
+    { name: "World Bank — Container port traffic (TEU)", url: "https://data.worldbank.org/indicator/IS.SHP.GOOD.TU?locations=IN", retrieved: "October 2026", note: "9.2M TEU (2010) → 23.9M TEU (2024)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/green-hydrogen-economy", label: "A green hydrogen export hub at Indian ports" }
+  ]}
+/>

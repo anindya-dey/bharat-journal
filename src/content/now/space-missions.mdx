@@ -1,0 +1,76 @@
+---
+title: "India in Space: Doing More With Less"
+description: "From a bicycle-borne rocket in 1963 to a soft landing at the lunar south pole — India's space programme has redefined what a small budget can achieve."
+theme: "space"
+datasets: ["src/data/datasets/space-missions.json"]
+unit: "missions"
+sources:
+  - name: "ISRO — Indian Space Research Organisation (Wikipedia)"
+    url: "https://en.wikipedia.org/wiki/Indian_Space_Research_Organisation"
+    retrieved: "October 2026"
+  - name: "List of ISRO missions (Wikipedia)"
+    url: "https://en.wikipedia.org/wiki/List_of_ISRO_missions"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["bharatiya-space-station"]
+---
+
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Rocket, Satellite, Globe } from "@lucide/astro";
+import data from "../../data/datasets/space-missions.json";
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="434" label="foreign satellites launched for 34 countries" Icon={Satellite} accent="navy" />
+  <StatCallout value="136" label="spacecraft missions flown" Icon={Rocket} accent="saffron" />
+  <StatCallout value="2023" label="first landing near the lunar south pole" Icon={Globe} accent="moss" />
+</div>
+
+<p>
+  India's space programme is the clearest example of the country's signature
+  ability: doing more with less. Its first rocket, in 1963, was carried to the
+  launchpad on a bicycle. Six decades later, Chandrayaan-3 made the first-ever
+  soft landing near the Moon's south pole — for less than the cost of many
+  feature films.
+</p>
+
+<div class="not-prose my-8">
+  <ol class="relative ml-1">
+    <span class="absolute left-[6px] top-2 bottom-2 w-[2px] bg-stone-200" aria-hidden="true"></span>
+    {data.missions.map((m) => (
+      <li class="relative pl-10 pb-5">
+        <span class="absolute left-0 top-5 grid place-items-center w-3.5 h-3.5 rounded-full bg-navy ring-4 ring-paper" />
+        <div class="rounded-2xl border border-line bg-paper-2 p-4 shadow-card">
+          <div class="flex items-baseline justify-between gap-4">
+            <h3 class="font-display font-bold text-ink leading-snug">{m.name}</h3>
+            <span class="text-xs font-mono font-medium text-saffron shrink-0">{m.year}</span>
+          </div>
+          <p class="mt-1 text-sm text-fog leading-relaxed">{m.note}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<p>
+  The programme's reach now extends well beyond prestige. ISRO has launched
+  <strong>434 foreign satellites</strong> for 34 countries, flown
+  <strong>136 spacecraft missions</strong>, and built the navigation
+  (NavIC), communication and earth-observation systems that underpin daily life
+  in India. With the sector opened to private players in 2020, a commercial
+  space economy is now taking shape around it.
+</p>
+
+<SourceList
+  sources={[
+    { name: "Indian Space Research Organisation (Wikipedia)", url: "https://en.wikipedia.org/wiki/Indian_Space_Research_Organisation", retrieved: "October 2026", note: "434 foreign satellites; 136 spacecraft missions; 106 launch missions." },
+    { name: "List of ISRO missions (Wikipedia)", url: "https://en.wikipedia.org/wiki/List_of_ISRO_missions", retrieved: "October 2026" },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/bharatiya-space-station", label: "Bharatiya Antariksh Station: India's home in orbit" }
+  ]}
+/>

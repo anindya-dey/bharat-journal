@@ -1,0 +1,65 @@
+{
+  "notes": "Life expectancy at birth (years), India. Source table (UN/World Bank).",
+  "series": [
+    {
+      "year": 1950,
+      "years": 41.18
+    },
+    {
+      "year": 1955,
+      "years": 43.74
+    },
+    {
+      "year": 1960,
+      "years": 45.61
+    },
+    {
+      "year": 1965,
+      "years": 45.56
+    },
+    {
+      "year": 1970,
+      "years": 48.59
+    },
+    {
+      "year": 1975,
+      "years": 50.76
+    },
+    {
+      "year": 1980,
+      "years": 53.59
+    },
+    {
+      "year": 1985,
+      "years": 56.32
+    },
+    {
+      "year": 1990,
+      "years": 58.62
+    },
+    {
+      "year": 1995,
+      "years": 60.63
+    },
+    {
+      "year": 2000,
+      "years": 62.75
+    },
+    {
+      "year": 2005,
+      "years": 64.94
+    },
+    {
+      "year": 2010,
+      "years": 67.16
+    },
+    {
+      "year": 2015,
+      "years": 69.33
+    },
+    {
+      "year": 2020,
+      "years": 70.16
+    }
+  ]
+}

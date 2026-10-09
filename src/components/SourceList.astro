@@ -1,4 +1,6 @@
 ---
+import { BookOpen, ExternalLink } from "@lucide/astro";
+
 interface Props {
   sources: { name: string; url: string; retrieved: string; note?: string }[];
 }
@@ -6,11 +8,14 @@ interface Props {
 const { sources } = Astro.props;
 ---
 
-<aside class="mt-10 rounded-lg border border-stone-300 bg-cream/70 p-5">
-  <h3 class="font-display font-bold text-sm uppercase tracking-wide text-ink mb-3">
+<aside class="mt-10 rounded-2xl border border-line bg-cream p-6">
+  <h3
+    class="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wide text-ink mb-4"
+  >
+    <BookOpen size={16} stroke-width={2.4} />
     Sources
   </h3>
-  <ul class="space-y-2.5">
+  <ul class="space-y-3">
     {
       sources.map((source) => (
         <li class="text-sm">
@@ -18,14 +23,14 @@ const { sources } = Astro.props;
             href={source.url}
             target="_blank"
             rel="noopener"
-            class="text-navy underline decoration-stone-400 underline-offset-2 hover:decoration-navy"
+            class="inline-flex items-start gap-1.5 font-medium text-navy hover:text-saffron transition-colors"
           >
-            {source.name}
+            <span class="underline decoration-line underline-offset-2">
+              {source.name}
+            </span>
+            <ExternalLink size={13} class="mt-0.5 shrink-0" />
           </a>
-          <span class="text-fog">
-            {" "}
-            · data as of {source.retrieved}
-          </span>
+          <span class="text-fog"> · data as of {source.retrieved}</span>
           {source.note && (
             <span class="block text-xs text-fog mt-0.5">{source.note}</span>
           )}

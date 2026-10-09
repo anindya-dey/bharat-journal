@@ -1,0 +1,66 @@
+---
+title: "Taking to the Skies"
+description: "Indian aviation carried 162 million passengers in 2012 and over 420 million by 2025 — one of the fastest-growing aviation markets in the world."
+theme: "mobility"
+datasets: ["src/data/datasets/aviation.json"]
+unit: "passengers per year"
+sources:
+  - name: "List of busiest airports in India — annual passenger traffic (Wikipedia, citing AAI)"
+    url: "https://en.wikipedia.org/wiki/List_of_busiest_airports_in_India"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["satellite-capitals"]
+sparkline:
+  dataset: "aviation"
+  key: "passengers"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Plane, MapPin, TrendingUp } from "@lucide/astro";
+import data from "../../data/datasets/aviation.json";
+
+export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.passengers / 1e6 }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="~420M" label="air passengers in 2025–26" Icon={Plane} accent="navy" />
+  <StatCallout value="~2.6x" label="growth since 2011–12" Icon={TrendingUp} accent="saffron" />
+  <StatCallout value="UDAN" label="regional connectivity scheme" Icon={MapPin} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Annual air passengers"
+  subCaption="domestic + international passengers (millions). The dip is the pandemic year; the recovery surpassed pre-COVID levels within two years."
+>
+  <LineChart data={series} yLabel="Passengers (millions)" color="#1d3557" />
+</ChartFrame>
+
+<p>
+  India is now one of the world's largest and fastest-growing aviation markets.
+  Passenger traffic grew from <strong>162 million</strong> in 2011–12 to over
+  <strong>420 million</strong> by 2025–26, with a brief pandemic dip that was
+  recovered within two years. A rising middle class, low-cost carriers, and the
+  <strong>UDAN</strong> regional-connectivity scheme — which put small towns on
+  the aviation map — drove the growth.
+</p>
+
+<p>
+  The build-out continues: new airports, expanded terminals, and a fleet
+  order book among the largest in the world, positioning India as a global
+  aviation hub.
+</p>
+
+<SourceList
+  sources={[
+    { name: "List of busiest airports in India — passenger traffic (AAI via Wikipedia)", url: "https://en.wikipedia.org/wiki/List_of_busiest_airports_in_India", retrieved: "October 2026", note: "162.3M (2011-12) → 420.1M (2025-26)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/satellite-capitals", label: "Satellite capitals with independent airports" }
+  ]}
+/>

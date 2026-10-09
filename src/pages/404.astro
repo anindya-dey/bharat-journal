@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import { Compass, ArrowRight } from "@lucide/astro";
+import { SITE } from "../data/site";
+---
+
+<BaseLayout
+  title="Page not found"
+  description={`${SITE.title} — page not found.`}
+>
+  <section class="pt-24 pb-32">
+    <Container>
+      <div class="text-center">
+        <span
+          class="grid place-items-center w-16 h-16 mx-auto rounded-2xl bg-navy text-paper shadow-card mb-6"
+        >
+          <Compass size={30} stroke-width={2} />
+        </span>
+        <p class="font-mono text-saffron-600 font-bold text-sm uppercase tracking-[0.25em] mb-2">
+          404
+        </p>
+        <h1
+          class="font-display text-3xl md:text-4xl font-bold text-ink leading-tight tracking-tight"
+        >
+          Off the timeline
+        </h1>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-md mx-auto">
+          This page doesn't exist — but the timeline, the data, and the ideas
+          all do. Pick up the thread from one of these:
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3 text-sm font-semibold">
+          <a
+            href="/then"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-navy text-paper shadow-card hover:bg-navy-soft transition-all"
+          >
+            Then <ArrowRight size={15} stroke-width={2.5} />
+          </a>
+          <a
+            href="/now"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-paper-2 border border-line text-ink hover:border-navy hover:text-navy transition-all"
+          >
+            Now
+          </a>
+          <a
+            href="/next"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-paper-2 border border-line text-ink hover:border-navy hover:text-navy transition-all"
+          >
+            Next
+          </a>
+          <a
+            href="/"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-paper-2 border border-line text-ink hover:border-navy hover:text-navy transition-all"
+          >
+            Home
+          </a>
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

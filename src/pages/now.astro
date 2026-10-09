@@ -1,72 +1,135 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Sparkline from "../components/Sparkline.astro";
+import PageHeader from "../components/PageHeader.astro";
 import { getCollection } from "astro:content";
+import {
+  Wallet,
+  TrainFront,
+  Sprout,
+  Wifi,
+  Zap,
+  Users,
+  Rocket,
+  ArrowRight,
+  ChartColumn,
+  ChartLine,
+} from "@lucide/astro";
+import { dataset, toSeries } from "../lib/charts";
 
-const THEME_LABELS: Record<string, string> = {
-  money: "Money",
-  mobility: "Mobility",
-  livelihoods: "Livelihoods",
-};
+const THEMES = [
+  { id: "money", label: "Money", Icon: Wallet },
+  { id: "mobility", label: "Mobility", Icon: TrainFront },
+  { id: "energy", label: "Energy", Icon: Zap },
+  { id: "connectivity", label: "Connectivity", Icon: Wifi },
+  { id: "society", label: "Society", Icon: Users },
+  { id: "livelihoods", label: "Livelihoods", Icon: Sprout },
+  { id: "space", label: "Space", Icon: Rocket },
+];
 
 const vizs = (await getCollection("now")).sort((a, b) =>
   a.data.title.localeCompare(b.data.title),
 );
 
-const byTheme = Object.keys(THEME_LABELS).map((theme) => ({
-  id: theme,
-  label: THEME_LABELS[theme],
-  vizs: vizs.filter((v) => v.data.theme === theme),
-}));
+const sparklineFor = (v: (typeof vizs)[number]) => {
+  const spec = v.data.sparkline;
+  if (!spec) return null;
+  try {
+    const d = dataset(spec.dataset);
+    return toSeries(d.series, "year", spec.key);
+  } catch {
+    return null;
+  }
+};
+
+const THEME_SPARK: Record<string, string> = {
+  money: "#1d3557",
+  mobility: "#1d3557",
+  energy: "#d97706",
+  connectivity: "#1d3557",
+  society: "#b3392f",
+  livelihoods: "#3f7d3f",
+  space: "#1d3557",
+};
+
+const byTheme = THEMES.map((theme) => ({
+  ...theme,
+  sparkColor: THEME_SPARK[theme.id] ?? "#d97706",
+  vizs: vizs.filter((v) => v.data.theme === theme.id),
+})).filter((t) => t.vizs.length > 0);
 ---
 
 <BaseLayout
   title="Now"
   description="Where India stands today — data visualisations with cited sources: UPI, Jan Dhan, rail electrification."
 >
-  <section class="pt-12 pb-6">
-    <p class="text-xs uppercase tracking-[0.25em] text-ember font-semibold mb-2">
-      Now · data
-    </p>
-    <h1 class="font-display text-3xl md:text-4xl font-bold text-ink">
-      Where we stand
-    </h1>
-    <p class="mt-3 text-ink/70 leading-relaxed max-w-2xl">
-      One aspect per page: a chart, its story, its sources, and what could come
-      next. Every series starts in 1947 or at the earliest year its data
-      exists — the trajectory speaks for itself, and you can check every
-      number.
-    </p>
-  </section>
+  <PageHeader
+    eyebrow="Now · data"
+    title="Where we stand"
+    Icon={ChartColumn}
+    description="One aspect per page: a chart, its story, its sources, and what could come next. Every series starts in 1947 or at the earliest year its data exists — the trajectory speaks for itself."
+  >
+  </PageHeader>
 
-  {
-    byTheme.map((theme) => (
-      <section class="mb-12">
-        <h2 class="font-display text-xl font-bold text-navy mb-4">
-          {theme.label}
-        </h2>
-        <div class="grid md:grid-cols-2 gap-4">
-          {theme.vizs.map((v) => (
-            <a
-              href={`/now/${v.id}`}
-              class="rounded-xl border border-stone-300 bg-white p-6 hover:border-navy hover:shadow-md transition-all flex flex-col"
-            >
-              <div class="text-xs font-mono text-ember mb-1.5">
-                {v.data.unit}
-              </div>
-              <h3 class="font-display text-lg font-bold text-ink leading-snug">
-                {v.data.title}
-              </h3>
-              <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-3">
-                {v.data.description}
-              </p>
-              <div class="mt-auto pt-3 text-xs text-fog">
-                Updated {v.data.updated} · {v.data.sources.length} source
-                {v.data.sources.length === 1 ? "" : "s"}
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    ))
-  }
+  <div class="pb-20 space-y-12">
+    {
+      byTheme.map((theme) => (
+        <section>
+          <Container size="wide">
+            <div class="flex items-center gap-2.5 mb-5">
+              <span class="grid place-items-center w-9 h-9 rounded-xl bg-navy/5 text-navy">
+                <theme.Icon size={18} stroke-width={2.2} />
+              </span>
+              <h2 class="font-display text-xl font-bold text-ink">
+                {theme.label}
+              </h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4" data-reveal>
+              {theme.vizs.map((v) => {
+                const spark = sparklineFor(v);
+                return (
+                  <a
+                    href={`/now/${v.id}`}
+                    class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
+                  >
+                    <div class="flex items-center justify-between gap-3 mb-2">
+                      <div class="flex items-center gap-2 text-xs font-mono text-saffron-600">
+                        <ChartLine size={13} stroke-width={2.4} />
+                        {v.data.unit}
+                      </div>
+                      <span class="text-[11px] text-fog">
+                        Updated {v.data.updated}
+                      </span>
+                    </div>
+                    <h3 class="font-display text-lg font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+                      {v.data.title}
+                    </h3>
+                    <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
+                      {v.data.description}
+                    </p>
+                    {spark && (
+                      <div class="mt-4 -mb-1 opacity-90">
+                        <Sparkline data={spark} color={theme.sparkColor} width={200} height={40} />
+                      </div>
+                    )}
+                    <div class="mt-auto pt-4 flex items-center justify-between text-xs text-fog">
+                      <span>
+                        {v.data.sources.length} source
+                        {v.data.sources.length === 1 ? "" : "s"}
+                      </span>
+                      <ArrowRight
+                        size={15}
+                        class="text-fog group-hover:text-navy group-hover:translate-x-0.5 transition-all"
+                      />
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </Container>
+        </section>
+      ))
+    }
+  </div>
 </BaseLayout>

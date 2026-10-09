@@ -1,96 +1,245 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import { getCollection } from "astro:content";
+import {
+  RotateCcwClock,
+  ChartLine,
+  Lightbulb,
+  ArrowRight,
+  Milestone as MilestoneIcon,
+  ChartColumn,
+  Sparkles,
+  Flame,
+} from "@lucide/astro";
+import { MILESTONES } from "../data/milestones";
 
 const ideas = (await getCollection("ideas")).sort((a, b) =>
-  a.data.title.localeCompare(b.data.title),
+  b.data.updated.localeCompare(a.data.updated),
+);
+const vizs = (await getCollection("now")).sort((a, b) =>
+  b.data.updated.localeCompare(a.data.updated),
 );
 
-const three = [
+const latestMilestone = [...MILESTONES].sort((a, b) => b.year - a.year)[0];
+
+const sections = [
   {
     href: "/then",
     label: "Then",
     line: "How we got here",
-    text: "A milestone timeline of the republic, 1947–2014: constitution to freight corridors, green revolution to digital foundations.",
+    text: "A milestone timeline of the republic, 1947–2014 — constitution to freight corridors, green revolution to digital foundations.",
+    Icon: RotateCcwClock,
+    accent: "text-navy",
+    bg: "bg-navy/5",
   },
   {
     href: "/now",
     label: "Now",
     line: "Where we stand",
-    text: "Data visualisations with sources you can check — UPI, Jan Dhan, rail electrification. Every chart starts at 1947 or wherever its data begins.",
+    text: `${vizs.length} sourced data stories — UPI, Jan Dhan, rail electrification and more — each starting from 1947.`,
+    Icon: ChartLine,
+    accent: "text-saffron-600",
+    bg: "bg-saffron-100",
   },
   {
     href: "/next",
     label: "Next",
     line: "Where we could go",
-    text: "Proposals, tracked honestly: spark, gap, precedent, ask — and a public record of every submission and what came back.",
+    text: `${ideas.length} proposals, tracked honestly: spark, gap, precedent, ask — with a public record of every submission.`,
+    Icon: Lightbulb,
+    accent: "text-moss",
+    bg: "bg-moss/10",
   },
+];
+
+const stats = [
+  { value: "78 yrs", label: "of the republic, on one timeline", Icon: MilestoneIcon },
+  { value: `${vizs.length}`, label: "sourced data stories", Icon: ChartColumn },
+  { value: `${ideas.length}`, label: "ideas, tracked in the open", Icon: Sparkles },
 ];
 ---
 
 <BaseLayout>
-  <section class="pt-16 pb-10 md:pt-24">
-    <p class="text-xs uppercase tracking-[0.3em] text-ember font-semibold mb-3">
-      A journal of progress and possibilities
-    </p>
-    <h1 class="font-display text-4xl md:text-5xl font-bold text-ink leading-tight max-w-2xl">
-      Then. Now. Next.
-    </h1>
-    <p class="mt-4 text-lg text-ink/70 leading-relaxed max-w-xl">
-      India's story in three linked views — what the country has built since
-      1947, what the data says about where it stands, and where it could go
-      next. Written by one citizen, citable by anyone.
-    </p>
-  </section>
-
-  <section class="grid md:grid-cols-3 gap-4 pb-12">
-    {
-      three.map((t) => (
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-cream via-paper to-paper"></div>
+    <Container size="wide" class="pt-16 md:pt-24 pb-12">
+      <p
+        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-navy/5 text-navy text-xs font-bold uppercase tracking-[0.18em] mb-6"
+      >
+        <Sparkles size={14} stroke-width={2.4} />
+        A journal of progress and possibilities
+      </p>
+      <h1
+        class="font-display text-5xl md:text-7xl font-bold text-ink leading-[0.98] tracking-tight max-w-3xl"
+      >
+        Then. Now. <span class="text-saffron-600">Next.</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-ink/70 leading-relaxed max-w-2xl">
+        India's story in three linked views — what the country has built since
+        1947, what the data says about where it stands, and where it could go
+        next. Written by one citizen, citable by anyone.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
         <a
-          href={t.href}
-          class="group rounded-xl border border-stone-300 bg-white p-6 hover:border-navy hover:shadow-md transition-all"
+          href="/then"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-navy text-paper font-semibold text-sm shadow-card hover:bg-navy-soft hover:shadow-lift transition-all"
         >
-          <div class="flex items-center justify-between mb-3">
-            <span class="font-display text-2xl font-bold text-ink group-hover:text-navy transition-colors">
-              {t.label}
-            </span>
-            <span class="text-stone-400 group-hover:text-navy transition-colors">→</span>
-          </div>
-          <p class="text-sm font-semibold text-ink/90 mb-2">{t.line}</p>
-          <p class="text-sm text-fog leading-relaxed">{t.text}</p>
+          Start with the timeline
+          <ArrowRight size={16} stroke-width={2.5} />
         </a>
-      ))
-    }
+        <a
+          href="/next"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-paper-2 border border-line text-ink font-semibold text-sm hover:border-navy hover:text-navy transition-all"
+        >
+          Explore the ideas
+        </a>
+      </div>
+    </Container>
   </section>
 
-  <section class="mt-6 mb-14">
-    <div class="flex items-baseline justify-between mb-4">
-      <h2 class="font-display text-xl font-bold text-ink">Latest ideas</h2>
-      <a href="/next" class="text-sm text-navy underline underline-offset-2 hover:decoration-navy">
-        All ideas →
-      </a>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4">
-      {
-        ideas.slice(0, 4).map((idea) => (
-          <a
-            href={`/next/${idea.id}`}
-            class="rounded-lg border border-stone-300 bg-white p-5 hover:border-navy transition-colors"
-          >
-            <div class="flex items-center justify-between gap-3 mb-2">
-              <StatusBadge status={idea.data.status} />
-              <span class="text-xs text-fog">
-                {idea.data.themes.slice(0, 2).join(" · ")}
+  <section class="pb-14">
+    <Container size="wide">
+      <div class="grid sm:grid-cols-3 gap-4" data-reveal>
+        {
+          stats.map((s) => (
+            <div class="flex items-center gap-4 rounded-2xl border border-line bg-paper-2 p-5 shadow-card">
+              <span class="grid place-items-center w-11 h-11 rounded-xl bg-cream text-navy shrink-0">
+                <s.Icon size={20} stroke-width={2.2} />
               </span>
+              <div>
+                <div class="font-display text-2xl font-bold text-ink leading-none">
+                  {s.value}
+                </div>
+                <div class="text-xs font-medium text-fog mt-1">{s.label}</div>
+              </div>
             </div>
-            <h3 class="font-display font-bold text-ink leading-snug">
-              {idea.data.title}
-            </h3>
-            <p class="mt-1.5 text-sm text-fog line-clamp-2">{idea.data.description}</p>
-          </a>
-        ))
-      }
-    </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <section class="pb-16">
+    <Container size="wide">
+      <div class="grid md:grid-cols-3 gap-4" data-reveal>
+        {
+          sections.map((t) => (
+            <a
+              href={t.href}
+              class="group relative rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
+            >
+              <span
+                class={`grid place-items-center w-12 h-12 rounded-2xl ${t.bg} ${t.accent} mb-4`}
+              >
+                <t.Icon size={24} stroke-width={2.1} />
+              </span>
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-display text-2xl font-bold text-ink">
+                  {t.label}
+                </span>
+                <ArrowRight
+                  size={18}
+                  class="text-fog group-hover:text-navy group-hover:translate-x-0.5 transition-all"
+                />
+              </div>
+              <p class="text-sm font-semibold text-ink/80 mb-2">{t.line}</p>
+              <p class="text-sm text-fog leading-relaxed">{t.text}</p>
+            </a>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <section class="pb-16">
+    <Container size="wide">
+      <h2 class="flex items-center gap-2 font-display text-2xl font-bold text-ink mb-5">
+        <Flame size={20} class="text-saffron-600" stroke-width={2.4} />
+        Latest on the journal
+      </h2>
+      <div class="grid md:grid-cols-3 gap-4" data-reveal>
+        <a
+          href={`/then#${latestMilestone.anchor}`}
+          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
+        >
+          <span class="text-xs font-semibold uppercase tracking-wide text-navy mb-2">
+            Then · {latestMilestone.year}
+          </span>
+          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+            {latestMilestone.title}
+          </h3>
+          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+            {latestMilestone.summary}
+          </p>
+        </a>
+        <a
+          href={`/now/${vizs[0].id}`}
+          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
+        >
+          <span class="text-xs font-semibold uppercase tracking-wide text-saffron-600 mb-2">
+            Now · data
+          </span>
+          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+            {vizs[0].data.title}
+          </h3>
+          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+            {vizs[0].data.description}
+          </p>
+        </a>
+        <a
+          href={`/next/${ideas[0].id}`}
+          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
+        >
+          <span class="flex items-center gap-2 mb-2">
+            <StatusBadge status={ideas[0].data.status} />
+          </span>
+          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+            {ideas[0].data.title}
+          </h3>
+          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+            {ideas[0].data.description}
+          </p>
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  <section class="pb-20">
+    <Container size="wide">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="font-display text-2xl font-bold text-ink">Ideas in motion</h2>
+        <a
+          href="/next"
+          class="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-saffron-600 transition-colors"
+        >
+          All ideas <ArrowRight size={15} stroke-width={2.5} />
+        </a>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4" data-reveal>
+        {
+          ideas.slice(0, 4).map((idea) => (
+            <a
+              href={`/next/${idea.id}`}
+              class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all"
+            >
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <StatusBadge status={idea.data.status} />
+                <span class="text-xs font-medium text-fog">
+                  {idea.data.themes.slice(0, 2).join(" · ")}
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+                {idea.data.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+                {idea.data.description}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </Container>
   </section>
 </BaseLayout>

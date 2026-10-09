@@ -1,19 +1,39 @@
 ---
+import { Compass, ArrowUpRight, Rss } from "@lucide/astro";
 import { SITE } from "../data/site";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-stone-300 bg-cream">
-  <div class="max-w-5xl mx-auto px-5 md:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <div class="text-sm text-fog">
-      <span class="font-display font-semibold text-ink">{SITE.title}</span>
-      — {SITE.description}
+<footer class="border-t border-line bg-cream">
+  <div class="max-w-6xl mx-auto px-5 md:px-8 py-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-2.5">
+        <span class="grid place-items-center w-8 h-8 rounded-lg bg-navy text-paper">
+          <Compass size={17} stroke-width={2.2} />
+        </span>
+        <div class="leading-tight">
+          <div class="font-display font-bold text-ink">{SITE.title}</div>
+          <div class="text-xs text-fog">{SITE.description}</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-5 text-sm font-medium text-fog">
+        <a href="/about" class="hover:text-ink transition-colors">Method</a>
+        <a href="/rss.xml" class="inline-flex items-center gap-1 hover:text-ink transition-colors">
+          <Rss size={14} /> RSS
+        </a>
+        <a
+          href="https://blog.anindyadey.com"
+          class="inline-flex items-center gap-1 hover:text-ink transition-colors"
+        >
+          Blog <ArrowUpRight size={14} />
+        </a>
+      </div>
     </div>
-    <div class="text-xs text-fog">
-      © {year} {SITE.author} ·
-      <a href="https://blog.anindyadey.com" class="underline hover:text-ink">Blog</a>
-      ·
-      <a href="/about" class="underline hover:text-ink">Method & sources</a>
+    <div class="mt-6 pt-5 border-t border-line text-xs text-fog">
+      © {year} {SITE.author} · Figures are sourced and dated on each page ·
+      <kbd class="font-mono px-1 py-0.5 rounded bg-paper-2 border border-line">⌘K</kbd>
+      to search anywhere
     </div>
   </div>
 </footer>

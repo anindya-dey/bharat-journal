@@ -1,0 +1,82 @@
+---
+title: "Connecting a Billion People"
+description: "From almost no internet users in 1995 to 70% of the population online, and a mobile subscription for nearly every adult — the fastest telecom build-out at scale."
+theme: "connectivity"
+datasets: ["src/data/datasets/internet-users.json", "src/data/datasets/mobile-connectivity.json"]
+unit: "% of population online / mobile per 100"
+sources:
+  - name: "World Bank — Individuals using the Internet (% of population), India (IT.NET.USER.ZS)"
+    url: "https://data.worldbank.org/indicator/IT.NET.USER.ZS?locations=IN"
+    retrieved: "October 2026"
+  - name: "World Bank — Mobile cellular subscriptions (per 100 people), India (IT.CEL.SETS.P2)"
+    url: "https://data.worldbank.org/indicator/IT.CEL.SETS.P2?locations=IN"
+    retrieved: "October 2026"
+updated: "2026-10-08"
+relatedIdeas: ["ai-vernacular-education", "ai-primary-healthcare"]
+sparkline:
+  dataset: "internet-users"
+  key: "pct"
+---
+
+import LineChart from "../../components/LineChart.astro";
+import ChartFrame from "../../components/ChartFrame.astro";
+import SourceList from "../../components/SourceList.astro";
+import NextCTA from "../../components/NextCTA.astro";
+import StatCallout from "../../components/StatCallout.astro";
+import { Wifi, Smartphone, Globe } from "@lucide/astro";
+import internet from "../../data/datasets/internet-users.json";
+import mobile from "../../data/datasets/mobile-connectivity.json";
+
+export const netSeries = internet.series.map((d) => ({ date: `${d.year}-01-01`, value: d.pct }));
+export const mobSeries = mobile.series.map((d) => ({ date: `${d.year}-01-01`, value: d.per100 }));
+
+<div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
+  <StatCallout value="70%" label="of Indians online (2025)" Icon={Wifi} accent="navy" />
+  <StatCallout value="~80/100" label="mobile subscriptions per 100 people" Icon={Smartphone} accent="saffron" />
+  <StatCallout value="1995" label="first mobile call & public internet" Icon={Globe} accent="moss" />
+</div>
+
+<ChartFrame
+  caption="Individuals using the Internet"
+  subCaption="% of population. From near-zero in 1995 to 70% by 2025 — a connectivity base for UPI, digital services and remote work."
+>
+  <LineChart data={netSeries} yLabel="% of population online" color="#1d3557" />
+</ChartFrame>
+
+<ChartFrame
+  caption="Mobile cellular subscriptions"
+  subCaption="per 100 people. The 2000s explosion — from almost none to saturation in a single decade."
+>
+  <LineChart data={mobSeries} yLabel="Subscriptions per 100 people" color="#d97706" />
+</ChartFrame>
+
+<p>
+  India's first mobile call was made in <strong>1995</strong>, the same year
+  public internet arrived — and teledensity was under 1 per 100. Three decades
+  later, nearly <strong>80 in every 100</strong> people have a mobile
+  subscription and <strong>70%</strong> are online. The mobile explosion of the
+  2000s, driven by falling call rates and competition, is what made the
+  smartphone the default computer for a billion people — and what made UPI,
+  digital welfare and remote work possible.
+</p>
+
+<p>
+  The infrastructure keeps extending: BharatNet's fibre to villages,
+  5G rollout, and cheap data (among the lowest per-GB prices in the world)
+  mean the connectivity layer is now deep enough to carry the next generation
+  of services.
+</p>
+
+<SourceList
+  sources={[
+    { name: "World Bank — Individuals using the Internet (% of population)", url: "https://data.worldbank.org/indicator/IT.NET.USER.ZS?locations=IN", retrieved: "October 2026", note: "0.03% (1995) → 70% (2025)." },
+    { name: "World Bank — Mobile cellular subscriptions (per 100 people)", url: "https://data.worldbank.org/indicator/IT.CEL.SETS.P2?locations=IN", retrieved: "October 2026", note: "Near-zero (1995) → ~80 (2024)." },
+  ]}
+/>
+
+NextCTA
+  links={[
+    { href: "/next/ai-vernacular-education", label: "An AI tutor in every mother tongue" },
+    { href: "/next/ai-primary-healthcare", label: "AI-assisted primary healthcare" }
+  ]}
+/>
