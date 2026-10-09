@@ -20,7 +20,7 @@ const {
   data,
   yLabel = "",
   highlightLast = true,
-  color = "#1d3557",
+  color = "#7c3aed",
   seriesLabel = yLabel,
   formatValue,
 } = Astro.props;
@@ -75,7 +75,7 @@ const svg = Plot.plot({
       y: "value",
       rx: 6,
       fill: (_d: Datum, i: number) =>
-        highlightLast && i === data.length - 1 ? "#e07b1a" : color,
+        highlightLast && i === data.length - 1 ? "#c026d3" : color,
       fillOpacity: 0.92,
     }),
     Plot.text(data, {
@@ -119,6 +119,7 @@ const jsonTips = JSON.stringify(
   data-chart
   data-bar
   data-title={seriesLabel}
+  data-color={color}
   data-tips={jsonTips}
   data-w={W}
   data-h={H}

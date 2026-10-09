@@ -61,13 +61,15 @@ const DW = 900;
 const DH = 110;
 const padT = 10;
 const padB = 6;
+const n = density.length;
+const band = DW / n;
 const gap = 2;
-const barW = (DW - (density.length - 1) * gap) / density.length;
+const barW = band - gap;
 const chartH = DH - padT - padB;
 const bars = density.map((d, i) => {
   const h = (d.count / maxCount) * chartH;
   return {
-    x: i * (barW + gap),
+    x: i * band + gap / 2,
     y: DH - padB - h,
     w: barW,
     h: Math.max(h, d.count > 0 ? 2 : 0),
@@ -78,13 +80,11 @@ const bars = density.map((d, i) => {
 // era divider x-positions
 const eraDividers = [1965, 1991, 2005].map((yr) => ({
   year: yr,
-  x: (yr - startYear) * (barW + gap) - gap / 2,
+  x: (yr - startYear) * band,
 }));
 const axisTicks = [1947, 1960, 1980, 2000, 2014].map((yr) => ({
   year: yr,
-  x: (yr - startYear) * (barW + gap) + barW / 2,
-  pct:
-    (((yr - startYear) * (barW + gap) + barW / 2) / DW) * 100,
+  pct: (((yr - startYear) + 0.5) / n) * 100,
 }));
 const peakYears = [...density]
   .filter((d) => d.count > 1)
@@ -177,7 +177,7 @@ const densityTips = JSON.stringify(
                   width={b.w}
                   height={b.h}
                   rx="1.5"
-                  fill={b.count > 1 ? "#c05f10" : "#e59a49"}
+                  fill={b.count > 1 ? "#a21caf" : "#d946ef"}
                   opacity={b.count > 0 ? 1 : 0}
                 />
               ))

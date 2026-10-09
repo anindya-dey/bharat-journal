@@ -22,10 +22,9 @@ const links = [
     <div class="flex items-center justify-between h-16">
       <a href="/" class="flex items-center gap-2.5 group">
         <span
-          class="relative grid place-items-center w-9 h-9 rounded-xl shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
-          style="background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);"
+          class="logo-mark relative grid place-items-center w-9 h-9 rounded-xl shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
         >
-          <Compass size={18} stroke-width={2.4} class="text-navy-800" />
+          <Compass size={18} stroke-width={2.4} class="text-[#1a1235]" />
         </span>
         <span class="flex flex-col leading-none">
           <span class="font-display font-bold text-lg text-ink tracking-tight">
@@ -60,8 +59,8 @@ const links = [
         <button
           id="palette-open"
           type="button"
-          aria-label="Open command palette (Ctrl/Cmd + K)"
-          class="nav-link-hover hidden md:grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink transition-colors"
+          aria-label="Open search (Ctrl/Cmd + K)"
+          class="nav-link-hover grid place-items-center w-9 h-9 rounded-lg text-ink/70 hover:text-ink transition-colors"
         >
           <Search size={18} stroke-width={2.2} />
         </button>
@@ -99,12 +98,6 @@ const links = [
           </a>
         ))
       }
-      <a
-        href="/search"
-        class="px-3.5 py-2.5 rounded-lg text-sm font-semibold text-ink/70 nav-link-hover transition-colors"
-      >
-        Search
-      </a>
     </nav>
   </div>
 </header>

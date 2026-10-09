@@ -22,13 +22,16 @@ function initChart(el) {
   if (tips.length === 0) return;
 
   var title = el.dataset.title || "";
-  var color = el.dataset.color || "#e07b1a";
-  var W = Number(el.dataset.w) || 860;
-  var H = Number(el.dataset.h) || 400;
-  var PL = Number(el.dataset.padl) || 64;
-  var PR = Number(el.dataset.padr) || 28;
-  var PT = Number(el.dataset.padt) || 24;
-  var PB = Number(el.dataset.padb) || 36;
+  var color = el.dataset.color || "#c026d3";
+  var num = function (v, fallback) {
+    return v !== undefined && v !== "" ? Number(v) : fallback;
+  };
+  var W = num(el.dataset.w, 860);
+  var H = num(el.dataset.h, 400);
+  var PL = num(el.dataset.padl, 64);
+  var PR = num(el.dataset.padr, 28);
+  var PT = num(el.dataset.padt, 24);
+  var PB = num(el.dataset.padb, 36);
   var n = tips.length;
   var inner = W - PL - PR;
 

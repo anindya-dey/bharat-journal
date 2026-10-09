@@ -49,11 +49,20 @@ const items = JSON.stringify([...staticItems, ...vizItems, ...ideaItems]);
     />
     <ul id="cmdk-list" class="max-h-[50vh] overflow-y-auto py-2"></ul>
     <div
-      class="px-4 py-2.5 border-t border-line text-[11px] text-fog flex items-center gap-4"
+      class="px-4 py-2.5 border-t border-line text-[11px] text-fog flex flex-wrap items-center gap-x-4 gap-y-1"
     >
-      <span><kbd class="font-mono">↑↓</kbd> navigate</span>
-      <span><kbd class="font-mono">↵</kbd> open</span>
-      <span><kbd class="font-mono">esc</kbd> close</span>
+      <span class="inline-flex items-center gap-1"
+        ><kbd class="font-mono">⌘K</kbd> toggle</span
+      >
+      <span class="inline-flex items-center gap-1"
+        ><kbd class="font-mono">↑↓</kbd> navigate</span
+      >
+      <span class="inline-flex items-center gap-1"
+        ><kbd class="font-mono">↵</kbd> open</span
+      >
+      <span class="inline-flex items-center gap-1"
+        ><kbd class="font-mono">esc</kbd> close</span
+      >
     </div>
   </div>
 </div>

@@ -13,57 +13,57 @@
   --font-display: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  /* Brand: navy */
-  --color-navy-50: #f2f5f9;
-  --color-navy-100: #e2e9f2;
-  --color-navy-200: #c3d2e5;
-  --color-navy-300: #94b3d1;
-  --color-navy-400: #648bbd;
-  --color-navy-500: #42699f;
-  --color-navy-600: #31517e;
-  --color-navy-soft: #2c4a6e;
-  --color-navy: #1d3557;
-  --color-navy-700: #1d3557;
-  --color-navy-800: #16293f;
-  --color-navy-900: #131f2f;
-  --color-navy-950: #0d1722;
+  /* Violet */
+  --color-navy-50: #f5f3ff;
+  --color-navy-100: #ede9fe;
+  --color-navy-200: #ddd6fe;
+  --color-navy-300: #c4b5fd;
+  --color-navy-400: #a78bfa;
+  --color-navy-500: #8b5cf6;
+  --color-navy-600: #7c3aed;
+  --color-navy-soft: #8b5cf6;
+  --color-navy: #7c3aed;
+  --color-navy-700: #6d28d9;
+  --color-navy-800: #5b21b6;
+  --color-navy-900: #4c1d95;
+  --color-navy-950: #2e1065;
 
-  /* Accent: saffron */
-  --color-saffron: #e07b1a;
-  --color-saffron-50: #fdf6ec;
-  --color-saffron-100: #f9ecd3;
-  --color-saffron-200: #f2d3a5;
-  --color-saffron-300: #ecb471;
-  --color-saffron-400: #e59a49;
-  --color-saffron-500: #e07b1a;
-  --color-saffron-600: #c05f10;
-  --color-saffron-700: #99490e;
-  --color-saffron-800: #7c3c11;
-  --color-saffron-900: #663210;
-  --color-marigold: #f59e0b;
+  /* Fuchsia accent */
+  --color-saffron: #c026d3;
+  --color-saffron-50: #fdf4ff;
+  --color-saffron-100: #fae8ff;
+  --color-saffron-200: #f5d0fe;
+  --color-saffron-300: #f0abfc;
+  --color-saffron-400: #e879f9;
+  --color-saffron-500: #d946ef;
+  --color-saffron-600: #a21caf;
+  --color-saffron-700: #86198f;
+  --color-saffron-800: #701a75;
+  --color-saffron-900: #4a044e;
+  --color-marigold: #d946ef;
 
-  /* Greens */
-  --color-moss: #3f7d3f;
-  --color-moss-300: #a3cba3;
-  --color-moss-400: #74a874;
-  --color-moss-500: #3f7d3f;
-  --color-moss-600: #336833;
-  --color-moss-700: #2a542a;
+  /* Teal */
+  --color-moss: #0d9488;
+  --color-moss-300: #5eead4;
+  --color-moss-400: #2dd4bf;
+  --color-moss-500: #14b8a6;
+  --color-moss-600: #0d9488;
+  --color-moss-700: #0f766e;
 
-  /* Red */
-  --color-clay: #b3392f;
-  --color-clay-500: #b3392f;
-  --color-clay-600: #96302a;
+  /* Rose */
+  --color-clay: #e11d48;
+  --color-clay-500: #e11d48;
+  --color-clay-600: #be123c;
 
   /* Neutrals */
-  --color-paper: #faf9f6;
+  --color-paper: #fbf9ff;
   --color-paper-2: #ffffff;
   --color-chrome: #ffffff;
-  --color-cream: #f4efe4;
-  --color-line: #e4e0d4;
-  --color-fog: #5d6472;
-  --color-ink: #16181d;
-  --color-ink-soft: #3c414b;
+  --color-cream: #f3eefe;
+  --color-line: #e7dffb;
+  --color-fog: #6b6480;
+  --color-ink: #1a1428;
+  --color-ink-soft: #443c5a;
 
   --shadow-card: 0 1px 2px rgb(22 24 29 / 0.04), 0 4px 16px -4px rgb(22 24 29 / 0.08);
   --shadow-lift: 0 2px 4px rgb(22 24 29 / 0.05), 0 12px 32px -8px rgb(22 24 29 / 0.14);
@@ -120,14 +120,23 @@
 body {
   font-family: var(--font-sans);
   background-color: var(--color-paper);
-  /* Tricolor wash: saffron (top-left) → white → green (bottom-right) */
-  background-image: linear-gradient(
-    135deg,
-    rgba(255, 153, 51, 0.1) 0%,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(19, 136, 8, 0.1) 100%
-  );
+  /* Subtle violet → teal wash */
+  background-image:
+    radial-gradient(
+      900px 520px at 8% -8%,
+      rgba(124, 58, 237, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      820px 600px at 98% 10%,
+      rgba(13, 148, 136, 0.07),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 80% 118%,
+      rgba(192, 38, 211, 0.06),
+      transparent 60%
+    );
   background-repeat: no-repeat;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
@@ -172,6 +181,14 @@ body {
 }
 .dark .nav-link-hover:hover {
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Logo mark: tricolor (light) → cyberpunk (dark) ---------- */
+.logo-mark {
+  background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+}
+.dark .logo-mark {
+  background: linear-gradient(135deg, #a78bfa 0%, #d946ef 50%, #2dd4bf 100%);
 }
 
 /* ---------- Charts ---------- */
@@ -220,44 +237,59 @@ body {
 }
 
 /* Dark mode: brighten the baked chart strokes/fills for contrast */
-.dark .chart-svg svg [stroke="#1d3557"] {
+.dark .chart-svg svg [stroke="#7c3aed"] {
   stroke: #a78bfa !important;
 }
-.dark .chart-svg svg [stroke="#e07b1a"] {
-  stroke: #f0abfc !important;
+.dark .chart-svg svg [stroke="#c026d3"] {
+  stroke: #e879f9 !important;
 }
-.dark .chart-svg svg [stroke="#3f7d3f"] {
+.dark .chart-svg svg [stroke="#0d9488"] {
   stroke: #2dd4bf !important;
 }
-.dark .chart-svg svg [stroke="#b3392f"] {
+.dark .chart-svg svg [stroke="#e11d48"] {
   stroke: #fb7185 !important;
 }
-.dark .chart-svg svg [fill="#1d3557"] {
+.dark .chart-svg svg [stroke="#d946ef"] {
+  stroke: #f0abfc !important;
+}
+.dark .chart-svg svg [stroke="#a21caf"] {
+  stroke: #f0abfc !important;
+}
+.dark .chart-svg svg [fill="#7c3aed"] {
   fill: #a78bfa !important;
 }
-.dark .chart-svg svg [fill="#e07b1a"] {
-  fill: #f0abfc !important;
+.dark .chart-svg svg [fill="#c026d3"] {
+  fill: #e879f9 !important;
 }
-.dark .chart-svg svg [fill="#3f7d3f"] {
+.dark .chart-svg svg [fill="#0d9488"] {
   fill: #2dd4bf !important;
 }
-.dark .chart-svg svg [fill="#b3392f"] {
+.dark .chart-svg svg [fill="#e11d48"] {
   fill: #fb7185 !important;
 }
-.dark .chart-svg svg stop[stop-color="#1d3557"] {
+.dark .chart-svg svg [fill="#d946ef"] {
+  fill: #f0abfc !important;
+}
+.dark .chart-svg svg [fill="#a21caf"] {
+  fill: #f0abfc !important;
+}
+.dark .chart-svg svg stop[stop-color="#7c3aed"] {
   stop-color: #a78bfa !important;
 }
-.dark .chart-svg svg stop[stop-color="#e07b1a"] {
-  stop-color: #f0abfc !important;
+.dark .chart-svg svg stop[stop-color="#c026d3"] {
+  stop-color: #e879f9 !important;
 }
-.dark .chart-svg svg stop[stop-color="#3f7d3f"] {
+.dark .chart-svg svg stop[stop-color="#0d9488"] {
   stop-color: #2dd4bf !important;
 }
-.dark .chart-svg svg stop[stop-color="#b3392f"] {
+.dark .chart-svg svg stop[stop-color="#e11d48"] {
   stop-color: #fb7185 !important;
 }
-.dark .chart-svg svg [stroke="#faf9f6"] {
-  stroke: #17102b !important;
+.dark .chart-svg svg stop[stop-color="#d946ef"] {
+  stop-color: #f0abfc !important;
+}
+.dark .chart-svg svg stop[stop-color="#a21caf"] {
+  stop-color: #f0abfc !important;
 }
 
 /* ---------- Command palette + Pagefind (theme-aware) ---------- */
