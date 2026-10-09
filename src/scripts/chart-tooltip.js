@@ -41,13 +41,20 @@
     dot.style.pointerEvents = "none";
     svg.appendChild(dot);
 
-    var n = tips.length;
+  var n = tips.length;
 
-    function show(idx, clientX, clientY) {
-      var t = tips[idx];
-      if (!t) return;
-      var label = t.label || "";
-      var value = t.value;
+  // Cap any long decimal run to at most 2 places (e.g. 41.18333 → 41.18)
+  function clean(v) {
+    return String(v).replace(/(\d+\.\d{3,})/g, function (m) {
+      return Number(m).toFixed(2);
+    });
+  }
+
+  function show(idx, clientX, clientY) {
+    var t = tips[idx];
+    if (!t) return;
+    var label = t.label || "";
+    var value = clean(t.value);
       tip.innerHTML =
         '<span style="opacity:.65">' + label + "</span><br><b>" + value + "</b>";
       tip.classList.remove("hidden");

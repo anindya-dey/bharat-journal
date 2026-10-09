@@ -1,6 +1,7 @@
 ---
 import { Search, Compass, Menu } from "@lucide/astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import IndianFlag from "./IndianFlag.astro";
 import { SITE } from "../data/site";
 
 const path = Astro.url.pathname;
@@ -22,13 +23,17 @@ const links = [
     <div class="flex items-center justify-between h-16">
       <a href="/" class="flex items-center gap-2.5 group">
         <span
-          class="grid place-items-center w-9 h-9 rounded-xl bg-navy text-paper shadow-card group-hover:scale-105 transition-transform"
+          class="relative grid place-items-center w-9 h-9 rounded-xl shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
+          style="background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);"
         >
-          <Compass size={19} stroke-width={2.2} />
+          <Compass size={18} stroke-width={2.4} class="text-navy-800" />
         </span>
         <span class="flex flex-col leading-none">
-          <span class="font-display font-bold text-lg text-ink tracking-tight">
-            {SITE.title}
+          <span class="flex items-center gap-2">
+            <span class="font-display font-bold text-lg text-ink tracking-tight">
+              {SITE.title}
+            </span>
+            <IndianFlag size={20} class="shrink-0" />
           </span>
           <span class="text-[11px] font-medium text-fog tracking-wide hidden sm:inline">
             {SITE.tagline}

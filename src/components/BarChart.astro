@@ -42,7 +42,11 @@ g.window = {
 const W = 860;
 const H = 400;
 const yMax = Math.max(...data.map((d) => d.value)) * 1.12;
-const fmt = formatValue ?? ((d: Datum) => `${d.value}`);
+const num = (v: number) =>
+  (Math.round(v * 100) / 100).toLocaleString("en-IN", {
+    maximumFractionDigits: 2,
+  });
+const fmt = formatValue ?? ((d: Datum) => num(d.value));
 
 const svg = Plot.plot({
   width: W,
@@ -56,7 +60,7 @@ const svg = Plot.plot({
     fontFamily: "Quicksand Variable, sans-serif",
     fontSize: "12px",
     overflow: "visible",
-    color: "#5d6472",
+    color: "var(--color-fog)",
   },
   y: { domain: [0, yMax], label: yLabel, labelOffset: 42, grid: true, ticks: 5 },
   x: { type: "band", label: null },
@@ -76,7 +80,7 @@ const svg = Plot.plot({
       dy: -9,
       fontSize: 11,
       fontWeight: 600,
-      fill: "#16181d",
+      fill: "var(--color-ink)",
     }),
   ],
 });
@@ -116,7 +120,7 @@ const jsonTips = JSON.stringify(
   <span class="sr-only">{seriesLabel || "Chart"}: {summary}</span>
   <Fragment set:html={svgStr} />
   <div
-    class="chart-tip pointer-events-none absolute z-10 hidden rounded-xl bg-ink/90 text-paper px-3 py-2 text-xs font-semibold shadow-lift backdrop-blur-sm dark:bg-ink-soft/95"
+    class="chart-tip pointer-events-none absolute z-10 hidden rounded-xl bg-slate-900 text-slate-50 px-3 py-2 text-xs font-semibold shadow-lift backdrop-blur-sm"
   >
   </div>
 </div>
