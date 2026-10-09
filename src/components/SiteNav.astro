@@ -1,6 +1,7 @@
 ---
 import { Search, Compass, Menu } from "@lucide/astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import IndianFlag from "./IndianFlag.astro";
 import { SITE } from "../data/site";
 
 const path = Astro.url.pathname;
@@ -19,7 +20,7 @@ const links = [
   class="site-nav sticky top-0 z-40 border-b border-line bg-chrome/70 backdrop-blur-xl"
 >
   <div class="max-w-6xl mx-auto px-5 md:px-8">
-    <div class="flex items-center justify-between h-16">
+    <div class="relative flex items-center justify-between h-16">
       <a href="/" class="flex items-center gap-2.5 group">
         <span
           class="logo-mark relative grid place-items-center w-9 h-9 rounded-xl shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
@@ -34,6 +35,17 @@ const links = [
             {SITE.tagline}
           </span>
         </span>
+      </a>
+
+      <a
+        href="/"
+        aria-label="Bharat Journal — home"
+        class="absolute left-1/2 -translate-x-1/2 hidden sm:block group"
+      >
+        <IndianFlag
+          size={28}
+          class="rounded-[3px] shadow-card ring-1 ring-black/10 dark:ring-white/15 group-hover:scale-105 transition-transform"
+        />
       </a>
 
       <div class="flex items-center gap-1.5">

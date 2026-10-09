@@ -11,7 +11,6 @@ const ideas = defineCollection({
     description: z.string(),
     origin: z.enum(["my-proposal", "government-initiative"]),
     status: z.enum(IDEA_STATUSES),
-    statusNote: z.string().optional(),
     themes: z.array(z.string()).min(1),
     relatedNow: z.string().optional(),
     relatedMilestone: z.string().optional(),
@@ -34,12 +33,6 @@ const now = defineCollection({
       "space",
     ]),
     datasets: z.array(z.string()).default([]),
-    sparkline: z
-      .object({
-        dataset: z.string(),
-        key: z.string(),
-      })
-      .optional(),
     unit: z.string(),
     sources: z
       .array(
@@ -51,7 +44,6 @@ const now = defineCollection({
         }),
       )
       .min(1, "Every visualisation must cite at least one source"),
-    relatedIdeas: z.array(z.string()).default([]),
     updated: z.string(),
   }),
 });
