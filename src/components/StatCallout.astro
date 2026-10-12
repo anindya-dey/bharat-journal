@@ -16,10 +16,25 @@ const accents = {
   moss: "text-moss",
   clay: "text-clay",
 };
+
+// detect a leading number for the count-up (e.g. "~185 bn" → 185)
+const m = value.match(/^([~]?)([\d,.]+)\s*(.*)$/);
+const prefix = m?.[1] ?? "";
+const num = m?.[2] ?? "";
+const suffix = m?.[3] ?? "";
+const parsed = num ? Number(num.replace(/,/g, "")) : NaN;
+const decimals = num.includes(".")
+  ? Math.min(num.split(".")[1]?.length ?? 0, 2)
+  : 0;
+const canCount = Number.isFinite(parsed) && num !== "";
 ---
 
 <div
   class="rounded-2xl border border-line bg-paper-2 p-5 shadow-card flex flex-col gap-2"
+  data-countup={canCount ? String(parsed) : undefined}
+  data-decimals={canCount ? String(decimals) : undefined}
+  data-prefix={prefix}
+  data-suffix={suffix}
 >
   {
     Icon && (
@@ -30,11 +45,57 @@ const accents = {
   }
   <div
     class:list={[
-      "font-display text-3xl font-bold tracking-tight",
+      "stat-value font-display text-3xl font-bold tracking-tight",
       accents[accent],
     ]}
   >
-    {value}
+    {canCount ? `${prefix}${num}${suffix}` : value}
   </div>
   <div class="text-sm font-medium text-fog leading-snug">{label}</div>
 </div>
+
+<script>
+  // Count-up when scrolled into view (no-op under reduced motion)
+  function initCountUp() {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var els = document.querySelectorAll<HTMLElement>("[data-countup]");
+    if (
+      !("IntersectionObserver" in window) ||
+      reduce.matches ||
+      els.length === 0
+    )
+      return;
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          var el = entry.target as HTMLElement;
+          var target = Number(el.dataset.countup);
+          var dec = Number(el.dataset.decimals || 0);
+          var pre = el.dataset.prefix || "";
+          var suf = el.dataset.suffix || "";
+          var box = el.querySelector<HTMLElement>(".stat-value");
+          if (!box || !Number.isFinite(target)) return;
+          var t0 = performance.now();
+          var dur = 900;
+          var tick = function (t: number) {
+            var p = Math.min((t - t0) / dur, 1);
+            var e = 1 - Math.pow(1 - p, 3);
+            var v = target * e;
+            var txt =
+              dec > 0 ? v.toFixed(dec) : Math.round(v).toLocaleString("en-IN");
+            if (box) box.textContent = pre + txt + suf;
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    els.forEach(function (el) {
+      io.observe(el);
+    });
+  }
+  initCountUp();
+</script>

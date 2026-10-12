@@ -26,9 +26,9 @@ Legend: **P0** = fix now · **P1** = high value · **P2** = nice to have
 
 ## P0 — Correctness & dead code
 
-> **Applied alongside this review:** items 1, 2 and 4 below were implemented
-> (deleted `Callout.astro` + `Sparkline.astro`, pruned the unused schema
-> fields and their frontmatter, and added global `:focus-visible` styles).
+> **Status: applied.** Items 1, 2 and 4 below were implemented (deleted
+> `Callout.astro` + `Sparkline.astro`, pruned the unused schema fields and
+> their frontmatter, and added global `:focus-visible` styles).
 
 1. **Unused components.** `src/components/Callout.astro` and
    `src/components/Sparkline.astro` have **zero imports**. Delete both.
@@ -43,6 +43,12 @@ Legend: **P0** = fix now · **P1** = high value · **P2** = nice to have
 
 ## P1 — High value
 
+> **Status: applied.** Items 5–9 below were implemented (Vercel Analytics
+> installed + deploy docs; per-theme OG images for then/now/next/about with
+> a shared renderer; `/next` gained a status filter and sort; the `/now` index
+> now shows related-idea chips; article pages gained `datePublished` JSON-LD
+> and a "raise a correction" link).
+
 5. **Deploy it.** Import the repo to Vercel and point
    `bharat-journal.anindyadey.com` at it (the `site` URL and sitemap already
    assume that domain).
@@ -55,6 +61,14 @@ Legend: **P0** = fix now · **P1** = high value · **P2** = nice to have
    (proposed / in progress / achieved) and a sort (recent, A–Z).
 
 ## P2 — Polish
+
+> **Status: applied.** Items 10–14 below were implemented (a year-jump
+> scrubber on `/then`; an end-value bubble on every line chart + a line
+> draw-on animation; count-up numbers on stat callouts; a `/schemes` index
+> page with a central `src/data/schemes.ts` registry; a light
+> `targetChannel` — "who could act" — field on all 30 ideas; empty states
+> and `aria-live` filter counts on `/then` and `/next`; a first-time-visitor
+> hint on the homepage).
 
 10. **`/then` year jump.** The era nav jumps by era; add a year scrubber or
     search-in-timeline for the 56 milestones.
@@ -142,11 +156,10 @@ Legend: **P0** = fix now · **P1** = high value · **P2** = nice to have
 
 - Componentisation is good (`Container`, `PageHeader`, `Prose`, `NextCTA`,
   `StatCallout`, `StatusBadge`, `SourceList`, `Breadcrumb`, charts).
-- The repeated `prose prose-lg …` class string appears in several pages —
-  extract a `<Prose>` usage everywhere (already a component).
 - `charts.ts` helper is light; good.
-- **No tests / CI.** Add a GitHub Action running `pnpm lint` + `pnpm build` on
-  push, so a broken source or missing citation fails fast.
+- **CI now runs on push/PR** (`.github/workflows/ci.yml`: lint + build).
+- **No unit tests.** CI covers build integrity; content correctness is
+  guarded by the Zod schema (missing sources fail the build).
 
 ## Deletions
 

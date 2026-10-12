@@ -21,11 +21,19 @@ const {
   data,
   yLabel = "",
   annotations = [],
-  color = "#16a34a",
+  color = "#ea580c",
   seriesLabel = yLabel,
   formatValue,
   formatLabel,
 } = Astro.props;
+
+const num = (v: number) =>
+  (Math.round(v * 100) / 100).toLocaleString("en-IN", {
+    maximumFractionDigits: 2,
+  });
+const fmt =
+  formatValue ?? ((v: number) => (v >= 1000 ? `${num(v / 1000)}k` : num(v)));
+const labelFmt = formatLabel ?? ((d: Datum) => d.date.slice(0, 4));
 
 const linkedom = parseHTML("<!doctype html><html><body></body></html>");
 const g = globalThis as any;
@@ -101,7 +109,7 @@ const svg = Plot.plot({
       ? [
           Plot.ruleX(annotations, {
             x: "date",
-            stroke: "#16a34a",
+            stroke: "#c026d3",
             strokeWidth: 1,
             strokeDasharray: "4 4",
             opacity: 0.7,
@@ -119,19 +127,32 @@ const svg = Plot.plot({
           }),
         ]
       : []),
+    // End-point value bubble
+    Plot.dot([data[data.length - 1]], {
+      x: "date",
+      y: "value",
+      r: 5,
+      fill: color,
+      stroke: "var(--color-paper)",
+      strokeWidth: 2,
+    }),
+    Plot.text([data[data.length - 1]], {
+      x: "date",
+      y: "value",
+      text: (d: Datum) => fmt(d.value),
+      dx: 10,
+      dy: -6,
+      fontSize: 12,
+      fontWeight: 700,
+      fill: color,
+      textAnchor: "start",
+    }),
   ],
 });
 
 g.document = priorDocument;
 g.window = priorWindow;
 
-const num = (v: number) =>
-  (Math.round(v * 100) / 100).toLocaleString("en-IN", {
-    maximumFractionDigits: 2,
-  });
-const fmt =
-  formatValue ?? ((v: number) => (v >= 1000 ? `${num(v / 1000)}k` : num(v)));
-const labelFmt = formatLabel ?? ((d: Datum) => d.date.slice(0, 4));
 
 const defs = `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.30"/><stop offset="100%" stop-color="${color}" stop-opacity="0.02"/></linearGradient></defs>`;
 

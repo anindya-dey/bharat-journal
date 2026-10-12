@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { Library, ArrowUpRight } from "@lucide/astro";
+import { SCHEMES } from "../data/schemes";
+
+const byMinistry = [...SCHEMES]
+  .sort((a, b) => a.name.localeCompare(b.name))
+  .reduce((acc, s) => {
+    (acc[s.ministry] ??= []).push(s);
+    return acc;
+  }, {} as Record<string, typeof SCHEMES>);
+
+const ministries = Object.keys(byMinistry).sort();
+---
+
+<BaseLayout
+  title="Schemes"
+  description="Every government scheme and programme referenced in this journal, with official links — grouped by ministry."
+  ogImage="/og-image/about.png"
+>
+  <PageHeader
+    eyebrow="Reference"
+    title="Schemes & programmes"
+    Icon={Library}
+    description="Every government scheme referenced anywhere in this journal, with a link to its official page. Grouped by the ministry that runs it."
+  >
+  </PageHeader>
+
+  <div class="pb-20 space-y-10">
+    {
+      ministries.map((m) => (
+        <section>
+          <Container size="wide">
+            <h2 class="font-display text-lg font-bold text-ink mb-4">{m}</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {byMinistry[m].map((s) => (
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="group rounded-2xl border border-line bg-paper-2 p-4 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
+                >
+                  <span class="font-display font-bold text-ink group-hover:text-navy transition-colors leading-snug">
+                    {s.name}
+                  </span>
+                  <span class="mt-auto pt-3 flex items-center justify-between gap-2 text-[11px] text-fog">
+                    <span>{s.themes.join(" · ")}</span>
+                    <ArrowUpRight
+                      size={13}
+                      class="text-fog group-hover:text-navy transition-colors"
+                    />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </Container>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>

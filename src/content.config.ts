@@ -12,6 +12,7 @@ const ideas = defineCollection({
     origin: z.enum(["my-proposal", "government-initiative"]),
     status: z.enum(IDEA_STATUSES),
     themes: z.array(z.string()).min(1),
+    targetChannel: z.string().optional(),
     relatedNow: z.string().optional(),
     relatedMilestone: z.string().optional(),
     updated: z.string(),

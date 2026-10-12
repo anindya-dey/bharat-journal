@@ -38,7 +38,7 @@ Three kinds of content, all versioned in git:
   story + sources + a "what's next" link. Every chart carries its dataset
   (JSON) with source URL and retrieved date. Build fails if a source is missing.
 - **Ideas** (`src/content/next/`) — proposals with anatomy
-  (spark → gap → precedent → proposal → submission record → status log).
+  (where it was seen → what's missing → what India already has → proposal).
   Achieved ideas keep their URL and link to a related visualisation.
 
 ## Commands
@@ -50,6 +50,15 @@ Three kinds of content, all versioned in git:
 | `pnpm build` | Production build + Pagefind index |
 | `pnpm preview` | Preview the production build |
 | `pnpm lint` | Astro check + TypeScript |
+
+## Deployment (Vercel)
+
+1. Push to `main` — CI (GitHub Actions) runs `pnpm lint` + `pnpm build`.
+2. Import the repo on [Vercel](https://vercel.com) (framework preset: Astro).
+   The build command is `pnpm build`; output directory `dist/`.
+3. Add the custom domain `bharat-journal.anindyadey.com` in the project's
+   domains settings, then add the CNAME it gives you to your DNS.
+4. Vercel Analytics runs automatically (`@vercel/analytics` is installed).
 
 ## Data sources
 

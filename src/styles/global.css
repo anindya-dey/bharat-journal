@@ -200,6 +200,34 @@ body {
   outline-color: var(--color-navy-soft);
 }
 
+/* ---------- /then year scrubber ---------- */
+.year-jump-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-navy) 0%, var(--color-moss) 100%);
+  cursor: pointer;
+}
+.year-jump-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--color-navy);
+  border: 2px solid var(--color-paper);
+  box-shadow: var(--shadow-card);
+}
+.year-jump-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--color-navy);
+  border: 2px solid var(--color-paper);
+  box-shadow: var(--shadow-card);
+}
+
 /* ---------- Nav hover: subtle neutral tint ---------- */
 .nav-link-hover {
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -238,6 +266,20 @@ main h2 {
 /* ---------- Charts ---------- */
 .chart-svg {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Line draw-on: strokes animate their dash offset */
+@keyframes chart-draw {
+  from {
+    stroke-dashoffset: 2600;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.chart-svg:not([data-bar]) svg path[fill="none"] {
+  stroke-dasharray: 2600;
+  animation: chart-draw 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ---------- Chart tooltip ---------- */

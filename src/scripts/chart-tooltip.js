@@ -52,7 +52,8 @@ function initChart(el) {
       });
     }
   });
-  var useMarks = marks.length === n;
+  var useMarks = marks.length >= n;
+  if (useMarks) marks = marks.slice(0, n);
 
   // ---- Fallback mapping (if marks are unavailable) ----
   var t0, tN;

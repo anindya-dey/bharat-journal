@@ -6,6 +6,7 @@ import CommandPalette from "../components/CommandPalette.astro";
 import BackToTop from "../components/BackToTop.astro";
 import Reveal from "../components/Reveal.astro";
 import ChartTooltip from "../components/ChartTooltip.astro";
+import Analytics from "@vercel/analytics/astro";
 import { SITE } from "../data/site";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   description?: string;
   type?: "website" | "article";
   ogImage?: string;
+  published?: string;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   description,
   type = "website",
   ogImage = "/og-image.png",
+  published,
 } = Astro.props;
 
 const pageTitle = title
@@ -30,7 +33,7 @@ const pageDescription = description ?? SITE.description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
 
-const jsonLd = JSON.stringify({
+const jsonLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": type === "article" ? "Article" : "WebSite",
   name: pageTitle,
@@ -38,7 +41,11 @@ const jsonLd = JSON.stringify({
   url: canonical.toString(),
   author: { "@type": "Person", name: SITE.author },
   publisher: { "@type": "Person", name: SITE.author },
-});
+};
+if (published) {
+  jsonLd.datePublished = published;
+  jsonLd.dateModified = published;
+}
 ---
 
 <!doctype html>
@@ -68,7 +75,7 @@ const jsonLd = JSON.stringify({
     <script
       is:inline
       type="application/ld+json"
-      set:html={jsonLd}
+      set:html={JSON.stringify(jsonLd)}
     />
     <script is:inline>
       (function () {
@@ -101,6 +108,7 @@ const jsonLd = JSON.stringify({
     <BackToTop />
     <Reveal />
     <ChartTooltip />
+    <Analytics />
     <script>
       const bar = document.getElementById("reading-progress");
       const update = () => {

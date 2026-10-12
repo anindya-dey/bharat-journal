@@ -31,6 +31,7 @@ const milestone = idea.data.relatedMilestone
   title={idea.data.title}
   description={idea.data.description}
   type="article"
+  published={idea.data.updated}
 >
   <article class="pt-14 pb-16">
     <Container>
@@ -63,11 +64,29 @@ const milestone = idea.data.relatedMilestone
         <p class="mt-4 text-lg text-ink/70 leading-relaxed">
           {idea.data.description}
         </p>
+        {
+          idea.data.targetChannel && (
+            <span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-moss bg-moss/10 px-3 py-1.5 rounded-lg">
+              <Landmark size={15} stroke-width={2.2} />
+              Who could act: {idea.data.targetChannel}
+            </span>
+          )
+        }
       </header>
 
       <Prose>
         <Content />
       </Prose>
+      <p class="mt-10 text-sm text-fog">
+        Spotted something wrong?{" "}
+        <a
+          href="https://github.com/anindya-dey/bharat-journal/issues"
+          class="font-semibold text-navy hover:text-saffron-600"
+          >Raise a correction</a
+        >{" "}
+        — it gets fixed visibly.
+      </p>
+
 
       {
         milestone && (

@@ -23,6 +23,7 @@ const relatedIdeas = (await getCollection("ideas")).filter((i) =>
   title={viz.data.title}
   description={viz.data.description}
   type="article"
+  published={viz.data.updated}
 >
   <article class="pt-14 pb-16">
     <Container>
@@ -65,6 +66,16 @@ const relatedIdeas = (await getCollection("ideas")).filter((i) =>
       <Prose>
         <Content />
       </Prose>
+      <p class="mt-10 text-sm text-fog">
+        Spotted something wrong?{" "}
+        <a
+          href="https://github.com/anindya-dey/bharat-journal/issues"
+          class="font-semibold text-navy hover:text-saffron-600"
+          >Raise a correction</a
+        >{" "}
+        — it gets fixed visibly.
+      </p>
+
 
       {
         relatedIdeas.length > 0 && (

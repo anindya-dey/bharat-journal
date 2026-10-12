@@ -101,6 +101,7 @@ const densityTips = JSON.stringify(
 ---
 
 <BaseLayout
+  ogImage="/og-image/then.png"
   title="Then"
   description="A milestone timeline of India, 1947–2014 — constitution to digital foundations."
 >
@@ -207,8 +208,8 @@ const densityTips = JSON.stringify(
     </Container>
   </header>
 
-  <!-- Era jump + sector filter -->
-  <section class="pt-6 pb-4">
+      <!-- Era jump + sector filter -->
+      <section class="pt-6 pb-4">
     <Container size="wide">
       <nav aria-label="Jump to era" class="flex flex-wrap items-center gap-2">
         {
@@ -223,6 +224,35 @@ const densityTips = JSON.stringify(
           ))
         }
       </nav>
+
+      <div class="mt-4 flex items-center gap-3">
+        <label
+          for="year-jump"
+          class="text-[11px] font-semibold uppercase tracking-wide text-fog shrink-0"
+        >
+          Jump to year
+        </label>
+        <input
+          id="year-jump"
+          type="range"
+          min={startYear}
+          max={endYear}
+          value={startYear}
+          step="1"
+          list="year-ticks"
+          class="year-jump-range flex-1 min-w-0"
+          aria-label="Jump to a year"
+        />
+        <datalist id="year-ticks">
+          {axisTicks.map((t) => <option value={t.year}></option>)}
+        </datalist>
+        <output
+          id="year-jump-val"
+          class="font-mono text-sm font-bold text-navy tabular-nums w-14 text-right"
+        >
+          {startYear}
+        </output>
+      </div>
 
       <div class="mt-5 flex flex-wrap gap-2" id="sector-filter">
         <button
@@ -251,8 +281,15 @@ const densityTips = JSON.stringify(
 
       <!-- content-width separator -->
       <div class="mt-6 h-px w-full bg-line" aria-hidden="true"></div>
+      <p id="then-filter-count" aria-live="polite" class="sr-only">
+        {total} milestones
+      </p>
     </Container>
   </section>
+
+  <p class="then-no-results hidden max-w-6xl mx-auto px-5 md:px-8 pb-8 text-sm text-fog italic">
+    No milestones match the selected sector. Try another.
+  </p>
 
   <div class="pb-16">
     {
@@ -358,6 +395,8 @@ const densityTips = JSON.stringify(
     const yearGroups = document.querySelectorAll<HTMLElement>(
       "[data-year-group]",
     );
+    const countEl = document.getElementById("then-filter-count");
+    const noResults = document.querySelector(".then-no-results");
 
     const ACTIVE = ["border-navy", "bg-navy", "text-paper"];
     const INACTIVE = [
@@ -369,16 +408,22 @@ const densityTips = JSON.stringify(
     ];
 
     const setActive = (sector: string) => {
+      let visible = 0;
       document.querySelectorAll<HTMLElement>(".milestone").forEach((el) => {
         const match = sector === "all" || el.dataset.sector === sector;
         el.style.display = match ? "" : "none";
+        if (match) visible++;
       });
       yearGroups.forEach((group) => {
-        const visible = group.querySelectorAll<HTMLElement>(
+        const vis = group.querySelectorAll<HTMLElement>(
           '.milestone:not([style*="display: none"])',
         ).length;
-        group.style.display = visible > 0 ? "" : "none";
+        group.style.display = vis > 0 ? "" : "none";
       });
+      if (countEl)
+        countEl.textContent = `${visible} milestone${visible === 1 ? "" : "s"} in view`;
+      if (noResults)
+        (noResults as HTMLElement).classList.toggle("hidden", visible > 0);
     };
 
     buttons.forEach((btn) => {
@@ -399,6 +444,38 @@ const densityTips = JSON.stringify(
         history.replaceState(null, "", url);
       });
     });
+
+    // Year jump: slide to a year, scroll to the nearest year group
+    const slider = document.getElementById(
+      "year-jump",
+    ) as HTMLInputElement | null;
+    const out = document.getElementById("year-jump-val");
+    if (slider && out) {
+      const years = Array.from(yearGroups).map((g) => ({
+        el: g,
+        y: Number(
+          g.querySelector("h3")?.textContent ?? g.dataset.year ?? "1947",
+        ),
+      }));
+      const jump = () => {
+        const target = Number(slider.value);
+        out.textContent = String(target);
+        let best = years[0];
+        let bestd = Infinity;
+        for (const w of years) {
+          const d = Math.abs(w.y - target);
+          if (d < bestd) {
+            bestd = d;
+            best = w;
+          }
+        }
+        best?.el.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      slider.addEventListener("input", () => {
+        if (out) out.textContent = slider.value;
+      });
+      slider.addEventListener("change", jump);
+    }
 
     const initial = new URLSearchParams(location.search).get("sector");
     if (initial) {
