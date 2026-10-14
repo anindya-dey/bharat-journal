@@ -200,6 +200,12 @@ body {
   outline-color: var(--color-navy-soft);
 }
 
+/* ---------- Buttons use the hand cursor (Tailwind v4 no longer sets it) ---------- */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
 /* ---------- /then year scrubber ---------- */
 .year-jump-range {
   -webkit-appearance: none;

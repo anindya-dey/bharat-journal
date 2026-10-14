@@ -216,7 +216,7 @@ const densityTips = JSON.stringify(
           byEra.map((era) => (
             <a
               href={`#${era.id}`}
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:bg-navy hover:text-paper transition-colors"
             >
               <span class="text-saffron-600">{era.range}</span>
               {era.name}
@@ -269,7 +269,7 @@ const densityTips = JSON.stringify(
               <button
                 data-sector={s.id}
                 aria-pressed="false"
-                class="sector-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
+                class="sector-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:bg-navy hover:text-paper transition-colors"
               >
                 <Icon size={14} stroke-width={2.3} />
                 {s.name}
@@ -404,7 +404,8 @@ const densityTips = JSON.stringify(
       "bg-paper-2",
       "text-ink/70",
       "hover:border-navy",
-      "hover:text-navy",
+      "hover:bg-navy",
+      "hover:text-paper",
     ];
 
     const setActive = (sector: string) => {

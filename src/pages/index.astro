@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
 import StatusBadge from "../components/StatusBadge.astro";
-import IndianFlag from "../components/IndianFlag.astro";
 import { getCollection } from "astro:content";
 import {
   RotateCcwClock,
@@ -14,7 +13,7 @@ import {
   Sparkles,
   Flame,
 } from "@lucide/astro";
-import { MILESTONES } from "../data/milestones";
+import { DOMAINS, domainForIdea } from "../lib/domains";
 
 const byRecency = <T extends { id: string; data: { updated: string } }>(
   a: T,
@@ -24,9 +23,12 @@ const byRecency = <T extends { id: string; data: { updated: string } }>(
 const ideas = (await getCollection("ideas")).sort(byRecency);
 const vizs = (await getCollection("now")).sort(byRecency);
 
-const latestMilestone = [...MILESTONES].sort(
-  (a, b) => b.year - a.year || a.anchor.localeCompare(b.anchor),
-)[0];
+// Homepage splits ideas by status: new ideas I've written up, and ideas the
+// government has already begun (in progress).
+const latestIdeas = ideas.filter((i) => i.data.status === "idea").slice(0, 3);
+const inMotion = ideas.filter((i) => i.data.status === "in-progress");
+const domainLabel = (themes: string[]) =>
+  DOMAINS.find((d) => d.id === domainForIdea(themes))?.label ?? "";
 
 const yearsOfRepublic = new Date().getFullYear() - 1947;
 
@@ -78,7 +80,6 @@ const stats = [
       <h1
         class="font-display text-5xl md:text-7xl font-bold text-ink leading-[0.98] tracking-tight max-w-3xl"
       >
-        <IndianFlag size={52} class="inline-block align-middle mr-3 md:mr-4 -mt-1" />
         Then. Now. <span class="text-saffron-600">Next.</span>
       </h1>
       <p class="mt-6 text-lg md:text-xl text-ink/70 leading-relaxed max-w-2xl">
@@ -166,93 +167,83 @@ const stats = [
     </Container>
   </section>
 
-  <section class="pb-16">
-    <Container size="wide">
-      <h2 class="flex items-center gap-2 font-display text-2xl font-bold text-ink mb-5">
-        <Flame size={20} class="text-saffron-600" stroke-width={2.4} />
-        Latest on the journal
-      </h2>
-      <div class="grid md:grid-cols-3 gap-4" data-reveal>
-        <a
-          href={`/then#${latestMilestone.anchor}`}
-          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
-        >
-          <span class="text-xs font-semibold uppercase tracking-wide text-navy mb-2">
-            Then · {latestMilestone.year}
-          </span>
-          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
-            {latestMilestone.title}
-          </h3>
-          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
-            {latestMilestone.summary}
-          </p>
-        </a>
-        <a
-          href={`/now/${vizs[0].id}`}
-          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
-        >
-          <span class="text-xs font-semibold uppercase tracking-wide text-saffron-600 mb-2">
-            Now · data
-          </span>
-          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
-            {vizs[0].data.title}
-          </h3>
-          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
-            {vizs[0].data.description}
-          </p>
-        </a>
-        <a
-          href={`/next/${ideas[0].id}`}
-          class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
-        >
-          <span class="flex items-center gap-2 mb-2">
-            <StatusBadge status={ideas[0].data.status} />
-          </span>
-          <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
-            {ideas[0].data.title}
-          </h3>
-          <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
-            {ideas[0].data.description}
-          </p>
-        </a>
-      </div>
-    </Container>
-  </section>
-
-  <section class="pb-20">
-    <Container size="wide">
-      <div class="flex items-baseline justify-between mb-5">
-        <h2 class="font-display text-2xl font-bold text-ink">Ideas in motion</h2>
-        <a
-          href="/next"
-          class="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-saffron-600 transition-colors"
-        >
-          All ideas <ArrowRight size={15} stroke-width={2.5} />
-        </a>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4" data-reveal>
-        {
-          ideas.slice(0, 4).map((idea) => (
+  {
+    latestIdeas.length > 0 && (
+      <section class="pb-16">
+        <Container size="wide">
+          <div class="flex items-baseline justify-between mb-5">
+            <h2 class="flex items-center gap-2 font-display text-2xl font-bold text-ink">
+              <Flame size={20} class="text-saffron-600" stroke-width={2.4} />
+              Latest ideas
+            </h2>
             <a
-              href={`/next/${idea.id}`}
-              class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all"
+              href="/next"
+              class="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-saffron-600 transition-colors"
             >
-              <div class="flex items-center justify-between gap-3 mb-3">
-                <StatusBadge status={idea.data.status} />
-                <span class="text-xs font-medium text-fog">
-                  {idea.data.themes.slice(0, 2).join(" · ")}
-                </span>
-              </div>
-              <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
-                {idea.data.title}
-              </h3>
-              <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
-                {idea.data.description}
-              </p>
+              All ideas <ArrowRight size={15} stroke-width={2.5} />
             </a>
-          ))
-        }
-      </div>
-    </Container>
-  </section>
+          </div>
+          <div class="grid md:grid-cols-3 gap-4" data-reveal>
+            {latestIdeas.map((idea) => (
+              <a
+                href={`/next/${idea.id}`}
+                class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all flex flex-col"
+              >
+                <span class="text-xs font-semibold uppercase tracking-wide text-moss mb-2">
+                  {domainLabel(idea.data.themes)}
+                </span>
+                <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+                  {idea.data.title}
+                </h3>
+                <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+                  {idea.data.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </Container>
+      </section>
+    )
+  }
+
+  {
+    inMotion.length > 0 && (
+      <section class="pb-20">
+        <Container size="wide">
+          <div class="flex items-baseline justify-between mb-5">
+            <h2 class="font-display text-2xl font-bold text-ink">
+              Ideas in motion
+            </h2>
+            <a
+              href="/next"
+              class="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-saffron-600 transition-colors"
+            >
+              All ideas <ArrowRight size={15} stroke-width={2.5} />
+            </a>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4" data-reveal>
+            {inMotion.slice(0, 4).map((idea) => (
+              <a
+                href={`/next/${idea.id}`}
+                class="group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:border-navy/30 transition-all"
+              >
+                <div class="flex items-center justify-between gap-3 mb-3">
+                  <StatusBadge status={idea.data.status} />
+                  <span class="text-xs font-medium text-fog">
+                    {domainLabel(idea.data.themes)}
+                  </span>
+                </div>
+                <h3 class="font-display font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+                  {idea.data.title}
+                </h3>
+                <p class="mt-2 text-sm text-fog line-clamp-2 leading-relaxed">
+                  {idea.data.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </Container>
+      </section>
+    )
+  }
 </BaseLayout>
