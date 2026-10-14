@@ -4,14 +4,16 @@
 /* Class-based dark mode (toggled by ThemeToggle) */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Self-hosted fonts — Quicksand throughout */
+/* Self-hosted fonts — Quicksand (display), Nunito (body), Fira Code (mono) */
 @import "@fontsource-variable/quicksand";
-@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/nunito";
+@import "@fontsource-variable/nunito/wght-italic.css";
+@import "@fontsource-variable/fira-code";
 
 @theme {
-  --font-sans: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Quicksand Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-sans: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Quicksand Variable", "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fira Code Variable", ui-monospace, monospace;
 
   /* Orange primary */
   --color-navy-50: #fff7ed;
