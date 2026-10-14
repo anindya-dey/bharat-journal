@@ -1,6 +1,6 @@
 ---
 title: "Living Longer: Life Expectancy Since 1950"
-description: "From a life expectancy of 41 years at independence to over 70 today — one of the sharpest health gains any large country has made."
+description: "From a life expectancy of 41 years at independence to over 72 today — one of the sharpest health gains any large country has made."
 theme: "society"
 datasets: ["src/data/datasets/life-expectancy.json"]
 unit: "years"
@@ -12,7 +12,6 @@ sources:
     url: "https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=IN"
     retrieved: "October 2026"
 updated: "2026-10-08"
-relatedIdeas: ["ai-primary-healthcare"]
 ---
 
 import LineChart from "../../components/LineChart.astro";
@@ -26,23 +25,25 @@ import data from "../../data/datasets/life-expectancy.json";
 export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: d.years }));
 
 <div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
-  <StatCallout value="41 → 70+" label="years of life expectancy, 1950 to today" Icon={HeartPulse} accent="clay" />
-  <StatCallout value="~+29 yrs" label="added to the average Indian life" Icon={Baby} accent="navy" />
+  <StatCallout value="41 → 72" label="years of life expectancy, 1950 to 2024" Icon={HeartPulse} accent="clay" />
+  <StatCallout value="~+31 yrs" label="added to the average Indian life" Icon={Baby} accent="navy" />
   <StatCallout value="<5/1000" label="smallpox, polio and maternal gains" Icon={Activity} accent="moss" />
 </div>
 
 <ChartFrame
   caption="Life expectancy at birth"
-  subCaption="years, India, 1950–2020. A gain of roughly three decades in a single lifetime."
+  subCaption="years, India, 1950–2024. A gain of roughly three decades in a single lifetime — with a visible dip in 2021, the COVID year."
 >
   <LineChart data={series} yLabel="Life expectancy (years)" color="#dc2626" />
 </ChartFrame>
 
 <p>
   At independence, an Indian could expect to live to about <strong>41</strong>.
-  Today the figure is over <strong>70</strong> — roughly three extra decades
-  added within a single lifetime. Few countries of India's size and starting
-  point have achieved a larger health gain.
+  By 2024 the figure was over <strong>72</strong> — roughly three extra decades
+  added within a single lifetime. (The 2021 dip to 67 is the COVID year; the
+  curve recovered and passed its pre-pandemic level within two years.) Few
+  countries of India's size and starting point have achieved a larger health
+  gain.
 </p>
 
 <p>
@@ -56,7 +57,7 @@ export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: 
 
 <SourceList
   sources={[
-    { name: "Demographics of India — life expectancy table (UN/World Bank via Wikipedia)", url: "https://en.wikipedia.org/wiki/Demographics_of_India", retrieved: "October 2026", note: "41.18 years (1950) → 70.16 (2020)." },
+    { name: "Demographics of India — life expectancy table (UN/World Bank via Wikipedia)", url: "https://en.wikipedia.org/wiki/Demographics_of_India", retrieved: "October 2026", note: "41.18 years (1950) → 70.16 (2020); 67.28 (2021, COVID) → 72.24 (2024)." },
     { name: "World Bank — Life expectancy at birth", url: "https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=IN", retrieved: "October 2026" },
   ]}
 />

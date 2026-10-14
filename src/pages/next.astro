@@ -8,45 +8,49 @@ import { Lightbulb, ArrowRight } from "@lucide/astro";
 import { DOMAINS, domainForIdea } from "../lib/domains";
 
 const ORIGIN_LABELS: Record<string, string> = {
-  "my-proposal": "My proposal",
+  "my-proposal": "My idea",
   "government-initiative": "Government initiative",
 };
 
-const STATUS_FILTERS = [
-  { id: "all", label: "All" },
-  { id: "proposed", label: "Proposed" },
+const STATUS_ORDER = [
+  { id: "idea", label: "Idea" },
+  { id: "proposed", label: "Proposed to govt" },
   { id: "in-progress", label: "In progress" },
   { id: "achieved", label: "Achieved" },
 ];
 
+const ORIGIN_OPTIONS = [
+  { id: "all", label: "All ideas" },
+  { id: "mine", label: "My ideas" },
+  { id: "in-motion", label: "Already in motion" },
+];
+
 const ideas = (await getCollection("ideas"))
-  .map((i) => ({ ...i, domain: domainForIdea(i.data.themes) }))
+  .map((i) => ({
+    ...i,
+    domain: domainForIdea(i.data.themes),
+    group: i.data.origin === "my-proposal" ? "mine" : "in-motion",
+  }))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const withDomain = (domain: string) =>
-  domain === "all" || domain === "other"
-    ? ideas
-    : ideas.filter((i) => i.domain === domain);
+const presentStatuses = new Set<string>(ideas.map((i) => i.data.status));
+const STATUS_FILTERS = [
+  { id: "all", label: "All" },
+  ...STATUS_ORDER.filter((s) => presentStatuses.has(s.id)),
+];
 
-const grouped = [
-  {
-    id: "mine",
-    label: "Proposed by me",
-    items: ideas.filter((i) => i.data.origin === "my-proposal"),
-  },
-  {
-    id: "in-motion",
-    label: "Already in motion — government initiatives",
-    items: ideas.filter((i) => i.data.origin === "government-initiative"),
-  },
-].filter((g) => g.items.length > 0);
-
-const domainCount = (id: string) => withDomain(id).length;
+const originCount = (id: string) =>
+  id === "all" ? ideas.length : ideas.filter((i) => i.group === id).length;
+const domainCount = (id: string) =>
+  id === "all" || id === "other"
+    ? ideas.length
+    : ideas.filter((i) => i.domain === id).length;
 const domainLabel = (id: string) =>
   DOMAINS.find((d) => d.id === id)?.label ?? id;
-
 const statusCount = (id: string) =>
   id === "all" ? ideas.length : ideas.filter((i) => i.data.status === id).length;
+
+const domainOptions = DOMAINS.filter((d) => domainCount(d.id) > 0);
 ---
 
 <BaseLayout
@@ -64,33 +68,11 @@ const statusCount = (id: string) =>
 
   <section class="pb-6" id="idea-filter">
     <Container size="wide">
-      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by domain">
-        <button
-          data-domain="all"
-          aria-pressed="true"
-          class="domain-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-navy bg-navy text-paper transition-colors"
-        >
-          All <span class="opacity-70 tabular-nums">{ideas.length}</span>
-        </button>
-        {
-          DOMAINS.map((d) => {
-            const count = domainCount(d.id);
-            if (count === 0) return null;
-            return (
-              <button
-                data-domain={d.id}
-                aria-pressed="false"
-                class="domain-chip inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold border border-line bg-paper-2 text-ink/70 hover:border-navy hover:text-navy transition-colors"
-              >
-                {d.label}
-                <span class="opacity-60 tabular-nums">{count}</span>
-              </button>
-            );
-          })
-        }
-      </div>
-
-      <div class="mt-3 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by status">
+      <div
+        class="flex flex-wrap items-center gap-2"
+        role="group"
+        aria-label="Filter by status"
+      >
         {
           STATUS_FILTERS.map((s) => (
             <button
@@ -112,174 +94,188 @@ const statusCount = (id: string) =>
         }
       </div>
 
-      <div class="mt-3 flex items-center gap-3">
-        <label for="sort-select" class="text-[11px] font-semibold uppercase tracking-wide text-fog">Sort</label>
-        <select
-          id="sort-select"
-          class="sort-select rounded-lg border border-line bg-paper-2 text-xs font-semibold text-ink/80 px-2.5 py-1.5 cursor-pointer"
-        >
-          <option value="title">Title A–Z</option>
-          <option value="recent">Recently updated</option>
-        </select>
+      <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <label class="flex items-center gap-2">
+          <span
+            class="text-[11px] font-semibold uppercase tracking-wide text-fog"
+            >Ideas</span
+          >
+          <select
+            id="origin-select"
+            class="filter-select rounded-lg border border-line bg-paper-2 text-xs font-semibold text-ink/80 px-2.5 py-1.5 cursor-pointer"
+          >
+            {
+              ORIGIN_OPTIONS.map((o) => (
+                <option value={o.id}>
+                  {o.label} ({originCount(o.id)})
+                </option>
+              ))
+            }
+          </select>
+        </label>
+
+        <label class="flex items-center gap-2">
+          <span
+            class="text-[11px] font-semibold uppercase tracking-wide text-fog"
+            >Category</span
+          >
+          <select
+            id="domain-select"
+            class="filter-select rounded-lg border border-line bg-paper-2 text-xs font-semibold text-ink/80 px-2.5 py-1.5 cursor-pointer"
+          >
+            <option value="all">All categories ({ideas.length})</option>
+            {
+              domainOptions.map((d) => (
+                <option value={d.id}>
+                  {d.label} ({domainCount(d.id)})
+                </option>
+              ))
+            }
+          </select>
+        </label>
+
+        <label class="flex items-center gap-2">
+          <span
+            class="text-[11px] font-semibold uppercase tracking-wide text-fog"
+            >Sort</span
+          >
+          <select
+            id="sort-select"
+            class="filter-select rounded-lg border border-line bg-paper-2 text-xs font-semibold text-ink/80 px-2.5 py-1.5 cursor-pointer"
+          >
+            <option value="title">Title A–Z</option>
+            <option value="recent">Recently updated</option>
+          </select>
+        </label>
       </div>
     </Container>
   </section>
 
-  <p
-    id="filter-count"
-    aria-live="polite"
-    class="sr-only"
-  >
-    {ideas.length} ideas
-  </p>
+  <p id="filter-count" aria-live="polite" class="sr-only">{ideas.length} ideas</p>
 
-  <div class="pb-20 space-y-12" id="idea-groups">
-    {
-      grouped.map((group) => (
-        <section data-group={group.id}>
-          <Container size="wide">
-            <div class="flex items-baseline gap-3 mb-5">
-              <h2 class="font-display text-xl font-bold text-ink">
-                {group.label}
-              </h2>
-              <span class="text-xs font-mono text-fog">{group.items.length}</span>
-            </div>
-            <div class="grid md:grid-cols-2 gap-4" data-reveal>
-              {group.items.map((idea) => (
-                <a
-                  href={`/next/${idea.id}`}
-                  data-domain={idea.domain}
-                  data-status={idea.data.status}
-                  data-updated={idea.data.updated}
-                  class="idea-card group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
-                >
-                  <div class="flex items-center justify-between gap-3 mb-3">
-                    <StatusBadge status={idea.data.status} />
-                    <span class="text-xs font-medium text-fog">
-                      {ORIGIN_LABELS[idea.data.origin]}
-                    </span>
-                  </div>
-                  <h3 class="font-display text-lg font-bold text-ink leading-snug group-hover:text-navy transition-colors">
-                    {idea.data.title}
-                  </h3>
-                  <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
-                    {idea.data.description}
-                  </p>
-                  <div class="mt-auto pt-4 flex items-center justify-between gap-3">
-                    <span class="text-[11px] font-medium text-fog">
-                      {domainLabel(idea.domain as string)}
-                    </span>
-                    <ArrowRight
-                      size={16}
-                      class="text-fog group-hover:text-navy group-hover:translate-x-0.5 transition-all shrink-0"
-                    />
-                  </div>
-                </a>
-              ))}
-            </div>
-            <p class="no-results hidden mt-2 text-sm text-fog italic">
-              No ideas match the current filters.
-            </p>
-          </Container>
-        </section>
-      ))
-    }
+  <div class="pb-20">
+    <Container size="wide">
+      <div class="grid md:grid-cols-2 gap-4" data-reveal id="idea-grid">
+        {
+          ideas.map((idea) => (
+            <a
+              href={`/next/${idea.id}`}
+              data-domain={idea.domain}
+              data-status={idea.data.status}
+              data-origin={idea.group}
+              data-updated={idea.data.updated}
+              class="idea-card group rounded-2xl border border-line bg-paper-2 p-6 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
+            >
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <StatusBadge status={idea.data.status} />
+                <span class="text-xs font-medium text-fog">
+                  {ORIGIN_LABELS[idea.data.origin]}
+                </span>
+              </div>
+              <h3 class="font-display text-lg font-bold text-ink leading-snug group-hover:text-navy transition-colors">
+                {idea.data.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
+                {idea.data.description}
+              </p>
+              <div class="mt-auto pt-4 flex items-center justify-between gap-3">
+                <span class="text-[11px] font-medium text-fog">
+                  {domainLabel(idea.domain as string)}
+                </span>
+                <ArrowRight
+                  size={16}
+                  class="text-fog group-hover:text-navy group-hover:translate-x-0.5 transition-all shrink-0"
+                />
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <p class="no-results hidden mt-4 text-sm text-fog italic">
+        No ideas match the current filters.
+      </p>
+    </Container>
   </div>
 
   <script>
-    const domainButtons = document.querySelectorAll<HTMLButtonElement>(
-      ".domain-chip",
-    );
+    const originSelect = document.getElementById(
+      "origin-select",
+    ) as HTMLSelectElement | null;
+    const domainSelect = document.getElementById(
+      "domain-select",
+    ) as HTMLSelectElement | null;
     const statusButtons = document.querySelectorAll<HTMLButtonElement>(
       ".status-chip",
     );
     const cards = document.querySelectorAll<HTMLElement>(".idea-card");
-    const groups = document.querySelectorAll<HTMLElement>("[data-group]");
+    const grid = document.getElementById("idea-grid");
     const countEl = document.getElementById("filter-count");
+    const noResults = document.querySelector(".no-results");
     const sortSelect = document.getElementById(
       "sort-select",
-    ) as HTMLSelectElement;
+    ) as HTMLSelectElement | null;
 
-    const ACTIVE = ["border-navy", "bg-navy", "text-paper"];
-    const INACTIVE = [
-      "border-line",
-      "bg-paper-2",
-      "text-ink/70",
-      "hover:border-navy",
-      "hover:text-navy",
-    ];
     const S_ACTIVE = ["border-navy", "bg-navy", "text-paper"];
     const S_INACTIVE = ["border-line", "bg-paper-2", "text-fog"];
 
-    let domain = "all";
+    let origin = originSelect?.value ?? "all";
+    let domain = domainSelect?.value ?? "all";
     let status = "all";
 
     function applyFilters() {
       let visible = 0;
       cards.forEach((el) => {
+        const oOk = origin === "all" || el.dataset.origin === origin;
         const dOk = domain === "all" || el.dataset.domain === domain;
         const sOk = status === "all" || el.dataset.status === status;
-        const match = dOk && sOk;
+        const match = oOk && dOk && sOk;
         el.style.display = match ? "" : "none";
         if (match) visible++;
       });
-      groups.forEach((group) => {
-        const vis = group.querySelectorAll<HTMLElement>(
-          '.idea-card:not([style*="display: none"])',
-        ).length;
-        group.style.display = vis > 0 ? "" : "none";
-        const noRes = group.querySelector(".no-results");
-        if (noRes)
-          (noRes as HTMLElement).classList.toggle(
-            "hidden",
-            vis > 0 || visible > 0,
-          );
-      });
       if (countEl)
         countEl.textContent = `${visible} idea${visible === 1 ? "" : "s"} visible`;
+      if (noResults)
+        (noResults as HTMLElement).classList.toggle("hidden", visible > 0);
     }
 
     function applySort(mode: string) {
-      groups.forEach((group) => {
-        const grid = group.querySelector(".grid");
-        if (!grid) return;
-        const items = [...grid.children] as HTMLElement[];
-        if (mode === "recent") {
-          items.sort((a, b) =>
-            (b.dataset.updated ?? "").localeCompare(a.dataset.updated ?? ""),
-          );
-        } else {
-          items.sort((a, b) =>
-            (a.dataset.updated ?? "").localeCompare(b.dataset.updated ?? ""),
-          );
-          // A-Z by title text
-          items.sort((a, b) =>
+      if (!grid) return;
+      const items = [...grid.children] as HTMLElement[];
+      if (mode === "recent") {
+        items.sort(
+          (a, b) =>
+            (b.dataset.updated ?? "").localeCompare(a.dataset.updated ?? "") ||
             (a.querySelector("h3")?.textContent ?? "").localeCompare(
               b.querySelector("h3")?.textContent ?? "",
             ),
-          );
-        }
-        items.forEach((i) => grid.appendChild(i));
-      });
+        );
+      } else {
+        items.sort((a, b) =>
+          (a.querySelector("h3")?.textContent ?? "").localeCompare(
+            b.querySelector("h3")?.textContent ?? "",
+          ),
+        );
+      }
+      items.forEach((i) => grid.appendChild(i));
     }
 
-    domainButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        domain = btn.dataset.domain ?? "all";
-        domainButtons.forEach((b) => {
-          b.classList.remove(...ACTIVE);
-          b.classList.add(...INACTIVE);
-          b.setAttribute("aria-pressed", "false");
-        });
-        btn.classList.remove(...INACTIVE);
-        btn.classList.add(...ACTIVE);
-        btn.setAttribute("aria-pressed", "true");
-        applyFilters();
-        const url = new URL(window.location.href);
-        if (domain === "all") url.searchParams.delete("domain");
-        else url.searchParams.set("domain", domain);
-        history.replaceState(null, "", url);
-      });
+    function persist(key: string, value: string) {
+      const url = new URL(window.location.href);
+      if (!value || value === "all") url.searchParams.delete(key);
+      else url.searchParams.set(key, value);
+      history.replaceState(null, "", url);
+    }
+
+    originSelect?.addEventListener("change", () => {
+      origin = originSelect.value;
+      applyFilters();
+      persist("origin", origin);
+    });
+
+    domainSelect?.addEventListener("change", () => {
+      domain = domainSelect.value;
+      applyFilters();
+      persist("domain", domain);
     });
 
     statusButtons.forEach((btn) => {
@@ -301,13 +297,17 @@ const statusCount = (id: string) =>
       applySort(sortSelect.value);
     });
 
-    const initial = new URLSearchParams(location.search).get("domain");
-    if (initial) {
-      document
-        .querySelector<HTMLButtonElement>(
-          `.domain-chip[data-domain="${initial}"]`,
-        )
-        ?.click();
+    const params = new URLSearchParams(location.search);
+    const initOrigin = params.get("origin");
+    if (initOrigin && originSelect) {
+      originSelect.value = initOrigin;
+      origin = initOrigin;
     }
+    const initDomain = params.get("domain");
+    if (initDomain && domainSelect) {
+      domainSelect.value = initDomain;
+      domain = initDomain;
+    }
+    applyFilters();
   </script>
 </BaseLayout>

@@ -27,6 +27,34 @@ const {
   formatLabel,
 } = Astro.props;
 
+// Sort ascending so ticks, line order and the end-point all agree.
+const sorted = [...data].sort((a, b) =>
+  String(a.date).localeCompare(String(b.date)),
+);
+
+// Put an x-axis tick on actual data points (not arbitrary "nice" years) so
+// every point — and the hover guide line — lines up with a labelled tick.
+// Space the labels by *time*, not by index, and thin only when a series is
+// too dense: that keeps yearly clusters (e.g. 2002–2024) from crowding the
+// axis while sparse early decades still get their own label.
+const MAX_TICKS = 12;
+const times = sorted.map((d) => new Date(d.date).getTime());
+const span = times[times.length - 1] - times[0];
+const minGap = span > 0 ? span / MAX_TICKS : 0;
+const tickIdx: number[] = [0];
+for (let i = 1; i < sorted.length; i++) {
+  if (times[i] - times[tickIdx[tickIdx.length - 1]] >= minGap) tickIdx.push(i);
+}
+const lastIdx = sorted.length - 1;
+if (tickIdx[tickIdx.length - 1] !== lastIdx) {
+  if (times[lastIdx] - times[tickIdx[tickIdx.length - 1]] < minGap) {
+    tickIdx[tickIdx.length - 1] = lastIdx;
+  } else {
+    tickIdx.push(lastIdx);
+  }
+}
+const xTicks = tickIdx.map((i) => new Date(sorted[i].date));
+
 const num = (v: number) =>
   (Math.round(v * 100) / 100).toLocaleString("en-IN", {
     maximumFractionDigits: 2,
@@ -55,7 +83,7 @@ const PAD_L = 64;
 const PAD_R = 28;
 const PAD_T = 24;
 const PAD_B = 36;
-const yMax = Math.max(...data.map((d) => d.value)) * 1.12;
+const yMax = Math.max(...sorted.map((d) => d.value)) * 1.12;
 const gradId = `grad-${Math.random().toString(36).slice(2, 8)}`;
 
 const svg = Plot.plot({
@@ -81,15 +109,15 @@ const svg = Plot.plot({
     tickFormat: (v: number) =>
       v >= 1000 ? `${(v / 1000).toFixed(v >= 10000 ? 0 : 1)}k` : `${v}`,
   },
-  x: { type: "time", label: null, ticks: 7, tickFormat: "%Y" },
+  x: { type: "time", label: null, ticks: xTicks, tickFormat: "%Y" },
   marks: [
-    Plot.areaY(data, {
+    Plot.areaY(sorted, {
       x: "date",
       y: "value",
       curve: "monotone-x",
       fill: `url(#${gradId})`,
     }),
-    Plot.lineY(data, {
+    Plot.lineY(sorted, {
       x: "date",
       y: "value",
       curve: "monotone-x",
@@ -97,7 +125,7 @@ const svg = Plot.plot({
       strokeWidth: 2.5,
       strokeLinejoin: "round",
     }),
-    Plot.dot(data, {
+    Plot.dot(sorted, {
       x: "date",
       y: "value",
       r: 3,
@@ -128,7 +156,7 @@ const svg = Plot.plot({
         ]
       : []),
     // End-point value bubble
-    Plot.dot([data[data.length - 1]], {
+    Plot.dot([sorted[sorted.length - 1]], {
       x: "date",
       y: "value",
       r: 5,
@@ -136,7 +164,7 @@ const svg = Plot.plot({
       stroke: "var(--color-paper)",
       strokeWidth: 2,
     }),
-    Plot.text([data[data.length - 1]], {
+    Plot.text([sorted[sorted.length - 1]], {
       x: "date",
       y: "value",
       text: (d: Datum) => fmt(d.value),
@@ -168,13 +196,13 @@ svgStr = svgStr.replace(/<svg[^>]*>/, (tag) =>
 );
 
 // Tooltip payload: label, value, normalized y fraction, and timestamp for x
-const tipData = data.map((d) => ({
+const tipData = sorted.map((d) => ({
   label: labelFmt(d),
   value: fmt(d.value),
   f: yMax > 0 ? d.value / yMax : 0,
   t: new Date(d.date).getTime(),
 }));
-const summary = data.map((d) => `${labelFmt(d)}: ${fmt(d.value)}`).join("; ");
+const summary = sorted.map((d) => `${labelFmt(d)}: ${fmt(d.value)}`).join("; ");
 const jsonTips = JSON.stringify(tipData);
 ---
 

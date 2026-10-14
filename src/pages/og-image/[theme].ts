@@ -21,6 +21,11 @@ const THEMES: Record<string, { title: string; accent: string; kicker: string }> 
     accent: "#ea580c",
     kicker: "ABOUT · METHOD & SOURCES",
   },
+  schemes: {
+    title: "Schemes",
+    accent: "#16a34a",
+    kicker: "REFERENCE · SCHEMES & PROGRAMMES",
+  },
 };
 
 export const GET = async ({ params }: { params: { theme: string } }) => {

@@ -1,4 +1,6 @@
 ---
+import { Lightbulb, ArrowRight } from "@lucide/astro";
+
 interface Link {
   href: string;
   label: string;
@@ -6,27 +8,50 @@ interface Link {
 
 interface Props {
   intro?: string;
+  eyebrow?: string;
   links: Link[];
 }
 
-const { intro = "What's next →", links } = Astro.props;
+const { intro = "What's next", eyebrow = "Next", links } = Astro.props;
 ---
 
-<aside class="not-prose my-10 rounded-2xl bg-navy text-paper p-6 shadow-card">
-  <h2 class="font-display text-xl font-bold mb-2">{intro}</h2>
-  <div class="flex flex-col gap-1.5 mt-3">
-    {
-      links.map((link, i) => (
-        <a
-          href={link.href}
-          class:list={[
-            "font-semibold text-marigold underline decoration-marigold/40 underline-offset-2 hover:decoration-marigold transition-colors",
-            i === 0 ? "text-lg" : "",
-          ]}
-        >
-          {link.label} →
-        </a>
-      ))
-    }
+<aside
+  class="not-prose my-10 overflow-hidden rounded-2xl bg-moss-600 dark:bg-moss text-paper shadow-card"
+>
+  <div class="p-6 sm:p-7">
+    <div class="flex items-center gap-2.5 mb-3">
+      <span
+        class="grid place-items-center w-8 h-8 rounded-full bg-paper/20 text-paper shrink-0"
+      >
+        <Lightbulb size={16} stroke-width={2.5} />
+      </span>
+      <span
+        class="text-[11px] font-bold uppercase tracking-[0.22em] text-paper/80"
+      >
+        {eyebrow}
+      </span>
+    </div>
+
+    <h2 class="font-display text-xl sm:text-2xl font-bold !text-paper max-w-2xl">
+      {intro}
+    </h2>
+
+    <div class="mt-5 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="group inline-flex items-center justify-between sm:justify-start gap-2 rounded-xl bg-paper/15 hover:bg-paper/25 px-4 py-2.5 text-sm font-semibold text-paper transition-colors"
+          >
+            <span>{link.label}</span>
+            <ArrowRight
+              size={15}
+              stroke-width={2.6}
+              class="shrink-0 transition-transform group-hover:translate-x-0.5"
+            />
+          </a>
+        ))
+      }
+    </div>
   </div>
 </aside>

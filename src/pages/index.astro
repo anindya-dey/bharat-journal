@@ -16,14 +16,19 @@ import {
 } from "@lucide/astro";
 import { MILESTONES } from "../data/milestones";
 
-const ideas = (await getCollection("ideas")).sort((a, b) =>
-  b.data.updated.localeCompare(a.data.updated),
-);
-const vizs = (await getCollection("now")).sort((a, b) =>
-  b.data.updated.localeCompare(a.data.updated),
-);
+const byRecency = <T extends { id: string; data: { updated: string } }>(
+  a: T,
+  b: T,
+) => b.data.updated.localeCompare(a.data.updated) || a.id.localeCompare(b.id);
 
-const latestMilestone = [...MILESTONES].sort((a, b) => b.year - a.year)[0];
+const ideas = (await getCollection("ideas")).sort(byRecency);
+const vizs = (await getCollection("now")).sort(byRecency);
+
+const latestMilestone = [...MILESTONES].sort(
+  (a, b) => b.year - a.year || a.anchor.localeCompare(b.anchor),
+)[0];
+
+const yearsOfRepublic = new Date().getFullYear() - 1947;
 
 const sections = [
   {
@@ -39,7 +44,7 @@ const sections = [
     href: "/now",
     label: "Now",
     line: "Where we stand",
-    text: `${vizs.length} sourced data stories — UPI, Jan Dhan, rail electrification and more — each starting from 1947.`,
+    text: `${vizs.length} sourced data stories — UPI, Jan Dhan, rail electrification and more — each charted from the earliest year its data allows.`,
     Icon: ChartLine,
     accent: "text-saffron-600",
     bg: "bg-saffron/10",
@@ -56,7 +61,7 @@ const sections = [
 ];
 
 const stats = [
-  { value: "78 yrs", label: "of the republic, on one timeline", Icon: MilestoneIcon },
+  { value: `${yearsOfRepublic} yrs`, label: "of the republic, on one timeline", Icon: MilestoneIcon },
   { value: `${vizs.length}`, label: "sourced data stories", Icon: ChartColumn },
   { value: `${ideas.length}`, label: "ideas, tracked in the open", Icon: Sparkles },
 ];

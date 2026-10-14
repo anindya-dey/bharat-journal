@@ -1,6 +1,6 @@
 ---
 title: "UPI: The World's Largest Payment Rail"
-description: "From 0.2 billion transactions in FY17 to ~185 billion in FY25 — the full rise of India's public payment rail, in volume and value."
+description: "From 0.2 billion transactions in FY17 to ~242 billion in FY26 — the full rise of India's public payment rail, in volume and value."
 theme: "money"
 datasets: ["src/data/datasets/upi.json"]
 unit: "billions of transactions / ₹ lakh crore"
@@ -16,7 +16,6 @@ sources:
     url: "https://www.aciworldwide.com/"
     retrieved: "October 2026"
 updated: "2026-10-08"
-relatedIdeas: ["palm-payments"]
 ---
 
 import LineChart from "../../components/LineChart.astro";
@@ -38,21 +37,21 @@ export const valueSeries = upi.series.map((d) => ({
 }));
 
 <div class="not-prose grid grid-cols-2 md:grid-cols-3 gap-3 my-8">
-  <StatCallout value="~185 bn" label="transactions in FY 2024–25" Icon={Zap} accent="navy" />
-  <StatCallout value="₹240 L Cr" label="moved in one fiscal year" Icon={TrendingUp} accent="saffron" />
+  <StatCallout value="~242 bn" label="transactions in FY 2025–26" Icon={Zap} accent="navy" />
+  <StatCallout value="₹314 L Cr" label="moved in one fiscal year" Icon={TrendingUp} accent="saffron" />
   <StatCallout value="#1" label="real-time payments system, globally" Icon={Globe} accent="moss" />
 </div>
 
 <ChartFrame
   caption="UPI annual transaction volume"
-  subCaption="billions of transactions per fiscal year (Apr–Mar). From 0.2 billion in FY17 to ~185 billion in FY25 — roughly a 1,000-fold rise in eight years."
+  subCaption="billions of transactions per fiscal year (Apr–Mar). From 0.2 billion in FY17 to ~242 billion in FY26 — roughly a 1,300-fold rise in nine years."
 >
   <LineChart data={series} yLabel="Transactions (billions)" annotations={upi.milestoneAnnotations} />
 </ChartFrame>
 
 <ChartFrame
   caption="UPI annual transaction value"
-  subCaption="₹ lakh crore per fiscal year. FY25's ~₹240 lakh crore is roughly 11% of India's GDP moving over one public rail."
+  subCaption="₹ lakh crore per fiscal year. FY26's ~₹314 lakh crore — more than two-thirds of India's annual GDP — moved over one public rail."
 >
   <LineChart data={valueSeries} yLabel="Value (₹ lakh crore)" color="#d97706" />
 </ChartFrame>
@@ -60,8 +59,8 @@ export const valueSeries = upi.series.map((d) => ({
 <p>
   UPI launched in April 2016 with 21 pilot banks and a simple promise: move money
   between any two bank accounts, instantly, for free, using just a phone. In its
-  first full year it processed 0.18 billion transactions. By FY 2024–25 the
-  annual figure was around <strong>185 billion</strong> — the largest real-time
+  first full year it processed 0.18 billion transactions. By FY 2025–26 the
+  annual figure was around <strong>242 billion</strong> — the largest real-time
   payments system in the world, ahead of China's, and by some measures
   processing more daily transactions than Visa.
 </p>
@@ -77,7 +76,7 @@ export const valueSeries = upi.series.map((d) => ({
 </p>
 
 <p>
-  The policy choices matter as much as the plumbing. the decision to scrap
+  The policy choices matter as much as the plumbing. The decision to scrap
   merchant fees (MDR) in 2019 made sub-₹200 transactions viable, and UPI's
   open, interoperable design is precisely why Brazil, the UAE, Singapore and
   others have since licensed or cloned it. When people say India "went
@@ -88,7 +87,7 @@ export const valueSeries = upi.series.map((d) => ({
 
 <p class="text-sm text-fog italic">
   Figures for FY23 and earlier are as reported in India's Economic Survey and
-  NPCI statistics; FY24–FY25 figures are from NPCI's annual reporting and are
+  NPCI statistics; FY24–FY26 figures are from NPCI's annual reporting and are
   rounded. Monthly figures (e.g., August 2025: 20 billion transactions) show
   the annualised pace continuing to grow.
 </p>
@@ -105,7 +104,7 @@ export const valueSeries = upi.series.map((d) => ({
       name: "Unified Payments Interface — Wikipedia (compiled NPCI/Economic Survey figures)",
       url: "https://en.wikipedia.org/wiki/Unified_Payments_Interface",
       retrieved: "October 2026",
-      note: "FY18: 92 crore txns / ₹1 lakh crore → FY23: 8,375 crore / ₹139 lakh crore; FY26: 241.62 bn / ₹314 trillion.",
+      note: "FY18: 92 crore txns / ₹1 lakh crore → FY23: 8,375 crore / ₹139 lakh crore → FY26: 241.62 bn txns / ₹314 trillion.",
     },
     {
       name: "ACI Worldwide — Global real-time payments (India #1)",

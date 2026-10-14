@@ -1,9 +1,13 @@
 {
-  "notes": "Aadhaar holders (billion). Points: launch 2010; 1.22 billion as of July 2018; 1.383 billion as of October 2024 (UIDAI via cited source).",
+  "notes": "Aadhaar holders (billion). Points: launch 2010; 1 billionth Aadhaar April 2016; 1.22 billion as of July 2018; 1.383 billion as of October 2024 (UIDAI via cited source).",
   "series": [
     {
       "year": 2010,
       "holdersBn": 0.0
+    },
+    {
+      "year": 2016,
+      "holdersBn": 1.0
     },
     {
       "year": 2018,

@@ -8,6 +8,10 @@ import { Search } from "@lucide/astro";
   title="Search"
   description="Search Bharat Journal — pages, ideas, and data stories."
 >
+  <Fragment slot="head">
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+    <script src="/pagefind/pagefind-ui.js" is:inline></script>
+  </Fragment>
   <section class="pt-14 pb-20">
     <Container>
       <div
@@ -30,14 +34,15 @@ import { Search } from "@lucide/astro";
   </section>
 </BaseLayout>
 
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-<script src="/pagefind/pagefind-ui.js" is:inline></script>
 <script is:inline>
-  var PagefindUIConstructor = window.PagefindUI;
-  if (PagefindUIConstructor) {
-    new PagefindUIConstructor({
-      element: "#search",
-      showSubResults: true,
-    });
-  }
+  (function () {
+    var el = document.getElementById("search");
+    if (!el) return;
+    if (window.PagefindUI) {
+      new window.PagefindUI({ element: "#search", showSubResults: true });
+    } else {
+      el.innerHTML =
+        '<p class="text-sm text-fog italic">The search index is generated at build time. Run <code class="font-mono">pnpm build</code> then <code class="font-mono">pnpm preview</code> to use search locally.</p>';
+    }
+  })();
 </script>

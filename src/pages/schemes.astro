@@ -18,7 +18,7 @@ const ministries = Object.keys(byMinistry).sort();
 <BaseLayout
   title="Schemes"
   description="Every government scheme and programme referenced in this journal, with official links — grouped by ministry."
-  ogImage="/og-image/about.png"
+  ogImage="/og-image/schemes.png"
 >
   <PageHeader
     eyebrow="Reference"
@@ -39,7 +39,7 @@ const ministries = Object.keys(byMinistry).sort();
                 <a
                   href={s.url}
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   class="group rounded-2xl border border-line bg-paper-2 p-4 shadow-card hover:shadow-lift hover:-translate-y-0.5 hover:border-navy/30 transition-all flex flex-col"
                 >
                   <span class="font-display font-bold text-ink group-hover:text-navy transition-colors leading-snug">

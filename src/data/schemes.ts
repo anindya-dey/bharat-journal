@@ -19,7 +19,7 @@ export const SCHEMES: Scheme[] = [
   { id: "saubhagya", name: "Saubhagya", url: "https://saubhagya.gov.in/", ministry: "Power", themes: ["energy"] },
   { id: "pmjay", name: "Ayushman Bharat (PM-JAY)", url: "https://pmjay.gov.in/", ministry: "Health & Family Welfare", themes: ["society"] },
   { id: "esanjeevani", name: "eSanjeevani", url: "https://esanjeevani.mohfw.gov.in/", ministry: "Health & Family Welfare", themes: ["society"] },
-  { id: "digisha", name: "DIKSHA", url: "https://diksha.gov.in/", ministry: "Education", themes: ["connectivity"] },
+  { id: "diksha", name: "DIKSHA", url: "https://diksha.gov.in/", ministry: "Education", themes: ["connectivity"] },
   { id: "bhashini", name: "Bhashini", url: "https://bhashini.gov.in/", ministry: "Electronics & IT", themes: ["connectivity"] },
   { id: "cowin", name: "CoWIN", url: "https://www.cowin.gov.in/", ministry: "Health & Family Welfare", themes: ["society"] },
   { id: "bharatnet", name: "BharatNet", url: "https://www.bbnl.nic.in/", ministry: "Communications", themes: ["connectivity"] },
@@ -39,6 +39,3 @@ export const SCHEMES: Scheme[] = [
   { id: "ncrtc", name: "Namo Bharat / RRTS", url: "https://www.ncrtc.in/", ministry: "Housing & Urban Affairs", themes: ["mobility"] },
   { id: "gati-shakti", name: "PM Gati Shakti", url: "https://pmgatishakti.gov.in/", ministry: "Commerce & Industry", themes: ["mobility"] },
 ];
-
-export const schemeById = (id: string) =>
-  SCHEMES.find((s) => s.id === id);

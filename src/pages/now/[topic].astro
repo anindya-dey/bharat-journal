@@ -23,6 +23,7 @@ const relatedIdeas = (await getCollection("ideas")).filter((i) =>
   title={viz.data.title}
   description={viz.data.description}
   type="article"
+  ogImage="/og-image/now.png"
   published={viz.data.updated}
 >
   <article class="pt-14 pb-16">

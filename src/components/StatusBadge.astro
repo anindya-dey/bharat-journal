@@ -1,13 +1,19 @@
 ---
-import { Lightbulb, Clock, CircleCheck } from "@lucide/astro";
+import { Lightbulb, Send, Clock, CircleCheck } from "@lucide/astro";
 
 const STATUSES: Record<string, { label: string; classes: string; Icon: any }> =
   {
-    proposed: {
-      label: "Proposed",
+    idea: {
+      label: "Idea",
       classes:
         "bg-stone-100 text-stone-700 ring-stone-200 dark:bg-white/10 dark:text-stone-200 dark:ring-white/15",
       Icon: Lightbulb,
+    },
+    proposed: {
+      label: "Proposed to govt",
+      classes:
+        "bg-sky-50 text-sky-700 ring-sky-200 dark:bg-sky-950/40 dark:text-sky-300 dark:ring-sky-900",
+      Icon: Send,
     },
     "in-progress": {
       label: "In progress",
@@ -28,7 +34,7 @@ interface Props {
 }
 
 const { status } = Astro.props;
-const meta = STATUSES[status] ?? STATUSES.proposed;
+const meta = STATUSES[status] ?? STATUSES.idea;
 const { Icon } = meta;
 ---
 

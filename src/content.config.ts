@@ -2,7 +2,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-const IDEA_STATUSES = ["proposed", "in-progress", "achieved"] as const;
+const IDEA_STATUSES = ["idea", "proposed", "in-progress", "achieved"] as const;
 
 const ideas = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/next" }),

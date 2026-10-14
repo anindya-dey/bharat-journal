@@ -12,7 +12,6 @@ sources:
     url: "https://uidai.gov.in/"
     retrieved: "October 2026"
 updated: "2026-10-08"
-relatedIdeas: ["palm-payments"]
 ---
 
 import LineChart from "../../components/LineChart.astro";
@@ -56,12 +55,12 @@ export const series = data.series.map((d) => ({ date: `${d.year}-01-01`, value: 
 
 <p class="text-sm text-fog italic">
   Enrollment figures are UIDAI dashboard totals as reported; the chart shows the
-  sourced milestone points (2010 launch, July 2018, October 2024).
+  sourced milestone points (2010 launch, April 2016, July 2018, October 2024).
 </p>
 
 <SourceList
   sources={[
-    { name: "Aadhaar — holders (UIDAI via Wikipedia)", url: "https://en.wikipedia.org/wiki/Aadhaar", retrieved: "October 2026", note: "1.22 billion (July 2018); 1.383 billion (Oct 2024)." },
+    { name: "Aadhaar — holders (UIDAI via Wikipedia)", url: "https://en.wikipedia.org/wiki/Aadhaar", retrieved: "October 2026", note: "1 billionth Aadhaar (April 2016); 1.22 billion (July 2018); 1.383 billion (Oct 2024)." },
     { name: "UIDAI — Aadhaar dashboard", url: "https://uidai.gov.in/", retrieved: "October 2026" },
   ]}
 />

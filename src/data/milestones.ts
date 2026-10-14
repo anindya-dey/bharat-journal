@@ -50,7 +50,6 @@ export interface Milestone {
   era: EraId;
   anchor: string;
   relatedNow?: string;
-  relatedNext?: string;
 }
 
 export const MILESTONES: Milestone[] = [

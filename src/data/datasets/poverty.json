@@ -2,6 +2,18 @@
   "notes": "Poverty headcount ratio at $2.15/day (2017 PPP, % of population), India. World Bank (WDI), SI.POV.DDAY.",
   "series": [
     {
+      "year": 1977,
+      "pct": 59.7
+    },
+    {
+      "year": 1983,
+      "pct": 50.9
+    },
+    {
+      "year": 1987,
+      "pct": 51.8
+    },
+    {
       "year": 1993,
       "pct": 47.5
     },

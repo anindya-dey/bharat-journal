@@ -61,6 +61,7 @@ if (published) {
     <link rel="alternate icon" sizes="32x32" href="/icon/32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icon/180.png" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content={type} />
@@ -79,6 +80,7 @@ if (published) {
     />
     <script is:inline>
       (function () {
+        document.documentElement.classList.add("js");
         try {
           var t = localStorage.getItem("bj-theme");
           if (
@@ -90,6 +92,7 @@ if (published) {
         } catch (e) {}
       })();
     </script>
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col overflow-x-clip">
     <div
@@ -100,7 +103,7 @@ if (published) {
     >
     </div>
     <SiteNav />
-    <main class="flex-1 w-full">
+    <main class="flex-1 w-full" data-pagefind-body>
       <slot />
     </main>
     <SiteFooter />

@@ -14,7 +14,6 @@ import {
   ArrowRight,
   ChartColumn,
   ChartLine,
-  Lightbulb,
 } from "@lucide/astro";
 
 const THEMES = [
@@ -30,10 +29,6 @@ const THEMES = [
 const vizs = (await getCollection("now")).sort((a, b) =>
   a.data.title.localeCompare(b.data.title),
 );
-
-const allIdeas = await getCollection("ideas");
-const ideaCounts = (vizId: string) =>
-  allIdeas.filter((i) => i.data.relatedNow === `/now/${vizId}`);
 
 const byTheme = THEMES.map((theme) => ({
   ...theme,
@@ -89,18 +84,6 @@ const byTheme = THEMES.map((theme) => ({
                     <p class="mt-2 text-sm text-fog leading-relaxed line-clamp-2">
                       {v.data.description}
                     </p>
-                    {
-                      ideaCounts(v.id).length > 0 && (
-                        <div class="mt-3 flex flex-wrap gap-1.5">
-                          {ideaCounts(v.id).map((idea) => (
-                            <span class="inline-flex items-center gap-1 rounded-full bg-cream border border-line px-2 py-0.5 text-[10px] font-semibold text-navy/80">
-                              <Lightbulb size={10} stroke-width={2.4} />
-                              {idea.data.title}
-                            </span>
-                          ))}
-                        </div>
-                      )
-                    }
                     <div class="mt-auto pt-4 flex items-center justify-between text-xs text-fog">
                       <span>
                         {v.data.sources.length} source

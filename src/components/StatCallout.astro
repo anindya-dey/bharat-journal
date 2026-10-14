@@ -18,10 +18,11 @@ const accents = {
 };
 
 // detect a leading number for the count-up (e.g. "~185 bn" → 185)
-const m = value.match(/^([~]?)([\d,.]+)\s*(.*)$/);
+const m = value.match(/^([~₹]?)([\d,.]+)(\s*)(.*)$/);
 const prefix = m?.[1] ?? "";
 const num = m?.[2] ?? "";
-const suffix = m?.[3] ?? "";
+const gap = m?.[3] ?? "";
+const suffix = gap + (m?.[4] ?? "");
 const parsed = num ? Number(num.replace(/,/g, "")) : NaN;
 const decimals = num.includes(".")
   ? Math.min(num.split(".")[1]?.length ?? 0, 2)

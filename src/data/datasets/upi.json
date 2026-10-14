@@ -9,7 +9,8 @@
     { "date": "2021-04-01", "label": "FY 2021-22", "volumeMn": 45960, "valueLakhCr": 84.9, "note": "45,960 million; calendar 2021 total ₹50 trillion crossed" },
     { "date": "2022-04-01", "label": "FY 2022-23", "volumeMn": 83750, "valueLakhCr": 139, "note": "8,375 crore transactions (NPCI via Economic Survey); ₹139 lakh crore value" },
     { "date": "2023-04-01", "label": "FY 2023-24", "volumeMn": 116740, "valueLakhCr": 180.6, "note": "~116.74 billion transactions, ₹180.6 lakh crore (NPCI annual)" },
-    { "date": "2024-04-01", "label": "FY 2024-25", "volumeMn": 185000, "valueLakhCr": 240, "note": "~185 billion transactions, ~₹240 lakh crore (NPCI annual report)" }
+    { "date": "2024-04-01", "label": "FY 2024-25", "volumeMn": 185000, "valueLakhCr": 240, "note": "~185 billion transactions, ~₹240 lakh crore (NPCI annual report)" },
+    { "date": "2025-04-01", "label": "FY 2025-26", "volumeMn": 241620, "valueLakhCr": 314, "note": "241.62 billion transactions, ₹314 lakh crore (NPCI, UPI's 10th year)" }
   ],
   "milestoneAnnotations": [
     { "date": "2016-04-01", "label": "UPI launched" },
