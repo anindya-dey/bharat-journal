@@ -30,6 +30,26 @@ government, if and when that is ever appropriate.
   archived copy of what was sent. Redact personal details (phone, address,
   Aadhaar-linked information) from anything published.
 
+## Tracking a submission
+
+- **Use `docs/SUBMISSION-TRACKER.md`** for the channel, date, and reference
+  number — never in the site's frontmatter or content.
+- **Flip the public `status` field to `"proposed"`** on the idea's `.mdx`
+  file once it has actually been formally submitted through an official
+  channel (a consultation comment, CPGRAMS, a written submission to a
+  ministry desk). This is the one piece of submission reality that belongs
+  on the public site: it tells a reader "this moved from an idea on a blog
+  to something a ministry has in hand" without publishing *how*, *where*, or
+  any reference number.
+- Leave `origin: "my-proposal"` unchanged — `status` and `origin` are
+  independent; `proposed` only describes how far the idea has travelled,
+  not who originated it.
+- If a ministry or the government independently starts a matching
+  programme (the way Mission Sudarshan Chakra, the Safran engine deal, and
+  others already have), that is a separate, stronger signal — update
+  `origin` to `"government-initiative"` and `status` to `"in-progress"`
+  instead, with the real programme cited in the article.
+
 ## What not to do
 
 - Do not publish submission records, reference numbers, or personal details on
