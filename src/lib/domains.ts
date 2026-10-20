@@ -10,6 +10,7 @@ export const DOMAINS = [
   { id: "energy-climate", label: "Energy & Climate" },
   { id: "human-development", label: "Human Development" },
   { id: "economy-industry", label: "Economy & Industry" },
+  { id: "defence-security", label: "Defence & Security" },
 ] as const;
 
 export type DomainId = (typeof DOMAINS)[number]["id"];
@@ -62,9 +63,12 @@ const THEME_TO_DOMAIN: Record<string, DomainId> = {
   investment: "economy-industry",
   jobs: "economy-industry",
   livelihoods: "economy-industry",
-  military: "economy-industry",
   governance: "economy-industry",
   resilience: "economy-industry",
+
+  // Defence & Security
+  military: "defence-security",
+  defence: "defence-security",
 };
 
 export function domainForIdea(themes: string[]): DomainId | "other" {
